@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   
+    <color name="app_green">#00CC00</color>
+    
+    <color name="app_white">#FFFFFF</color> 
+    <color name="app_offwhite">#F6F6F6</color> 
+    <color name="app_darkoffwhite">#E1E1E1</color> <!-- CACACA -->  
+    <color name="app_transparent">#00000000</color>
+    
+    <color name="app_black">#111111</color>
+    <color name="app_black_dark">#292929</color>
+    <color name="app_black_header">#393939</color>
+    <color name="app_tranparent_black">#88000000</color>
+    <color name="app_darkgray">#333333</color>
+    <color name="app_gray">#717171</color>   
+    <color name="app_lightgray">#919191</color>
+    <color name="app_verylightgray">#E1E1E1</color>
+    <color name="app_verylightgray_trans">#99E1E1E1</color>
+    
+    <color name="app_red">#DD2036</color>
+    <color name="app_lightred">#BDB9B9</color>
+ 
+    
+    <color name="app_darkblue">#077EF5</color>
+    <color name="app_blue">#3399FF</color>
+    <color name="app_verylightblue">#98CCFF</color>
+    <color name="app_lightblue">#47A3FF</color>
+    
+    <color name="app_orange">#F26522</color>
+    <color name="app_golden">#D4AF37</color>
+    
+    <color name="app_cat_color_0">#0077E7</color>
+    <color name="app_cat_color_1">#FE0200</color>
+    <color name="app_cat_color_2">#20AA3A</color>
+    <color name="app_cat_color_3">#009A9D</color>
+    <color name="app_cat_color_4">#6C38EC</color>
+    <color name="app_cat_color_5">#FF9903</color>
+    <color name="app_cat_color_6">#DD2036</color>
+    <color name="app_cat_color_7">#3399FF</color>
+    <color name="app_cat_color_8">#AACC00</color>
+    <color name="app_cat_color_9">#47A3FF</color>
+   
+    
+    
+</resources>

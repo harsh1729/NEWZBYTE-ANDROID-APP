@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+ 
+    <in.newzbyte.app.Custom_touchImageView
+        android:id="@+id/imgDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingRight="30dp"
+        android:scaleType="fitCenter" />
+
+    <!-- <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/cancel_white"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" /> -->
+
+   <!--  <TextView
+        android:id="@+id/txtimgViewerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="15dp"
+        android:textSize="@dimen/txt_app_labels_normal"
+        android:textColor="@color/app_white"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtoutOf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/txt_app_labels_normal_small"
+        android:layout_marginBottom="30dp"
+        android:text="" /> -->
+ 
+</RelativeLayout>

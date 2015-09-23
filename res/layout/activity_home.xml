@@ -1,0 +1,85 @@
+<in.newzbyte.app.Custom_DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+ 
+    <!-- The main content view -->
+    <RelativeLayout
+        android:id="@+id/rlytMainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <RelativeLayout
+        android:id="@+id/rlytNewsContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        </RelativeLayout>
+        <Button 
+     	android:id="@+id/btnMenu"
+        android:layout_width="50dp"
+    	android:layout_height="50dp"
+    	android:background="@drawable/menu1" 
+    	android:layout_marginTop="5dp"
+    	android:layout_marginLeft="5dp"
+    	android:layout_alignParentTop="true"
+    	android:layout_alignParentLeft="true"
+    	android:onClick="onClickMenu" />
+   </RelativeLayout>
+    
+    
+ 
+    <!-- The navigation drawer -->
+   <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/rlytDrawerPane"
+        android:background="@color/app_offwhite"
+        android:layout_gravity="start">  
+        <RelativeLayout  
+            android:id="@+id/rlytSettings"
+            android:layout_width ="match_parent"
+        	android:layout_height ="wrap_content"
+        	android:layout_alignParentTop="true"
+        	android:background="@color/app_black_header"
+        	android:padding="10dp">
+            
+            <ImageView 
+                android:layout_width ="40dp"
+        		android:layout_height ="40dp"
+        		android:clickable="true"
+        		android:src="@drawable/setting_white"
+        		android:onClick="onClickSettings"/>
+        </RelativeLayout>
+        <ScrollView
+        android:id="@+id/scrollViewCat"
+        android:layout_below="@+id/rlytSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp" >
+
+       <LinearLayout
+            android:id="@+id/llytCatContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_transparent"
+            android:orientation="vertical" >
+            
+            <Button 
+     	android:id="@+id/btnCatAll"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="@drawable/viewall_selected" 
+    	android:layout_margin="10dp"
+    	android:onClick="onClickAllCategory" />
+            
+            </LinearLayout>
+            
+     	</ScrollView>   
+ 
+    </RelativeLayout>
+ 
+</in.newzbyte.app.Custom_DrawerLayout>
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NewzByte</string>
+    <string name="news_paper_name">NewzByte</string>
+    <string name="txt_company_website">www.newzbyte.in</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+	<string name="keyTag">Tag</string>
+</resources>
