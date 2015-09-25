@@ -8,10 +8,11 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
-    <permission
+    <!--	CHANGED BY JASPAL 25-09-2015
+      <permission
         android:name="in.newzbyte.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" >
-    </permission>
+    </permission> -->
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />

@@ -1,18 +1,18 @@
 package in.newzbyte.app;
 
 import java.util.ArrayList;
+
 import org.json.JSONArray;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
-
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -190,6 +190,196 @@ public class Activity_NewsDetails extends Activity {
 		
 		startActivity(i);
 	}
+	//private void setLeftImageContent(LinearLayout llyt_mainContainer,final Object_ListItem_MainNews objNews,Typeface tf)
+	private void setLeftImageContent(int imgtag,LinearLayout llyt_mainContainer,Typeface tf,double imgratio,String imgpath,final Spanned content)
+	{
+		View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
+		
+//		TextView hdg = (TextView)singleNewsView.findViewById(R.id.txt_newsheading);
+//		hdg.setVisibility(View.GONE);
+		
+		ImageView img = (ImageView)singleNewsView.findViewById(R.id.img_newsimage);
+		img.setTag(R.id.img_newsimage,Integer.valueOf(imgtag));
+	
+		
+		final int wdth = (Globals.getScreenSize(this).x-20)*3/5;
+		//int hgt = (int) (wdth*objNews.getImageRatio());
+		int hgt = (int) (wdth*imgratio);
+		
+		//Log.i("jaspal","img widht:"+wdth+"   hgt:"+hgt);
+		RelativeLayout.LayoutParams img_lp = new RelativeLayout.LayoutParams(wdth,hgt);
+		img.setLayoutParams(img_lp);
+		
+		//Globals.loadImageIntoImageView(img, objNews.getImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
+		//loadImageIntoImageView( ImageView iv ,String imgURL, Context context ,int loadingImgId, int errorImgId ,int height,int width)
+		//Globals.loadImageIntoImageView(img, objNews.getImagePath(),this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+		Globals.loadImageIntoImageView(img, imgpath,this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+		
+		final TextView txt = (TextView)singleNewsView.findViewById(R.id.txt_newscontent);
+		int widthSpec = MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, MeasureSpec.EXACTLY);
+		int heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+		txt.measure(widthSpec, heightSpec);
+		final int rows = Globals.getTxtViewRowsByImgHgt(txt.getMeasuredHeight(),(int)txt.getLineSpacingMultiplier(),hgt);
+		//Log.i("jaspal","Rows found:"+rows);
+		
+		final RelativeLayout.LayoutParams txt_lp = new RelativeLayout.LayoutParams(txt.getLayoutParams());
+		txt_lp.setMargins(wdth+6, 0, 0, 0);
+		txt.setLayoutParams(txt_lp);
+		txt.setTypeface(tf);
+		txt.setText(content);
+		
+		
+		 txt.getViewTreeObserver().addOnGlobalLayoutListener( new OnGlobalLayoutListener() { 
+			 
+	            public void onGlobalLayout() { 
+	 
+	                int linesCount = txt.getLayout().getLineCount();
+	                // restore the margin 
+	                txt_lp.setMargins(0, 0, 0, 0); 
+	                SpannableString spanS =  new  SpannableString ( content );
+	 
+	                if (linesCount <= rows) {
+	                	//Log.i("jaspal","lines count less than Rows,linescount:"+linesCount);
+	                    //spanS.setSpan(new MyLeadingMarginSpan2(lines, width), 0, spanS.length(), 0);
+	                    spanS.setSpan(new Custom_LeadingMarginSpace(rows, wdth+6),0, spanS.length(),0);
+	                    txt.setText(spanS);
+	                } 
+	                else 
+	                { 
+	                	//Log.i("jaspal","lines count greater than Rows,linescount:"+linesCount);
+	                    // find the breakpoint where to break the String. 
+	                    int breakpoint = txt.getLayout().getLineEnd(rows-1);
+	                    //Log.i("jaspal","breakpoint at :"+breakpoint);
+	 
+	                    Spannable s1 = new SpannableStringBuilder(spanS, 0, breakpoint);
+	                   // Log.i("jaspal","s1 spannable is :"+Html.toHtml(s1));
+	                    s1.setSpan(new Custom_LeadingMarginSpace(rows, wdth+6),0, s1.length(),0);
+	                    Spannable s2 = new SpannableStringBuilder(System.getProperty("line.separator"));
+	                    Spannable s3 = new SpannableStringBuilder(spanS, breakpoint, spanS.length());
+	                    // It is needed to set a zero-margin span on for the text under the image to prevent the space on the right!
+	                    s3.setSpan(new Custom_LeadingMarginSpace(0,0),0, s3.length(),0);
+	                    txt.setText(TextUtils.concat(s1, s2, s3));
+	                } 
+	 
+	                // remove the GlobalLayoutListener 
+	                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+	                     txt.getViewTreeObserver().removeOnGlobalLayoutListener(this);                           
+	                 } else { 
+	                     txt.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+	                 } 
+	            } 
+	        });
+		llyt_mainContainer.addView(singleNewsView);
+	}
+	
+	//private void setCenterImageContent(LinearLayout llyt_mainContainer,final Object_ListItem_MainNews objNews,Typeface tf)
+	private void setCenterImageContent(int imgtag,LinearLayout llyt_mainContainer,Typeface tf,double imgratio,String imgpath,final Spanned content)
+	{
+		View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_center, llyt_mainContainer, false);
+		
+//		TextView hdg = (TextView)singleNewsView.findViewById(R.id.txt_newsheading);
+//		hdg.setVisibility(View.GONE);
+		
+		ImageView img = (ImageView)singleNewsView.findViewById(R.id.img_newsimage);
+		int wdth = (Globals.getScreenSize(this).x-20);
+		int hgt = (int) (wdth*imgratio);
+		
+		img.setTag(R.id.img_newsimage,Integer.valueOf(imgtag));
+		
+		LinearLayout.LayoutParams img_lp = new LinearLayout.LayoutParams(wdth,hgt);
+		img.setLayoutParams(img_lp);
+		
+		//Globals.loadImageIntoImageView(img, objNews.getImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
+		Globals.loadImageIntoImageView(img, imgpath,this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+		TextView txt = (TextView)singleNewsView.findViewById(R.id.txt_newscontent);
+		txt.setTypeface(tf);
+		txt.setText(content);
+		
+		llyt_mainContainer.addView(singleNewsView);
+	}
+	
+	//private void setRightImageContent(LinearLayout llyt_mainContainer,final Object_ListItem_MainNews objNews,Typeface tf)
+	private void setRightImageContent(int imgtag,LinearLayout llyt_mainContainer,Typeface tf,double imgratio,String imgpath,final Spanned content)
+	{
+		View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_right, llyt_mainContainer, false);
+		
+		//TextView hdg = (TextView)singleSubNewsView.findViewById(R.id.txt_newsheading);
+		//if(object_SubNewsItem.getNewsHeadingSpan().equals(""))
+			//hdg.setVisibility(View.GONE);
+		//else
+			//hdg.setText(object_SubNewsItem.getNewsHeadingSpan());
+		
+		ImageView subimg = (ImageView)singleSubNewsView.findViewById(R.id.img_newsimage);
+		//subimg.setTag(R.id.img_newsimage,Integer.valueOf(i));
+		subimg.setTag(R.id.img_newsimage,Integer.valueOf(imgtag));
+		
+		final int imgwdth = (Globals.getScreenSize(this).x-20)*3/5;
+		int imghgt = (int) (imgwdth*imgratio);
+		RelativeLayout.LayoutParams subimg_lp = new RelativeLayout.LayoutParams(imgwdth,imghgt);
+		subimg_lp.setMargins(Globals.getScreenSize(this).x-20-imgwdth, 0, 0, 0);
+		subimg.setLayoutParams(subimg_lp);
+		
+		//Globals.loadImageIntoImageView(subimg,object_SubNewsItem.getNewsImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
+		
+		Globals.loadImageIntoImageView(subimg, imgpath,this,R.drawable.loading, R.drawable.loading,imghgt,imgwdth);
+		
+		final TextView subtxt_imgside = (TextView)singleSubNewsView.findViewById(R.id.txt_newscontent_imgside);
+		final TextView subtxt = (TextView)singleSubNewsView.findViewById(R.id.txt_newscontent);
+		int subwidthSpec = MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, MeasureSpec.EXACTLY);
+		int subheightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+		subtxt_imgside.measure(subwidthSpec, subheightSpec);
+		subtxt_imgside.setTypeface(tf);
+		subtxt.setTypeface(tf);
+		final int subrows = Globals.getTxtViewRowsByImgHgt(subtxt_imgside.getMeasuredHeight(),(int)(subtxt_imgside.getLineSpacingMultiplier()+subtxt_imgside.getLineSpacingExtra()),imghgt);
+		
+		final RelativeLayout.LayoutParams subtxt_lp = new RelativeLayout.LayoutParams(subtxt_imgside.getLayoutParams());
+		subtxt_lp.setMargins(0, 0, imgwdth+6, 0);
+		subtxt_imgside.setLayoutParams(subtxt_lp);
+		subtxt_imgside.setText(content);
+		
+		
+		subtxt_imgside.getViewTreeObserver().addOnGlobalLayoutListener( new OnGlobalLayoutListener() { 
+			 
+            public void onGlobalLayout() { 
+ 
+                int linesCount = subtxt_imgside.getLayout().getLineCount();
+                // restore the margin 
+                //subtxt_lp.setMargins(0, 0, 0, 0); 
+                SpannableString spanS =  new  SpannableString (content);
+ 
+                if (linesCount <= subrows) {
+                    //spanS.setSpan(new MyLeadingMarginSpan2(lines, width), 0, spanS.length(), 0);
+                    spanS.setSpan(new Custom_LeadingMarginSpace(subrows, imgwdth+6),0, spanS.length(),0);
+                    subtxt_imgside.setText(spanS);
+                } 
+                else 
+                { 
+                    // find the breakpoint where to break the String. 
+                    int breakpoint = subtxt_imgside.getLayout().getLineEnd(subrows-1);
+                    Log.i("jaspal","breakpoint at :"+breakpoint);
+                    
+                    
+ 
+                    Spannable s1 = new SpannableStringBuilder(spanS, 0, breakpoint);
+                    Spannable s3 = new SpannableStringBuilder(spanS, breakpoint, spanS.length());
+                    // It is needed to set a zero-margin span on for the text under the image to prevent the space on the right!
+                    s3.setSpan(new Custom_LeadingMarginSpace(0,0),0, s3.length(),0);
+                    //subtxt_imgside.setText(TextUtils.concat(s1, s2));
+                    subtxt_imgside.setText(s1);
+                    subtxt.setText(s3);
+                } 
+ 
+                // remove the GlobalLayoutListener 
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                	subtxt_imgside.getViewTreeObserver().removeOnGlobalLayoutListener(this);                           
+                 } else { 
+                	 subtxt_imgside.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                 } 
+            } 
+        });
+		
+		llyt_mainContainer.addView(singleSubNewsView);
+	}
 	
 	private void gotNewsDetailResponse(JSONArray response) {
 
@@ -214,8 +404,8 @@ public class Activity_NewsDetails extends Activity {
 		
 		if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 		{
-			
-			View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
+			setLeftImageContent(0,llyt_mainContainer,tf,objNews.getImageRatio(),objNews.getImagePath(),objNews.getContentSpan());
+			/*View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
 			
 //			TextView hdg = (TextView)singleNewsView.findViewById(R.id.txt_newsheading);
 //			hdg.setVisibility(View.GONE);
@@ -289,13 +479,12 @@ public class Activity_NewsDetails extends Activity {
 		                 } 
 		            } 
 		        });
-			llyt_mainContainer.addView(singleNewsView);
+			llyt_mainContainer.addView(singleNewsView);*/
 		}
-		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_CENTER || objNews.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
+		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_CENTER )
 		{
-			
-			
-			View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_center, llyt_mainContainer, false);
+			setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+			/*View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_center, llyt_mainContainer, false);
 			
 //			TextView hdg = (TextView)singleNewsView.findViewById(R.id.txt_newsheading);
 //			hdg.setVisibility(View.GONE);
@@ -315,7 +504,89 @@ public class Activity_NewsDetails extends Activity {
 			txt.setTypeface(tf);
 			txt.setText(objNews.getContentSpan());
 			
-			llyt_mainContainer.addView(singleNewsView);
+			llyt_mainContainer.addView(singleNewsView);*/
+		}
+		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
+		{
+			setRightImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+			/*View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_right, llyt_mainContainer, false);
+			
+			//TextView hdg = (TextView)singleSubNewsView.findViewById(R.id.txt_newsheading);
+			//if(object_SubNewsItem.getNewsHeadingSpan().equals(""))
+				//hdg.setVisibility(View.GONE);
+			//else
+				//hdg.setText(object_SubNewsItem.getNewsHeadingSpan());
+			
+			ImageView subimg = (ImageView)singleSubNewsView.findViewById(R.id.img_newsimage);
+			//subimg.setTag(R.id.img_newsimage,Integer.valueOf(i));
+			subimg.setTag(R.id.img_newsimage,Integer.valueOf(0));
+			
+			final int imgwdth = (Globals.getScreenSize(this).x-20)*3/5;
+			int imghgt = (int) (imgwdth*objNews.getImageRatio());
+			RelativeLayout.LayoutParams subimg_lp = new RelativeLayout.LayoutParams(imgwdth,imghgt);
+			subimg_lp.setMargins(Globals.getScreenSize(this).x-20-imgwdth, 0, 0, 0);
+			subimg.setLayoutParams(subimg_lp);
+			
+			//Globals.loadImageIntoImageView(subimg,object_SubNewsItem.getNewsImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
+			
+			Globals.loadImageIntoImageView(subimg, objNews.getImagePath(),this,R.drawable.loading, R.drawable.loading,imghgt,imgwdth);
+			
+			final TextView subtxt_imgside = (TextView)singleSubNewsView.findViewById(R.id.txt_newscontent_imgside);
+			final TextView subtxt = (TextView)singleSubNewsView.findViewById(R.id.txt_newscontent);
+			int subwidthSpec = MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, MeasureSpec.EXACTLY);
+			int subheightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+			subtxt_imgside.measure(subwidthSpec, subheightSpec);
+			subtxt_imgside.setTypeface(tf);
+			subtxt.setTypeface(tf);
+			final int subrows = Globals.getTxtViewRowsByImgHgt(subtxt_imgside.getMeasuredHeight(),(int)(subtxt_imgside.getLineSpacingMultiplier()+subtxt_imgside.getLineSpacingExtra()),imghgt);
+			
+			final RelativeLayout.LayoutParams subtxt_lp = new RelativeLayout.LayoutParams(subtxt_imgside.getLayoutParams());
+			subtxt_lp.setMargins(0, 0, imgwdth+6, 0);
+			subtxt_imgside.setLayoutParams(subtxt_lp);
+			subtxt_imgside.setText(objNews.getContentSpan());
+			
+			
+			subtxt_imgside.getViewTreeObserver().addOnGlobalLayoutListener( new OnGlobalLayoutListener() { 
+				 
+	            public void onGlobalLayout() { 
+	 
+	                int linesCount = subtxt_imgside.getLayout().getLineCount();
+	                // restore the margin 
+	                //subtxt_lp.setMargins(0, 0, 0, 0); 
+	                SpannableString spanS =  new  SpannableString (objNews.getContentSpan());
+	 
+	                if (linesCount <= subrows) {
+	                    //spanS.setSpan(new MyLeadingMarginSpan2(lines, width), 0, spanS.length(), 0);
+	                    spanS.setSpan(new Custom_LeadingMarginSpace(subrows, imgwdth+6),0, spanS.length(),0);
+	                    subtxt_imgside.setText(spanS);
+	                } 
+	                else 
+	                { 
+	                    // find the breakpoint where to break the String. 
+	                    int breakpoint = subtxt_imgside.getLayout().getLineEnd(subrows-1);
+	                    Log.i("jaspal","breakpoint at :"+breakpoint);
+	                    
+	                    
+	 
+	                    Spannable s1 = new SpannableStringBuilder(spanS, 0, breakpoint);
+	                    Spannable s3 = new SpannableStringBuilder(spanS, breakpoint, spanS.length());
+	                    // It is needed to set a zero-margin span on for the text under the image to prevent the space on the right!
+	                    s3.setSpan(new Custom_LeadingMarginSpace(0,0),0, s3.length(),0);
+	                    //subtxt_imgside.setText(TextUtils.concat(s1, s2));
+	                    subtxt_imgside.setText(s1);
+	                    subtxt.setText(s3);
+	                } 
+	 
+	                // remove the GlobalLayoutListener 
+	                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+	                	subtxt_imgside.getViewTreeObserver().removeOnGlobalLayoutListener(this);                           
+	                 } else { 
+	                	 subtxt_imgside.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+	                 } 
+	            } 
+	        });
+			
+			llyt_mainContainer.addView(singleSubNewsView);*/
 		}
 				
 		
@@ -328,7 +599,8 @@ public class Activity_NewsDetails extends Activity {
 			
 			if(object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 			{
-				View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
+				setLeftImageContent(i,llyt_mainContainer,tf,object_SubNewsItem.getImageRatio(),object_SubNewsItem.getNewsImagePath(),object_SubNewsItem.getNewsContentSpan());
+				/*View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
 				
 //				TextView hdg = (TextView)singleSubNewsView.findViewById(R.id.txt_newsheading);
 //				if(object_SubNewsItem.getNewsHeadingSpan().equals(""))
@@ -406,11 +678,12 @@ public class Activity_NewsDetails extends Activity {
 				
 				//subtxt.setText(subss);
 				
-				llyt_mainContainer.addView(singleSubNewsView);
+				llyt_mainContainer.addView(singleSubNewsView);*/
 			}
 			else if( object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_CENTER)
 			{
-				View singlesubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_center, llyt_mainContainer, false);
+				setCenterImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());
+/*				View singlesubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_center, llyt_mainContainer, false);
 				
 //				TextView hdg = (TextView)singlesubNewsView.findViewById(R.id.txt_newsheading);
 //				if(object_SubNewsItem.getNewsHeadingSpan().equals(""))
@@ -433,11 +706,12 @@ public class Activity_NewsDetails extends Activity {
 				txt.setTypeface(tf);
 				txt.setText(object_SubNewsItem.getNewsContentSpan());
 				
-				llyt_mainContainer.addView(singlesubNewsView);
+				llyt_mainContainer.addView(singlesubNewsView);*/
 				
 			}else if(object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
 			{
-				View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_right, llyt_mainContainer, false);
+				setRightImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());
+				/*View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_right, llyt_mainContainer, false);
 				
 				//TextView hdg = (TextView)singleSubNewsView.findViewById(R.id.txt_newsheading);
 				//if(object_SubNewsItem.getNewsHeadingSpan().equals(""))
@@ -513,7 +787,7 @@ public class Activity_NewsDetails extends Activity {
 		            } 
 		        });
 				
-				llyt_mainContainer.addView(singleSubNewsView);
+				llyt_mainContainer.addView(singleSubNewsView);*/
 			}
 		}
 
