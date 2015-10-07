@@ -11,12 +11,14 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -93,6 +95,7 @@ public class Activity_Home extends Activity {
 
 	ArrayList<Object_ListItem_MainNews> listNewsItemServer;
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
+	private ProgressDialog mDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +186,7 @@ public class Activity_Home extends Activity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		
 		super.onResume();
 
 		if(comingFromPushMessage){
@@ -256,11 +259,21 @@ public class Activity_Home extends Activity {
 			Toast.makeText(this, "Please wait!", Toast.LENGTH_SHORT).show();
 			return null;
 		}
+		
+		Log.d("jaspal","CurrentNewsIndex:"+currentNewsIndex);
+
+		//Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
 
 		if(isSlideUp){
 			if(currentNewsIndex >= listNewsItemServer.size() - 1){
 				currentNewsIndex = listNewsItemServer.size() - 1;
-				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				//TODO CALL SERVER FOR MORE NEWS WITH CATEGORY
+				mDialog = Globals.showLoadingDialog(mDialog,this,false);
+				
+				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
+				getNewsDataFromServer(-1,Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
 				return null;
 			}
 
@@ -270,14 +283,19 @@ public class Activity_Home extends Activity {
 		else{
 			if(currentNewsIndex <= 0){
 				currentNewsIndex  = 0;
-				Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
+				//TODO CALL SERVER FOR MORE NEWS WITH CATEGORY
+				mDialog = Globals.showLoadingDialog(mDialog,this,false);
+				
+				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
+				getNewsDataFromServer(-1,Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
 				return null;
 			}
 			currentNewsIndex--;
 		}
-
-
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+		//objNews = listNewsItemServer.get(currentNewsIndex);
 
 		if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
 			return createNewsView();
@@ -411,13 +429,13 @@ public class Activity_Home extends Activity {
 
 				@Override
 				public void onAnimationStart(Animator arg0) {
-					// TODO Auto-generated method stub
+					
 
 				}
 
 				@Override
 				public void onAnimationRepeat(Animator arg0) {
-					// TODO Auto-generated method stub
+					
 
 				}
 
@@ -897,8 +915,7 @@ public class Activity_Home extends Activity {
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
 			if(i%2 == 0){
-				LayoutInflater inflater = (LayoutInflater)this.getSystemService
-						(Context.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
 			}
 
@@ -922,8 +939,7 @@ public class Activity_Home extends Activity {
 		int widthImage = rlytDrawerPane.getLayoutParams().width / 2 - 44 ;
 		int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
 		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
@@ -975,7 +991,136 @@ public class Activity_Home extends Activity {
 
 	}
 
+	
+	//TODO get main news data from server
+	public void getNewsDataFromServer(final int catId, final String callType,int lastNewsId , int limit) 
+	{
+		Log.d("jaspal","catid:"+catId);
+		Log.d("jaspal","callType:"+callType);
+		Log.d("jaspal","lastNewsid:"+lastNewsId);
+		Log.d("jaspal","limit:"+limit);
 
+		try{
+			
+			Custom_ConnectionDetector cd = new Custom_ConnectionDetector(getApplicationContext());
+
+			if (!cd.isConnectingToInternet()) {
+				/*if (!isPullToRefresh) {
+					Globals.showAlertDialogOneButton(
+							Globals.TEXT_NO_INTERNET_HEADING,
+							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
+							Activity_Home.this, "OK", null, false);
+					//showNewsList(catId,callType);
+
+				} else {*/
+					Toast.makeText(
+							Activity_Home.this,
+							Globals.TEXT_NO_INTERNET_DETAIL_TOAST,
+							Toast.LENGTH_SHORT).show();
+					//listViewNews.onRefreshComplete();
+
+				/*}*/
+
+				Globals.hideLoadingDialog(mDialog);
+				return;
+			}
+
+			Log.i("HARSH", "getNewsDataFromServer Request CatId = " + catId);
+			//if (!isPullToRefresh)
+				//if(!isShowingLoadingScreen())
+					//mDialog = Globals.showLoadingDialog(mDialog, this,false);
+			
+			Log.d("jaspal","URL for more news is :\n"+Custom_URLs_Params.getURL_NewsByCategory());
+			Log.d("jaspal","\n\nParameters for more news is:\n"+Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit));
+			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
+					Custom_URLs_Params.getURL_NewsByCategory(), Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit),
+							new Listener<JSONObject>() {
+
+
+						
+						@Override
+						public void onResponse(JSONObject response) {
+							Log.d("jaspal","REsponse: \n"+response);
+
+							gotNewsResponse(response, catId,callType);
+							
+						}
+
+					}, new ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError err) {
+							err.printStackTrace();
+							//listViewNews.onRefreshComplete();
+
+							/*if (!isPullToRefresh) {
+								Globals.showAlertDialogOneButton(
+										Globals.TEXT_CONNECTION_ERROR_HEADING,
+										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+										Activity_Home.this, "OK", null, false);
+								Globals.hideLoadingDialog(mDialog);
+								//showNewsList(catId,callType);
+								//hideLoadingScreen();
+							} else {*/
+								Toast.makeText(
+										Activity_Home.this,
+										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+										Toast.LENGTH_SHORT).show();
+								//listViewNews.onRefreshComplete();
+
+							/*}*/
+							Globals.hideLoadingDialog(mDialog);
+						}
+					});
+
+		
+			Custom_AppController.getInstance().addToRequestQueue(
+					jsonObjectRQST);
+			
+		}catch(Exception ex){
+
+		}
+	}
+	
+	//TODO got main news json response
+	private void gotNewsResponse(JSONObject response, int catId, final String callType) {
+ 
+		try {
+			
+			if(response != null){
+				if(response.has("topnewsid"))
+				{
+					updateCatTopNewsId(catId,response.getInt("topnewsid"));
+				}
+				
+				if(response.has("news"))
+				{
+					Log.d("jaspal","Found News !!!");
+					parseNewsJson(response,callType);
+				}
+				/*if(response.has("news"))
+					if(insertNewAndDeleteOldNews(response.getJSONArray("news"),catId,isPullToRefresh))
+							showNewsList(catId,callType);*/
+						
+			}
+			Globals.hideLoadingDialog(mDialog);
+			
+		} catch (JSONException e) {
+			Globals.showAlertDialogOneButton(
+					Globals.TEXT_CONNECTION_ERROR_HEADING,
+					Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+					Activity_Home.this, "OK", null, false);
+			
+			Globals.hideLoadingDialog(mDialog);
+			//hideLoadingScreen();
+			//showNewsList(catId,callType);
+		}
+	}
+
+	//TODO 
+	private void updateCatTopNewsId(int catId, int newsId){
+		DBHandler_Category dbH = new DBHandler_Category(this);
+		dbH.updateCategoryTopNews(catId, newsId);
+	}
 
 
 
@@ -1044,11 +1189,111 @@ public class Activity_Home extends Activity {
 		}
 
 	}
+	
+	
+	//TODO
+	private void parseNewsJson(JSONObject response,String callType) {
+
+		if (response == null){
+			
+			return;
+		}
+		Log.i("DARSH", "RESPONsE parseAppConfigJson is : "+response.toString());
+		try {
+
+			Object_AppConfig objConfig = new Object_AppConfig(this);
+
+			int newsCount = 0;
+			//// If news is there insert new news News
+			if (response.has("news")) {
+
+				Log.i("DARSH", "insertNewAndDeleteOldNews news onResponse" + response);
+
+				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
+				//TODO 
+				ArrayList<Object_ListItem_MainNews> tempMainNewsList = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig.getRootCatId());
+				
+				 
+				if(callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					currentNewsIndex += tempMainNewsList.size();
+					for(int i=tempMainNewsList.size()-1;i>=0;i--)
+					{
+						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
+							newsCount++;
+						listNewsItemServer.add(0, tempMainNewsList.get(i));			
+					}
+				}
+				else if(callType.equals(Globals.CALL_TYPE_OLD))
+				{
+					for(int i=0;i<tempMainNewsList.size();i++)
+					{
+						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
+							newsCount++;
+						listNewsItemServer.add(tempMainNewsList.get(i));
+					}
+				}
+				
+				/*
+				 * 
+				 * Log.i("Bytes", "ACTION_MOVE UP");
+						isSlideUp = true;
+						viewMoving = viewStatic;
+
+						int backUpId = currentNewsIndex;
+						viewStatic = createNewsView();
+						if(viewStatic == null){
+							viewStatic = viewMoving;
+							viewMoving = null;
+							isNoMoreNews = true;
+							isSlideInProgress = false;
+							currentNewsIndex = backUpId;
+							return false;
+				 * */
+				
+				if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_OLD))
+				{
+					Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				}
+				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_OLD))
+				{ 
+					isSlideUp = true;
+					viewMoving = viewStatic;
+					viewStatic = createNewsView();
+					slide(-1*rlytNewsContent.getHeight(),DEFAULT_MAX_SLIDE_DURATION);
+				}
+				else if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
+				}
+				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					isSlideUp = false;
+					//isSlideInProgress = true;
+					viewMoving = createNewsView();
+					viewMoving.setY(-1*rlytNewsContent.getHeight());
+					slide(0,DEFAULT_MAX_SLIDE_DURATION);
+				}
+				
+				Log.d("jaspal","currentNEWSiNDEX AFTER adding new News :"+currentNewsIndex);
+				
+				//viewStatic = createNewsView();
+
+				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+				dbH.insertNewsItemList(tempMainNewsList,false);
+			}
+
+
+		} catch (Exception ex) {
+			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
+		}
+
+	}
 
 	private void parseAppConfigJson(JSONObject response) {
 
 		if (response == null){
-			//TODO
+			
 			return;
 		}
 		Log.i("DARSH", "RESPONCE parseAppConfigJson is : "+response.toString());
@@ -1082,8 +1327,7 @@ public class Activity_Home extends Activity {
 					if(response.has("categories")){
 
 						JSONArray Cat_Object_Array = response.getJSONArray("categories");
-						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(
-								this);
+						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(this);
 						listCatItemServer = parserObject.getCategoriesFromJson(Cat_Object_Array);
 						createDrawerCategories();
 

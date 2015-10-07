@@ -61,11 +61,16 @@ public class Globals {
 	public static final String TEXT_NOTIFICATION_DISABLED= "NOTIFICATION OFF";
 	public static final int VOLLEY_TIMEOUT_MILLISECS = 15000;
 	public static final int CLIENT_ID = 4;
-	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 50;
+	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 3;
+	public static final int FINAL_NEWS_LIMIT_LOAD_OLD = 3;
+	public static final int FINAL_NEWS_LIMIT_LOAD_NEW = 3;
 	
 	public static final int IMAGE_ALIGN_LEFT = 1;
 	public static final int IMAGE_ALIGN_CENTER = 2;
 	public static final int IMAGE_ALIGN_RIGHT = 3;
+	
+	public static final String CALL_TYPE_OLD = "old";
+	public static final String CALL_TYPE_NEW = "new";
 	
 	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";
 	public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
