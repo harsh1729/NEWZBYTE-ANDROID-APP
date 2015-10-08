@@ -42,5 +42,7 @@
     <color name="app_cat_color_9">#47A3FF</color>
    
     
+    <color name="app_setting_item_color">#383838</color>
+    
     
 </resources>
