@@ -15,18 +15,28 @@
         android:id="@+id/rlytNewsContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
         </RelativeLayout>
-        <Button 
-     	android:id="@+id/btnMenu"
-        android:layout_width="50dp"
-    	android:layout_height="50dp"
-    	android:background="@drawable/menu1" 
-    	android:layout_marginTop="5dp"
-    	android:layout_marginLeft="5dp"
-    	android:layout_alignParentTop="true"
-    	android:layout_alignParentLeft="true"
-    	android:onClick="onClickMenu" />
+            
+		        <Button 
+		     	android:id="@+id/btnMenu"
+		        android:layout_width="50dp"
+		    	android:layout_height="50dp"
+		    	android:background="@drawable/menu1" 
+		    	android:layout_marginTop="5dp"
+		    	android:layout_marginLeft="5dp"
+		    	android:layout_alignParentTop="true"
+		    	android:layout_alignParentLeft="true"
+		    	android:onClick="onClickMenu" />
+		        
+		        <ImageView 
+		        android:id="@+id/imgSettingsCog"
+		        android:layout_width ="50dp"
+				android:layout_height ="50dp"
+				android:clickable="true"
+		    	android:layout_alignParentTop="true"
+		    	android:layout_alignParentRight="true"
+				android:src="@drawable/setting_white"
+				android:onClick="onClickSettings"/>
    </RelativeLayout>
     
     
@@ -37,8 +47,10 @@
         android:layout_height="match_parent"
         android:id="@+id/rlytDrawerPane"
         android:background="@color/app_offwhite"
-        android:layout_gravity="start">  
-        <RelativeLayout  
+        android:layout_gravity="start"> 
+        
+       <!-- Settings bar -->
+<!--         <RelativeLayout  
             android:id="@+id/rlytSettings"
             android:layout_width ="match_parent"
         	android:layout_height ="wrap_content"
@@ -52,13 +64,13 @@
         		android:clickable="true"
         		android:src="@drawable/setting_white"
         		android:onClick="onClickSettings"/>
-        </RelativeLayout>
+        </RelativeLayout>-->
         <ScrollView
         android:id="@+id/scrollViewCat"
-        android:layout_below="@+id/rlytSettings"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp" >
+        android:layout_margin="0dp" >
 
        <LinearLayout
             android:id="@+id/llytCatContainer"
@@ -72,7 +84,8 @@
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:background="@drawable/viewall_selected" 
-    	android:layout_margin="10dp"
+    	android:layout_marginLeft="6dp"
+    	android:layout_marginRight="6dp"
     	android:onClick="onClickAllCategory" />
             	
             

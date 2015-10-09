@@ -30,7 +30,7 @@ public class Custom_OnTouchListener_ColoredBG implements OnTouchListener {
 				int catColor = context.getResources().getColor(Globals.getCategoryColor(catId, context));
 				
 				GradientDrawable shape =  new GradientDrawable();
-				 shape.setCornerRadius(10);
+				 //shape.setCornerRadius(10);
 				 shape.setColor(catColor);
 				 if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN){                   
 					 view.setBackground(shape);

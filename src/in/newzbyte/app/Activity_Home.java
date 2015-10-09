@@ -32,6 +32,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ public class Activity_Home extends Activity {
 	private Boolean isFirstResume = true;
 	static Boolean comingFromPushMessage = false;
 	Button btnMenu;
+	ImageView imgSettingsCog;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 	private DrawerLayout mDrawerLayout;
@@ -117,6 +119,7 @@ public class Activity_Home extends Activity {
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 		btnMenu = (Button)findViewById(R.id.btnMenu);
+		imgSettingsCog = (ImageView)findViewById(R.id.imgSettingsCog);
 
 
 		rlytDrawerPane.getLayoutParams().width = (int) (2.3 *Globals.getScreenSize(this).x / 3);
@@ -914,7 +917,7 @@ public class Activity_Home extends Activity {
 		LinearLayout row = null;
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
-			if(i%2 == 0){
+			/*if(i%2 == 0){
 				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
 			}
@@ -925,7 +928,19 @@ public class Activity_Home extends Activity {
 
 				if(i%2 == 0)
 					llytCatContainer.addView(row);	
-			}
+			}*/
+			//if(i%2 == 0){
+				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
+		//	}
+
+			//if(row != null){
+
+				row.addView(getCatImageView(listCatItemServer.get(i),row)) ;
+
+				//if(i%2 == 0)
+					llytCatContainer.addView(row);	
+			//}
 
 
 
@@ -936,7 +951,7 @@ public class Activity_Home extends Activity {
 	@SuppressLint("NewApi")
 	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row){
 
-		int widthImage = rlytDrawerPane.getLayoutParams().width / 2 - 44 ;
+		int widthImage = rlytDrawerPane.getLayoutParams().width;// / 2 - 44 ;
 		int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -944,29 +959,35 @@ public class Activity_Home extends Activity {
 		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
 		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
 
-		if(isSelectedId(Integer.valueOf(objCat.getId()))){// == selectedCatId){
+		if(isSelectedId(Integer.valueOf(objCat.getId())))
+		{
 
 			GradientDrawable shape =  new GradientDrawable();
-			shape.setCornerRadius(10);
+			//shape.setCornerRadius(10);
 			shape.setColor(catColor);
-			if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN){                   
+			if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
+			{                   
 				item.setBackground(shape);
 			} 
 			else{ 
 				item.setBackgroundDrawable(shape);  // deprecated.
 			} 
 
-		}else{
+		}
+		else
+		{
 			item.setOnTouchListener(new Custom_OnTouchListener_ColoredBG(item, this, objCat.getId()));
 			item.setBackgroundResource(R.drawable.bg_rounded_shadow);
 		}
 		//item.getLayoutParams().width = widthImage;
 		//item.getLayoutParams().height = item.getLayoutParams().width;
 
-		item.setMinimumWidth(widthImage);
-		item.setMinimumHeight(widthImage);
-
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
+		int heightImage = Globals.getScreenSize(this).y/5;
+		
+		item.setMinimumWidth(widthImage);
+		item.setMinimumHeight(heightImage);
+
 
 		/*new ImageView(this);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -978,7 +999,7 @@ public class Activity_Home extends Activity {
 
 		 */
 
-		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), 10,0, this,widthImage,widthImage);
+		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), 0,0, this,heightImage,widthImage);
 
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
@@ -1450,10 +1471,11 @@ public class Activity_Home extends Activity {
 
 		//
 		if(viewSettings == null){
-			LayoutInflater inflater = (LayoutInflater)this.getSystemService
-					(Context.LAYOUT_INFLATER_SERVICE);
-
-			viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytDrawerPane,false);
+			LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			
+			//viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytDrawerPane,false);
+			viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytMainContent,false);
 
 			Object_AppConfig obj = new Object_AppConfig(this);
 
@@ -1470,17 +1492,32 @@ public class Activity_Home extends Activity {
 				}
 			}
 
-			rlytDrawerPane.addView(viewSettings);
+			//rlytDrawerPane.addView(viewSettings);
+			rlytMainContent.addView(viewSettings);
 		}
-		viewSettings.setY(-1*rlytDrawerPane.getHeight());
-
-
+		//viewSettings.setY(-1*rlytDrawerPane.getHeight());
+		viewSettings.setY(-1*rlytMainContent.getHeight());
+		
+		//disable functionality behind this setting activity
+		
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);		
+		/*btnMenu.setVisibility(View.GONE);
+		imgSettingsCog.setVisibility(View.GONE);
+		rlytNewsContent.setVisibility(View.GONE);*/
+		
+		///**********/
+		
 
 		viewSettings.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION).translationY(0);
 	}
 
 	public void onClickSettings2(View v){
 		if(viewSettings != null){
+			
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);		
+			/*btnMenu.setVisibility(View.VISIBLE);
+			imgSettingsCog.setVisibility(View.VISIBLE);
+			rlytNewsContent.setVisibility(View.VISIBLE);*/
 
 			viewSettings.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION)
 			.translationY(-1*rlytDrawerPane.getHeight())
@@ -1491,7 +1528,7 @@ public class Activity_Home extends Activity {
 	public void onClickNotification(View v){
 		Object_AppConfig obj = new Object_AppConfig(this);
 
-		TextView txt =(TextView) rlytDrawerPane.findViewById(R.id.txtNotification);
+		TextView txt =(TextView) rlytMainContent.findViewById(R.id.txtNotification);
 		ImageView imgImageView = (ImageView)viewSettings.findViewById(R.id.imgNotification);
 
 		if(obj.isNotificationEnabled()){

@@ -24,11 +24,16 @@
                 <padding android:right="2dp"   />
             </shape>
         </item> -->
-       <item android:left="8dp"  android:top="8dp" >
+       <!-- <item android:left="8dp"  android:top="8dp" >
             <shape>
                 <solid android:color="@color/app_black_header" />
                 <corners android:radius="8dp" />
-<!--                 <padding android:bottom="4dp"   /> -->
+            </shape>
+        </item> -->
+        <item android:left="0dp"  android:top="0dp" >
+            <shape>
+                <solid android:color="@color/app_offwhite" />
+                <corners android:radius="0dp" />
             </shape>
         </item>
     </layer-list>
