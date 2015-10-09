@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -381,7 +382,7 @@ public class Activity_Home extends Activity {
 		}
 
 		if(!objNews.getSource().isEmpty()){
-			txtSource.setText(objNews.getSource());
+			txtSource.setText(Html.fromHtml(objNews.getSource()));
 		}else{
 			txtSourceText.setVisibility(View.GONE);
 			txtSource.setVisibility(View.GONE);

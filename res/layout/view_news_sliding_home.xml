@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:ellipsize="end"
-       		 android:maxLines="1"
+       		 android:maxLines="3"
             android:textColor="@color/app_darkgray"
             android:textSize="@dimen/font_lbl_very_small" 
             android:text=""/>
