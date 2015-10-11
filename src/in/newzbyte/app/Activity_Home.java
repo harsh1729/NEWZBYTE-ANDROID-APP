@@ -263,6 +263,10 @@ public class Activity_Home extends Activity {
 			Toast.makeText(this, "Please wait!", Toast.LENGTH_SHORT).show();
 			return null;
 		}
+		else if(listNewsItemServer.size()==0)
+		{
+			return null;
+		}
 		
 		Log.d("jaspal","CurrentNewsIndex:"+currentNewsIndex);
 

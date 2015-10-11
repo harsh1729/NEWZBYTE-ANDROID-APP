@@ -31,6 +31,7 @@
     		android:textStyle="bold"
     		android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:textColor="@color/app_offwhite"
             android:onClick="onClickSettings2"/>
             
