@@ -75,6 +75,15 @@ public class Globals {
 	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";
 	public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
 	
+	public static final int[] SHARE_INTENT_ITEMS = {
+														R.drawable.share_plus, 
+														R.drawable.share_gmail,
+														R.drawable.share_messenger, 
+														R.drawable.share_fb, 
+														R.drawable.share_twitter, 
+														R.drawable.share_whats_app
+													};
+	
 	public static String getShareAppMsg() {
 		return "Friends, check out this awesome news app . ";
 	}

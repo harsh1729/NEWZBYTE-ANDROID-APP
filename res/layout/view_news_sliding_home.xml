@@ -146,7 +146,7 @@
         android:textColor="@color/app_black"
         android:textSize="@dimen/font_lbl_small_medium1" />
         
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/imgShareHome"
             android:layout_width="45dp"
             android:layout_height="match_parent"
@@ -154,7 +154,9 @@
             android:clickable="true"
             android:onClick="onClickShare"
             android:scaleType="centerCrop"
-            android:src="@drawable/selector_share_black_to_white" />
+            android:src="@drawable/selector_share_black_to_white" /> -->
+
+
     </RelativeLayout>
 
     <LinearLayout

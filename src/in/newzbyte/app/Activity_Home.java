@@ -1,5 +1,7 @@
 package in.newzbyte.app;
 
+import in.xercesblue.arcmenu.ArcMenu;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
@@ -21,6 +23,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -32,7 +36,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -46,6 +49,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,7 +73,7 @@ public class Activity_Home extends Activity {
 	View viewSettings;
 	AnimationDrawable bAmin;
 
-
+	public int shareOptionNo = -1;
 	float x = 0;
 	float y = 0;
 	long startTime;
@@ -99,12 +103,32 @@ public class Activity_Home extends Activity {
 	ArrayList<Object_ListItem_MainNews> listNewsItemServer;
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
 	private ProgressDialog mDialog;
+	private ArcMenu arcMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_home);
+		
+		arcMenu = (ArcMenu)findViewById(R.id.arcMenu1);
+		
+		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
+        {
+        	ImageView item = new ImageView(this);
+        	item.setImageResource(Globals.SHARE_INTENT_ITEMS[i]);
+        	final int position = i;
+        	arcMenu.addItem(item, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					arcMenu.switchShareArcmenu(true);
+					shareOptionNo = position;
+					//shareIntent(position);
+				}
+			});
+        }
+		
 		initHome();
 
 	}
@@ -276,7 +300,6 @@ public class Activity_Home extends Activity {
 			if(currentNewsIndex >= listNewsItemServer.size() - 1){
 				currentNewsIndex = listNewsItemServer.size() - 1;
 				//Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
-				//TODO CALL SERVER FOR MORE NEWS WITH CATEGORY
 				mDialog = Globals.showLoadingDialog(mDialog,this,false);
 				
 				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
@@ -292,7 +315,6 @@ public class Activity_Home extends Activity {
 			if(currentNewsIndex <= 0){
 				currentNewsIndex  = 0;
 				//Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
-				//TODO CALL SERVER FOR MORE NEWS WITH CATEGORY
 				mDialog = Globals.showLoadingDialog(mDialog,this,false);
 				
 				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
@@ -326,8 +348,7 @@ public class Activity_Home extends Activity {
 		TextView txtTime=(TextView) newView.findViewById(R.id.txtNewsTime);
 		TextView txtSourceText=(TextView) newView.findViewById(R.id.txtSourceText);
 		TextView txtSource=(TextView) newView.findViewById(R.id.txtSource);
-		ImageView imgShare = (ImageView)newView.findViewById(R.id.imgShareHome);
-
+		//ImageView imgShare = (ImageView)newView.findViewById(R.id.imgShareHome);
 
 
 		TextView txtTap = (TextView)newView.findViewById(R.id.txtTapToread);
@@ -338,7 +359,7 @@ public class Activity_Home extends Activity {
 
 		int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 		imgViewNews.setBackgroundColor(catColor);
-		imgShare.setBackgroundColor(catColor);
+		//imgShare.setBackgroundColor(catColor);
 		txtCategory.setBackgroundColor(catColor);
 		llyt.setBackgroundColor(catColor);
 		txtTap.setTextColor(catColor);
@@ -371,6 +392,7 @@ public class Activity_Home extends Activity {
 		paint.setTextSize(getResources().getDimension(R.dimen.font_lbl_small_medium1));
 		paint.getTextBounds(textSummary, 0, textSummary.length(), bounds);
 
+				
 		float width = (float) Math.ceil( bounds.width());
 
 		float noOfLines = width /(float) (Globals.getScreenSize(this).x - Globals.dpToPx(20));
@@ -410,6 +432,168 @@ public class Activity_Home extends Activity {
 		}
 
 		return newView;
+	}
+	
+	//TODO
+	public void shareIntent()
+    {    
+		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size()) {
+
+			Object_ListItem_MainNews currentNewsItem = listNewsItemServer.get(currentNewsIndex);
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT,currentNewsItem.getHeadingSpan()  + "\n\n");
+			
+			if (currentNewsItem.getShareLink() != null && !currentNewsItem.getShareLink().trim().equals("")) 
+			{
+				sendIntent.putExtra(
+						Intent.EXTRA_TEXT,
+						// currentNewsItem.getContent()
+						"Read more @\n"
+						+ getResources().getString(
+								R.string.txt_company_website)
+								+ "\nvia "
+								+ getResources().getString(
+										R.string.news_paper_name) +" for Android");
+			} 
+			else 
+			{
+				sendIntent.putExtra(
+						Intent.EXTRA_TEXT,
+						"Read more @\n"
+								+ getResources().getString(
+										R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+										+ "\nvia "
+										+ getResources().getString(
+												R.string.news_paper_name)+" for Android");
+			}
+
+			File imgF = takeScreenshot("Read more @ "
+					+ getResources().getString(
+							R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+							+ " via "
+							+ getResources().getString(
+									R.string.news_paper_name)+" for Android");
+
+			sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
+
+			//sendIntent.setType("text/plain");
+			sendIntent.setType("image/*"); 
+			sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
+			//startActivity(sendIntent);
+			//startActivity(Intent.createChooser(sendIntent, "Share Via"));
+			
+			ArrayList<String> listPackageDetail = getPackageName(shareOptionNo);
+			
+			if(listPackageDetail.size()==0){
+				// Open all options
+				startActivity(Intent.createChooser(sendIntent, "Share Via"));
+			}
+			else if(listPackageDetail.size()>0)
+			{
+				if(isPackageInstalled(listPackageDetail.get(0),this)){
+			
+					sendIntent.setPackage(listPackageDetail.get(0)); 
+					startActivity(Intent.createChooser(sendIntent, "Share Image"));
+
+				}else{
+					Toast.makeText(getApplicationContext(), "Please Install "+listPackageDetail.get(1), Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+		
+		/*Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+
+		if (android.os.Build.VERSION.SDK_INT >= 13) 
+		{
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+					"News Heading"+ "\n\n");
+		}else{
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+					"News Heading"  + "\n\n");
+		}
+
+
+		{
+			sendIntent.putExtra(
+					Intent.EXTRA_TEXT,
+					"Read more @\n"
+							+ 
+									"Website LInk"//+"/detail/"+currentNewsItem.getId()
+									+ "\nvia "
+									+ 
+											"Company name"+" for Android");
+		}
+
+		File imgF = takeScreenshot("Read more @ "+ "company link"+ " via "
+						+ "compony name"+" for Android");
+
+		sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
+		Log.i("jaspal","image Path is :"+Uri.fromFile(imgF));
+
+		sendIntent.setType("image/*"); 
+		sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
+		
+		ArrayList<String> listPackageDetail = getPackageName(optNumber);
+		
+		if(listPackageDetail.size()==0){
+			// Open all options
+			startActivity(Intent.createChooser(sendIntent, "Share Via"));
+		}
+		else if(listPackageDetail.size()>0)
+		{
+			if(isPackageInstalled(listPackageDetail.get(0),this)){
+		
+				sendIntent.setPackage(listPackageDetail.get(0)); 
+				startActivity(Intent.createChooser(sendIntent, "Share Image"));
+
+			}else{
+				Toast.makeText(getApplicationContext(), "Please Install "+listPackageDetail.get(1), Toast.LENGTH_LONG).show();
+			}
+		}*/
+    }
+	//TODO
+	private ArrayList<String> getPackageName(int optionNumber)
+    {
+    	ArrayList<String> res = new ArrayList<String>();
+    	switch(optionNumber)
+    	{
+    		case 5:
+    			res.add("com.whatsapp");
+    			res.add("Whatsapp");
+    			break;
+    		case 4:
+    			res.add("com.twitter.android");
+    			res.add("Twitter");
+    			break;
+    		case 3:
+    			res.add("com.facebook.katana");
+    			res.add("Facebook");;
+    			break;
+    		case 2: 
+    			res.add("com.facebook.orca");
+    			res.add("Messenger");
+    			break;
+    		case 1:
+    			res.add("com.google.android.gm");
+    			res.add("Gmail");
+    			break;
+    		default:
+    			break;
+    	}
+    	return res;
+    }
+	//TODO
+    private boolean isPackageInstalled(String packagename, Context context) {
+	    PackageManager pm = context.getPackageManager();
+	    try {
+	        pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+	        return true;
+	    } catch (NameNotFoundException e) {
+	        return false;
+	    }
 	}
 
 	private void slide(int height , long duration){
@@ -840,14 +1024,10 @@ public class Activity_Home extends Activity {
 			sendIntent.setAction(Intent.ACTION_SEND);
 			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
 
-			if (android.os.Build.VERSION.SDK_INT >= 13) 
-			{
+			
 				sendIntent.putExtra(Intent.EXTRA_SUBJECT,
 						currentNewsItem.getHeadingSpan()  + "\n\n");
-			}else{
-				sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-						currentNewsItem.getHeadingSpan()  + "\n\n");
-			}
+			
 
 
 
@@ -1018,7 +1198,6 @@ public class Activity_Home extends Activity {
 	}
 
 	
-	//TODO get main news data from server
 	public void getNewsDataFromServer(final int catId, final String callType,int lastNewsId , int limit) 
 	{
 		Log.d("jaspal","catid:"+catId);
@@ -1107,7 +1286,6 @@ public class Activity_Home extends Activity {
 		}
 	}
 	
-	//TODO got main news json response
 	private void gotNewsResponse(JSONObject response, int catId, final String callType) {
  
 		try {
@@ -1142,7 +1320,7 @@ public class Activity_Home extends Activity {
 		}
 	}
 
-	//TODO 
+	 
 	private void updateCatTopNewsId(int catId, int newsId){
 		DBHandler_Category dbH = new DBHandler_Category(this);
 		dbH.updateCategoryTopNews(catId, newsId);
@@ -1217,7 +1395,7 @@ public class Activity_Home extends Activity {
 	}
 	
 	
-	//TODO
+	
 	private void parseNewsJson(JSONObject response,String callType) {
 
 		if (response == null){
@@ -1236,7 +1414,7 @@ public class Activity_Home extends Activity {
 				Log.i("DARSH", "insertNewAndDeleteOldNews news onResponse" + response);
 
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
-				//TODO 
+				 
 				ArrayList<Object_ListItem_MainNews> tempMainNewsList = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig.getRootCatId());
 				
 				 

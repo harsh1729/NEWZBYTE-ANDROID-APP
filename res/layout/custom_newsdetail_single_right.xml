@@ -42,7 +42,7 @@
 	    android:id="@+id/txt_newscontent"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_marginTop="10dp"
+	    android:layout_marginTop="0dp"
 	    android:textSize="@dimen/font_lbl_small_medium2"
 	     />
 	
