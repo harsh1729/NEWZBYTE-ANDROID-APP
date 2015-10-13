@@ -47,7 +47,7 @@ public class Globals {
 	public final static String APP_PNAME = "in.newzbyte.app";
 	public final static String SHARE_URL = "https://play.google.com/store/apps/details?id="+APP_PNAME;
 	public final static String GCM_SENDER_ID = "82788197303";
-	public static final String DEFAULT_APP_SERVER_PATH= "http://newstest14.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
+	public static final String DEFAULT_APP_SERVER_PATH= "http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";
 	
 
@@ -61,9 +61,9 @@ public class Globals {
 	public static final String TEXT_NOTIFICATION_DISABLED= "NOTIFICATION OFF";
 	public static final int VOLLEY_TIMEOUT_MILLISECS = 15000;
 	public static final int CLIENT_ID = 4;
-	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 3;
-	public static final int FINAL_NEWS_LIMIT_LOAD_OLD = 3;
-	public static final int FINAL_NEWS_LIMIT_LOAD_NEW = 3;
+	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 50;
+	public static final int FINAL_NEWS_LIMIT_LOAD_OLD = 50;
+	public static final int FINAL_NEWS_LIMIT_LOAD_NEW = 50;
 	
 	public static final int IMAGE_ALIGN_LEFT = 1;
 	public static final int IMAGE_ALIGN_CENTER = 2;
