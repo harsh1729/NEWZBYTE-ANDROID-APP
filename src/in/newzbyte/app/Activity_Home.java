@@ -1658,20 +1658,23 @@ public class Activity_Home extends Activity {
 			
 			
 			//viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytDrawerPane,false);
-			viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytMainContent,false);
+			viewSettings = inflater.inflate(R.layout.view_settings, rlytMainContent,false);
 
 			Object_AppConfig obj = new Object_AppConfig(this);
 
 			TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
-			ImageView imgImageView = (ImageView)viewSettings.findViewById(R.id.imgNotification);
+			ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
+			ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
 			if(txt !=null){
 				if(obj.isNotificationEnabled()){
 					txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-					imgImageView.setImageResource(R.drawable.notificationturn_on1);
+					imgImageView1.setImageResource(R.drawable.notificationturn_on1);
+					imgImageView2.setImageResource(R.drawable.notification_on);
 				}else{
 
 					txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-					imgImageView.setImageResource(R.drawable.notificationturn_off2);
+					imgImageView1.setImageResource(R.drawable.notificationturn_off2);
+					imgImageView2.setImageResource(R.drawable.notification_off);
 				}
 			}
 
@@ -1712,19 +1715,21 @@ public class Activity_Home extends Activity {
 		Object_AppConfig obj = new Object_AppConfig(this);
 
 		TextView txt =(TextView) rlytMainContent.findViewById(R.id.txtNotification);
-		ImageView imgImageView = (ImageView)viewSettings.findViewById(R.id.imgNotification);
-
+		ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
+		ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
 		if(obj.isNotificationEnabled()){
 			obj.setNotificationEnabled(false);
 			if(txt !=null){
 				txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-				imgImageView.setImageResource(R.drawable.notificationturn_off2);
+				imgImageView1.setImageResource(R.drawable.notificationturn_off2);
+				imgImageView2.setImageResource(R.drawable.notification_off);
 			}
 		}else{
 			obj.setNotificationEnabled(true);
 			if(txt !=null){
 				txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-				imgImageView.setImageResource(R.drawable.notificationturn_on1);
+				imgImageView1.setImageResource(R.drawable.notificationturn_on1);
+				imgImageView2.setImageResource(R.drawable.notification_on);
 			}
 		}
 
@@ -1732,16 +1737,33 @@ public class Activity_Home extends Activity {
 	}
 
 	public void onClickPrivacyPolicy(View v){
-
+		 
+		
+		Intent i = new Intent(this,Activity_Disclaimer.class);
+		startActivity(i);
 
 	}
 
 	public void onClickShareApp(View v){
 
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, Globals.getShareAppMsg()+ "\n "+Globals.SHARE_URL);
+		//sendIntent.setPackage("com.whatsapp");
+		sendIntent.setType("text/plain");
+		startActivity(sendIntent);
 	}
 
 	public void onClickRateApp(View v){
 
+		Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
+		if(cd.isConnectingToInternet()){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri
+					.parse("market://details?id=" + Globals.APP_PNAME)));
+
+		}else{
+			Toast.makeText(this, Globals.TEXT_NO_INTERNET_DETAIL_TOAST, Toast.LENGTH_SHORT).show();
+		}
 	}
 }
 

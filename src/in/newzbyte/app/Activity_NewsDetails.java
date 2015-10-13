@@ -143,6 +143,7 @@ public class Activity_NewsDetails extends Activity {
 			if (!cd.isConnectingToInternet()) {
 
 				Globals.showAlertDialogError(this,Globals.TEXT_CONNECTION_ERROR_HEADING,Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST);
+				return;
 			}
 
 			mDialog = Globals.showLoadingDialog(mDialog, this, true);

@@ -3,16 +3,18 @@
     package="in.newzbyte.app"
     android:versionCode="1"
     android:versionName="1.0" >
- 
+
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
-    <!--	CHANGED BY JASPAL 25-09-2015
+    <!--
+	CHANGED BY JASPAL 25-09-2015
       <permission
         android:name="in.newzbyte.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" >
-    </permission> -->
+    </permission>
+    -->
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -70,11 +72,13 @@
         </activity>
         <activity
             android:name=".Activity_ImageViewer"
-             android:configChanges="orientation"
+            android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            >
-            
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activity_Disclaimer"
+            android:label="@string/title_activity_activity__web_view" >
         </activity>
     </application>
 

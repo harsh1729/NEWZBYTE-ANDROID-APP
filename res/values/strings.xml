@@ -6,5 +6,8 @@
     <string name="txt_company_website">www.newzbyte.in</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-	<string name="keyTag">Tag</string>
+    <string name="keyTag">Tag</string>
+    <string name="title_activity_activity__web_view">Activity_WebView</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

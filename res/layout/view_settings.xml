@@ -10,7 +10,7 @@
     <RelativeLayout  
             android:id="@+id/rlytSettings"
             android:layout_width ="match_parent"
-        	android:layout_height ="60dp"
+        	android:layout_height ="wrap_content"
         	android:padding="10dp">
         	
         <TextView 
@@ -18,21 +18,24 @@
             android:layout_width="wrap_content"
             android:text="Settings"
             android:textSize="@dimen/font_lbl_large"
-    		android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+    		android:textStyle="bold"   	
+            android:layout_centerInParent="true"
             android:textColor="#f4f5f9"/>
         
         <TextView 
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="Done"
+            android:paddingLeft="10dp"
+         	android:paddingRight="10dp"
+         	android:paddingTop="15dp"
+         	android:paddingBottom="15dp"
             android:textSize="@dimen/font_lbl_small"
     		android:textStyle="bold"
-    		android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+    		android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:clickable="true"
-            android:textColor="@color/app_offwhite"
+            android:textColor="@color/app_verylightgray"
             android:onClick="onClickSettings2"/>
             
           <!--   <ImageView 
@@ -55,10 +58,9 @@
          android:paddingLeft="10dp"
          android:paddingRight="10dp"
          android:orientation="vertical">
-            <LinearLayout 
+            <RelativeLayout 
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:orientation="horizontal"
          android:paddingLeft="10dp"
          android:paddingRight="10dp"
          android:paddingTop="15dp"
@@ -70,10 +72,10 @@
          android:background="@drawable/selector_rounded_corner_dark1">
          
         <ImageView 
-            android:id="@+id/imgNotification"
+            android:id="@+id/imgNotification1"
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
-        		android:clickable="true"
+        		android:layout_alignParentLeft="true"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/notificationturn_off2"
         		/>
@@ -81,13 +83,25 @@
         <TextView android:id="@+id/txtNotification"
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
-    				android:text ="NOFICATION OFF"
+    				android:layout_toRightOf="@+id/imgNotification1"
+    				android:text ="NOFICATION ON"
+    				android:layout_centerVertical="true"
     				android:textSize="@dimen/font_lbl_small"
     				android:textStyle="bold"
-    				android:textColor="@color/app_lightgray"
+    				android:textColor="@color/app_verylightgray"
     				/>
+        <ImageView 
+            android:id="@+id/imgNotification2"
+                android:layout_width ="63dp"
+        		android:layout_height ="30dp"
+        		android:clickable="true"
+         		android:onClick="onClickNotification"
+        		android:layout_alignParentRight="true"
+        		android:layout_marginRight="10dp"
+        		android:src="@drawable/notification_on"
+        		/>
         
-    </LinearLayout>
+    </RelativeLayout>
     
     <LinearLayout 
          android:layout_width="match_parent"
@@ -106,7 +120,6 @@
         <ImageView 
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
-        		android:clickable="true"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/rate"
         		/>
@@ -117,7 +130,7 @@
     				android:text ="RATE THIS APP"
     				android:textSize="@dimen/font_lbl_small"
     				android:textStyle="bold"
-    				android:textColor="@color/app_lightgray"
+    				android:textColor="@color/app_verylightgray"
     				/>
         
     </LinearLayout>
@@ -139,7 +152,6 @@
          <ImageView 
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
-        		android:clickable="true"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/share_white"
         		/>
@@ -150,7 +162,7 @@
     				android:text ="SHARE THIS APP"
     				android:textSize="@dimen/font_lbl_small"
     				android:textStyle="bold"
-    				android:textColor="@color/app_lightgray"
+    				android:textColor="@color/app_verylightgray"
     				/>
         
     </LinearLayout>
@@ -172,7 +184,6 @@
         <ImageView 
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
-        		android:clickable="true"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/privacy_policy"
         		/>
@@ -180,10 +191,10 @@
          <TextView 
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
-    				android:text ="PRIVACY POLICY"
+    				android:text ="DISCLAIMER"
     				android:textSize="@dimen/font_lbl_small"
     				android:textStyle="bold"
-    				android:textColor="@color/app_lightgray"
+    				android:textColor="@color/app_verylightgray"
     				/>
          
         

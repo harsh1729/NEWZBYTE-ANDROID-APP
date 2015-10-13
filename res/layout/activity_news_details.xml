@@ -26,9 +26,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/app_white"
         android:textSize="@dimen/font_lbl_normal" 
-        android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imgBack"    
+        android:layout_centerInParent="true"   
         android:textStyle="bold" />
 		    
 		    <ImageView
