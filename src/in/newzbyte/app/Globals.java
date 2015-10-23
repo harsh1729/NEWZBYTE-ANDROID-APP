@@ -47,7 +47,7 @@ public class Globals {
 	public final static String APP_PNAME = "in.newzbyte.app";
 	public final static String SHARE_URL = "https://play.google.com/store/apps/details?id="+APP_PNAME;
 	public final static String GCM_SENDER_ID = "82788197303";
-	public static final String DEFAULT_APP_SERVER_PATH= "http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
+	public static final String DEFAULT_APP_SERVER_PATH= "http://app.newzbyte.in:9393/client_requests/";//"http://103.248.80.133:9393/delhinewsserver/delhi-newsci/client_requests/";//"http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";
 	
 
@@ -57,8 +57,8 @@ public class Globals {
 	public static final String TEXT_NO_INTERNET_HEADING = "No Internet Connectivity";
 	public static final String TEXT_NO_INTERNET_DETAIL_TOAST= "No Internet Connectivity, please connect to a network.";
 	
-	public static final String TEXT_NOTIFICATION_ENABLED = "NOTIFICATION ON";
-	public static final String TEXT_NOTIFICATION_DISABLED= "NOTIFICATION OFF";
+	public static final String TEXT_NOTIFICATION_ENABLED = "Notifications";
+	public static final String TEXT_NOTIFICATION_DISABLED= "Notifications";
 	public static final int VOLLEY_TIMEOUT_MILLISECS = 15000;
 	public static final int CLIENT_ID = 4;
 	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 50;

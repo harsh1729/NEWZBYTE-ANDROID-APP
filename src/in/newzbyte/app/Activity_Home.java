@@ -34,6 +34,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -79,8 +80,9 @@ public class Activity_Home extends Activity {
 	long startTime;
 
 	final int MAX_TOUCH_VALUE = 10;
-	final long DEFAULT_MAX_SLIDE_DURATION = 350;
-	final long DEFAULT_MIN_SLIDE_DURATION = 150;
+	final long DEFAULT_MAX_SLIDE_DURATION = 300;
+	final long DEFAULT_MIN_SLIDE_DURATION = 100;
+	final int  NO_OF_ROWS_NEWSCONTENT = 10;
 	private Boolean isSlideInProgress = false;
 	private Boolean isAnimInProgress = false;
 	private Boolean isDrawerOpen = false;
@@ -147,8 +149,24 @@ public class Activity_Home extends Activity {
 		imgSettingsCog = (ImageView)findViewById(R.id.imgSettingsCog);
 
 
-		rlytDrawerPane.getLayoutParams().width = (int) (2.3 *Globals.getScreenSize(this).x / 3);
+		int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
+		rlytDrawerPane.getLayoutParams().width = drawerWidth;
 
+		ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+		btnCatAll.getLayoutParams().width = drawerWidth;
+		
+		
+		Drawable d = getResources().getDrawable(R.drawable.viewall);
+		int hImage = d.getIntrinsicHeight(); 
+		int wImage = d.getIntrinsicWidth();  
+		
+		int newImageHeight = hImage * (drawerWidth - Globals.dpToPx(10+10)) / wImage;
+		btnCatAll.getLayoutParams().height = newImageHeight + Globals.dpToPx(10+10);
+		
+		//TextView txt = (TextView)findViewById(R.id.txtCatHeading);
+		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		//txt.setTypeface(tfCat);
+		
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.menu1, R.string.drawer_open, R.string.drawer_close) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
@@ -209,6 +227,8 @@ public class Activity_Home extends Activity {
 					Activity_Home.this, "OK", null, false);
 		}
 
+		
+		
 
 	}
 
@@ -390,6 +410,7 @@ public class Activity_Home extends Activity {
 		Rect bounds = new Rect();
 		Paint paint = new Paint();
 		paint.setTextSize(getResources().getDimension(R.dimen.font_lbl_small_medium1));
+		paint.setTypeface(tf);
 		paint.getTextBounds(textSummary, 0, textSummary.length(), bounds);
 
 				
@@ -399,7 +420,7 @@ public class Activity_Home extends Activity {
 
 		Log.i("DARSH", "noOfLines "+noOfLines);
 
-		if(noOfLines >12){
+		if(noOfLines >= NO_OF_ROWS_NEWSCONTENT - 1){
 			txtTap.setVisibility(View.VISIBLE);
 			//txtTap.setTextColor(catColor);
 			objNews.hasDetailNews = true;
@@ -671,7 +692,7 @@ public class Activity_Home extends Activity {
 		Log.i("DARSH", "contentHeight = "+contentHeight);
 		Log.i("DARSH", "paddingHeight = "+paddingHeight);
 		Log.i("DARSH", "screenHeight = "+Globals.getScreenSize(this).y);
-		int totalheight = titleHeight *2 + contentHeight *13+paddingHeight; 
+		int totalheight = titleHeight *2 + contentHeight * (NO_OF_ROWS_NEWSCONTENT + 3)+paddingHeight; 
 		Log.i("DARSH", "totalheight = "+totalheight);
 		params.height =  totalheight;
 
@@ -946,6 +967,19 @@ public class Activity_Home extends Activity {
 
 		return false;
 	}
+	
+	private boolean isNotContainsId(int id){
+		
+		boolean returnVal = true;
+		for(Object_ListItem_MainNews item : listNewsItemServer){
+			if(item.getId() == id){
+				returnVal = false;
+				break;
+			}
+			
+		}
+		return returnVal;
+	}
 	private void onClickCategory() {
 
 		createDrawerCategories();
@@ -1087,16 +1121,18 @@ public class Activity_Home extends Activity {
 	private void createDrawerCategories(){
 
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
-		Button btnCatAll = (Button)findViewById(R.id.btnCatAll);
+		ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
 
 		if(llytCatContainer.getChildCount() > 1){
 			llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
 		}
 
 		if(arraySelectedCatIds.size() == 0){
-			btnCatAll.setBackgroundResource(R.drawable.viewall_selected);
+			btnCatAll.setImageResource(R.drawable.viewall_selected);
+			btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
 		}else{
-			btnCatAll.setBackgroundResource(R.drawable.selector_cat_all_button);
+			btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
+			btnCatAll.setBackgroundResource(R.color.app_transparent);
 		}
 
 		LinearLayout row = null;
@@ -1136,7 +1172,8 @@ public class Activity_Home extends Activity {
 	@SuppressLint("NewApi")
 	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row){
 
-		int widthImage = rlytDrawerPane.getLayoutParams().width;// / 2 - 44 ;
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+		int widthImage = rlytDrawerPane.getLayoutParams().width - 2* margin ;
 		int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1168,13 +1205,21 @@ public class Activity_Home extends Activity {
 		//item.getLayoutParams().height = item.getLayoutParams().width;
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
-		int heightImage = Globals.getScreenSize(this).y/5;
+		int heightImage =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+				//100;//Globals.getScreenSize(this).y/5;
 		
 		item.setMinimumWidth(widthImage);
 		item.setMinimumHeight(heightImage);
 
+		LinearLayout.LayoutParams params =(LinearLayout.LayoutParams )item.getLayoutParams();
+		params.height = heightImage;
+		params.width = widthImage + margin;//;rlytDrawerPane.getLayoutParams().width - margin;
+		
+		params.gravity = Gravity.RIGHT;
+		item.setLayoutParams(params);
 
-		/*new ImageView(this);
+		/*
+		new ImageView(this);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		params.setMargins(10, 10, 10, 10);
 
@@ -1184,7 +1229,7 @@ public class Activity_Home extends Activity {
 
 		 */
 
-		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), 0,0, this,heightImage,widthImage);
+		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
 
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
@@ -1425,7 +1470,8 @@ public class Activity_Home extends Activity {
 					{
 						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
 							newsCount++;
-						listNewsItemServer.add(0, tempMainNewsList.get(i));			
+						if(isNotContainsId(tempMainNewsList.get(i).getId()))	
+							listNewsItemServer.add(0, tempMainNewsList.get(i));			
 					}
 				}
 				else if(callType.equals(Globals.CALL_TYPE_OLD))
@@ -1434,7 +1480,8 @@ public class Activity_Home extends Activity {
 					{
 						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
 							newsCount++;
-						listNewsItemServer.add(tempMainNewsList.get(i));
+						if(isNotContainsId(tempMainNewsList.get(i).getId()))
+							listNewsItemServer.add(tempMainNewsList.get(i));
 					}
 				}
 				
@@ -1668,12 +1715,12 @@ public class Activity_Home extends Activity {
 			if(txt !=null){
 				if(obj.isNotificationEnabled()){
 					txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-					imgImageView1.setImageResource(R.drawable.notificationturn_on1);
+					imgImageView1.setImageResource(R.drawable.notification_on1);
 					imgImageView2.setImageResource(R.drawable.notification_on);
 				}else{
 
 					txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-					imgImageView1.setImageResource(R.drawable.notificationturn_off2);
+					imgImageView1.setImageResource(R.drawable.notification_off1);
 					imgImageView2.setImageResource(R.drawable.notification_off);
 				}
 			}
@@ -1721,14 +1768,14 @@ public class Activity_Home extends Activity {
 			obj.setNotificationEnabled(false);
 			if(txt !=null){
 				txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-				imgImageView1.setImageResource(R.drawable.notificationturn_off2);
+				imgImageView1.setImageResource(R.drawable.notification_off1);
 				imgImageView2.setImageResource(R.drawable.notification_off);
 			}
 		}else{
 			obj.setNotificationEnabled(true);
 			if(txt !=null){
 				txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-				imgImageView1.setImageResource(R.drawable.notificationturn_on1);
+				imgImageView1.setImageResource(R.drawable.notification_on1);
 				imgImageView2.setImageResource(R.drawable.notification_on);
 			}
 		}

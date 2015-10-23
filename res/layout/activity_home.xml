@@ -31,9 +31,9 @@
 		        
 		        <ImageView 
 		        android:id="@+id/imgSettingsCog"
-		        android:layout_width ="40dp"
-				android:layout_height ="40dp"
-				android:layout_marginTop="5dp"
+		        android:layout_width ="35dp"
+				android:layout_height ="35dp"
+				android:layout_marginTop="10dp"
 		    	android:layout_marginRight="5dp"
 				android:clickable="true"
 		    	android:layout_alignParentTop="true"
@@ -63,7 +63,7 @@
         android:layout_height="match_parent"
         android:id="@+id/rlytDrawerPane"
         android:background="@color/app_offwhite"
-        android:layout_gravity="start"> 
+        android:layout_gravity="left"> 
         
        <!-- Settings bar -->
 <!--         <RelativeLayout  
@@ -81,27 +81,59 @@
         		android:src="@drawable/setting_white"
         		android:onClick="onClickSettings"/>
         </RelativeLayout>-->
+<!--         <RelativeLayout -->
+<!-- 	    android:id="@+id/rlyt_detailHeader" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:background="@color/app_cat_color_5" -->
+<!--         android:paddingTop="12dp" -->
+<!--         android:paddingBottom="12dp" -->
+<!--         android:layout_alignParentTop="true" -->
+<!--         > -->
+
+<!-- 		<TextView -->
+<!--         android:id="@+id/txtCatHeading" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:textColor="@color/app_white" -->
+<!--         android:textSize="@dimen/font_lbl_normal"   -->
+<!--         android:layout_centerInParent="true" -->
+        
+<!--         android:text="CATEGORIES" -->
+<!--         android:textStyle="bold" /> -->
+        
+<!--     </RelativeLayout> -->
+<!--     <LinearLayout -->
+<!--         android:id="@+id/llyt_hrline" -->
+<!-- 	    android:orientation="horizontal" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_below="@+id/rlyt_detailHeader" -->
+<!--         android:background="@drawable/bg_black_gradient" -->
+<!--         android:layout_height="4dp" > -->
+
+        
+<!--    </LinearLayout> -->
         <ScrollView
         android:id="@+id/scrollViewCat"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+       	android:layout_alignParentTop="true"
         android:layout_margin="0dp" >
 
        <LinearLayout
             android:id="@+id/llytCatContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_transparent"
             android:orientation="vertical" >
             
-            <Button 
+            <ImageView 
      	android:id="@+id/btnCatAll"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:padding="10dp"
     	android:background="@drawable/viewall_selected" 
-    	android:layout_marginLeft="10dp"
-    	android:layout_marginRight="10dp"
+    	android:clickable="true"
+    	android:scaleType="fitXY" 
     	android:layout_marginTop="10dp"
     	android:layout_marginBottom="10dp"
     	android:onClick="onClickAllCategory" />

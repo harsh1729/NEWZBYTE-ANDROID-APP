@@ -17,6 +17,7 @@
     <color name="app_lightgray">#919191</color>
     <color name="app_verylightgray">#E1E1E1</color>
     <color name="app_verylightgray_trans">#99E1E1E1</color>
+    <color name="app_gray_option_selector">#55B8B8B8</color>
     
     <color name="app_red">#DD2036</color>
     <color name="app_lightred">#BDB9B9</color>
