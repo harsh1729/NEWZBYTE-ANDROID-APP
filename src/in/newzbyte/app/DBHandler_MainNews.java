@@ -21,7 +21,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 	private final String KEY_NEWS_HEADING = "Heading";
 	private final String KEY_NEWS_CONTENT = "Content";
 	private final String KEY_NEWS_CAT_ID = "CatId";
-	private final String KEY_NEWS_DATE = "Date";
+	private final String KEY_NEWS_DATE = "NewsDate";
 	private final String KEY_NEWS_IMAGE = "Image";
 	private final String KEY_NEWS_VIDEO = "Video";
 	private final String KEY_NEWS_SHARE_LINK = "ShareLink";
@@ -56,7 +56,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 
 		ArrayList<Object_ListItem_MainNews> list = new ArrayList<Object_ListItem_MainNews>();
 
-		String selectQuary = " SELECT * FROM " + TABLE_NEWS + " ORDER BY " + KEY_NEWS_ID + " DESC";
+		String selectQuary = " SELECT * FROM " + TABLE_NEWS + " ORDER BY datetime(" +  KEY_NEWS_DATE+") DESC";  //+ KEY_NEWS_ID + " DESC";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cur = db.rawQuery(selectQuary, null);
 		if (cur != null) {

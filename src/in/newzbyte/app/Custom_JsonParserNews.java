@@ -66,8 +66,8 @@ public class Custom_JsonParserNews {
 					if(jsonObjNews.has("imgtagline")){
 						objMainNews.setImageTagline(jsonObjNews.getString("imgtagline").trim());
 					}
-					if(jsonObjNews.has("share_link")){
-						objMainNews.setShareLink(jsonObjNews.getString("share_link").trim());
+					if(jsonObjNews.has("sharelink")){
+						objMainNews.setShareLink(jsonObjNews.getString("sharelink").trim());
 					}
 					if(jsonObjNews.has("video")){
 						objMainNews.setVideo(jsonObjNews.getString("video").trim());

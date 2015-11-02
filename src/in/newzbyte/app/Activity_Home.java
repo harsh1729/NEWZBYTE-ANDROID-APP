@@ -237,11 +237,15 @@ public class Activity_Home extends Activity {
 		
 		super.onResume();
 
-		if(comingFromPushMessage){
-			comingFromPushMessage = false;
-			if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-				Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-		}
+// Moved to service call
+//		if(comingFromPushMessage){
+//			comingFromPushMessage = false;
+//			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+//				//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+//		
+//			isSlideUp = false;
+//			currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
+//		}
 
 		if(!isFirstResume){
 
@@ -255,6 +259,23 @@ public class Activity_Home extends Activity {
 			isFirstResume = false;
 
 		}
+	}
+	
+	private int getNewsIndexById(long id){
+		int index = -1;
+		if(listNewsItemServer != null && listNewsItemServer.size() > 0){
+			
+			for (int i = 0;i< listNewsItemServer.size();i++){
+				Object_ListItem_MainNews newsObj = listNewsItemServer.get(i);
+				if(newsObj.getId() == id)
+				{
+					index = i - 1 ;
+					break;
+				}
+			}
+		}
+		
+		return index;
 	}
 
 	private void loadNewsCatFromDB(){
@@ -275,6 +296,22 @@ public class Activity_Home extends Activity {
 		listNewsItemServer = dbH.getAllMainNews();
 
 		currentNewsIndex = -1;
+		
+		if(comingFromPushMessage){
+			comingFromPushMessage = false;
+			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+				//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+		
+			
+			if(GCMIntentService.pushMessageNewsId > 0){
+				isSlideUp = true;
+				currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
+			}
+			else
+				if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+					Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+		
+		}
 		arraySelectedCatIds.clear();
 		viewStatic = createNewsView();
 
@@ -428,7 +465,7 @@ public class Activity_Home extends Activity {
 			objNews.hasDetailNews = false;
 		}
 
-		if(!objNews.getSource().isEmpty()){
+		if(objNews.getSource()!= null && !objNews.getSource().isEmpty()){
 			txtSource.setText(Html.fromHtml(objNews.getSource()));
 		}else{
 			txtSourceText.setVisibility(View.GONE);
@@ -472,8 +509,7 @@ public class Activity_Home extends Activity {
 						Intent.EXTRA_TEXT,
 						// currentNewsItem.getContent()
 						"Read more @\n"
-						+ getResources().getString(
-								R.string.txt_company_website)
+						+ currentNewsItem.getShareLink()
 								+ "\nvia "
 								+ getResources().getString(
 										R.string.news_paper_name) +" for Android");
@@ -1561,6 +1597,22 @@ public class Activity_Home extends Activity {
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 				listNewsItemServer = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig
 						.getRootCatId());
+				
+				if(comingFromPushMessage){
+					comingFromPushMessage = false;
+					//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+						//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+				
+					if(GCMIntentService.pushMessageNewsId > 0){
+						isSlideUp = true;
+						currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
+					}
+					else
+						if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+							Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+				
+				}
+				
 				viewStatic = createNewsView();
 
 				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
@@ -1609,9 +1661,9 @@ public class Activity_Home extends Activity {
 
 	private String getFormatedDateTime(String dateString){
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy",Locale.ENGLISH);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 
-		SimpleDateFormat currentdateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy",Locale.ENGLISH);
+		SimpleDateFormat currentdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 		//dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 		//Assuming server time is in IST
 		Date formattedDate = null;
@@ -1630,12 +1682,13 @@ public class Activity_Home extends Activity {
 			TimeZone tz = TimeZone.getTimeZone(Globals.SERVER_TIME_ZONE);
 			Calendar c = Calendar.getInstance(tz);
 
-			String time = String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
-					String.format("%02d" , c.get(Calendar.MINUTE))+":"+
-					String.format("%02d" , c.get(Calendar.SECOND)) +" "+ 
-					Globals.getTwoDigitNo(c.get(Calendar.DAY_OF_MONTH))+"-"+
+			String time = 
+					Globals.getTwoDigitNo(c.get(Calendar.YEAR))+"-"+
 					Globals.getTwoDigitNo(c.get(Calendar.MONTH)+1)+"-"+
-					Globals.getTwoDigitNo(c.get(Calendar.YEAR));
+					Globals.getTwoDigitNo(c.get(Calendar.DAY_OF_MONTH))+" "+
+					String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+					String.format("%02d" , c.get(Calendar.MINUTE))+":"+
+					String.format("%02d" , c.get(Calendar.SECOND)) +" ";
 
 
 			Log.i("HARSH", "new time  "+time);

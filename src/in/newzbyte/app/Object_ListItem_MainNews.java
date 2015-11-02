@@ -1,7 +1,11 @@
 package in.newzbyte.app;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import android.text.Html;
 import android.text.Spanned;
@@ -62,7 +66,10 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 	}
 
 	public Spanned getContentSpan() {
-		return Html.fromHtml(content);
+		if(content != null && !content.isEmpty())
+			return Html.fromHtml(content);
+		
+		return Html.fromHtml("");
 	}
 	public void setContent(String content) {
 		this.content = content;
@@ -81,6 +88,20 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 	}
 
 	public void setDate(String date) {
+		
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy",Locale.ENGLISH);
+			Date newDate;
+			newDate = format.parse(date);
+			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+			date = format.format(newDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		
+		
 		this.date = date;
 	}
 

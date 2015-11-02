@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class DBHandler_Main extends SQLiteOpenHelper {
 
-	public static final String DB_NAME = "NewsDB.sqlite";
+	public static final String DB_NAME = "NewsDB1.1.sqlite";
 	public static final int DB_VERSION = 1;
 	private static String DB_PATH = "";
 	

@@ -34,7 +34,7 @@ public class GCMIntentService extends IntentService {
 	public static final String TAG = "GCMIntentService";
 	public static String pushMessageHeader;
 	public static String pushMessageText;
-	public static int pushMessageNewsId;
+	public static long pushMessageNewsId;
 	
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -77,11 +77,12 @@ public class GCMIntentService extends IntentService {
 	@SuppressLint("NewApi")
 	private void sendNotification(Bundle extras) {
 		if (extras != null) {
+			Log.i("GCM",extras.toString());
 			pushMessageHeader = extras.getString("heading", "");
 			pushMessageText = extras.getString("content", "");
-			pushMessageNewsId = extras.getInt("newsid", 0);
+			pushMessageNewsId = Long.parseLong(extras.getString("newsid", "0"));//  extras.getInt("newsid", 0);
 			
-			Log.i("GCM", "Heading : "+pushMessageHeader + " Content  :"+pushMessageText);
+			Log.i("GCM", "Heading : "+pushMessageHeader + " Content  :"+pushMessageText +" NewsId  :"+pushMessageNewsId );
 			
 			//NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			
