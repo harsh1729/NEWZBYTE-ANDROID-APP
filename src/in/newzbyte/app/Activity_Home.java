@@ -79,9 +79,9 @@ public class Activity_Home extends Activity {
 	float y = 0;
 	long startTime;
 
-	final int MAX_TOUCH_VALUE = 10;
+	final int MAX_TOUCH_VALUE = 5;
 	final long DEFAULT_MAX_SLIDE_DURATION = 300;
-	final long DEFAULT_MIN_SLIDE_DURATION = 100;
+	final long DEFAULT_MIN_SLIDE_DURATION = 120;
 	final int  NO_OF_ROWS_NEWSCONTENT = 10;
 	private Boolean isSlideInProgress = false;
 	private Boolean isAnimInProgress = false;
@@ -1609,9 +1609,9 @@ public class Activity_Home extends Activity {
 
 	private String getFormatedDateTime(String dateString){
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy",Locale.ENGLISH);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy",Locale.ENGLISH);
 
-		SimpleDateFormat currentdateFormat = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy",Locale.ENGLISH);
+		SimpleDateFormat currentdateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy",Locale.ENGLISH);
 		//dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 		//Assuming server time is in IST
 		Date formattedDate = null;
@@ -1655,7 +1655,7 @@ public class Activity_Home extends Activity {
 
 			long day = hour/24;
 
-			if(day > 1){
+			if(day >= 1){
 
 				if(day == 1)
 					return day+" day ago";
