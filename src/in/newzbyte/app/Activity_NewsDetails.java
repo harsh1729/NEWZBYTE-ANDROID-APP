@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -106,8 +107,7 @@ public class Activity_NewsDetails extends Activity {
 					Intent.EXTRA_TEXT,
 					// currentNewsItem.getContent()
 					"Read more @\n"
-							+ getResources().getString(
-									R.string.txt_company_website)
+							+ objNews.getShareLink()
 							+ "\nvia "
 							+ getResources().getString(
 									R.string.news_paper_name) +" for Android");
@@ -192,6 +192,7 @@ public class Activity_NewsDetails extends Activity {
 		startActivity(i);
 	}
 	//private void setLeftImageContent(LinearLayout llyt_mainContainer,final Object_ListItem_MainNews objNews,Typeface tf)
+	@SuppressLint("NewApi")
 	private void setLeftImageContent(int imgtag,LinearLayout llyt_mainContainer,Typeface tf,double imgratio,String imgpath,final Spanned content)
 	{
 		View singleNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_left, llyt_mainContainer, false);
@@ -232,7 +233,8 @@ public class Activity_NewsDetails extends Activity {
 		
 		 txt.getViewTreeObserver().addOnGlobalLayoutListener( new OnGlobalLayoutListener() { 
 			 
-	            public void onGlobalLayout() { 
+	            @SuppressLint("NewApi")
+				public void onGlobalLayout() { 
 	 
 	                int linesCount = txt.getLayout().getLineCount();
 	                // restore the margin 
@@ -300,6 +302,7 @@ public class Activity_NewsDetails extends Activity {
 	}
 	
 	//private void setRightImageContent(LinearLayout llyt_mainContainer,final Object_ListItem_MainNews objNews,Typeface tf)
+	@SuppressLint("NewApi")
 	private void setRightImageContent(int imgtag,LinearLayout llyt_mainContainer,Typeface tf,double imgratio,String imgpath,final Spanned content)
 	{
 		View singleSubNewsView = getLayoutInflater().inflate(R.layout.custom_newsdetail_single_right, llyt_mainContainer, false);
@@ -405,7 +408,12 @@ public class Activity_NewsDetails extends Activity {
 		
 		if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 		{
-			setLeftImageContent(0,llyt_mainContainer,tf,objNews.getImageRatio(),objNews.getImagePath(),objNews.getContentSpan());
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+				setLeftImageContent(0,llyt_mainContainer,tf,objNews.getImageRatio(),objNews.getImagePath(),objNews.getContentSpan());                          
+             }else{
+           	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+             }
+			
 			
 		}
 		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_CENTER )
@@ -415,8 +423,11 @@ public class Activity_NewsDetails extends Activity {
 		}
 		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
 		{
-			setRightImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
-			
+			 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+				 setRightImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());                           
+              }else{
+            	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+              }
 		}
 				
 		
@@ -429,8 +440,11 @@ public class Activity_NewsDetails extends Activity {
 			
 			if(object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 			{
-				setLeftImageContent(i,llyt_mainContainer,tf,object_SubNewsItem.getImageRatio(),object_SubNewsItem.getNewsImagePath(),object_SubNewsItem.getNewsContentSpan());
-				
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+					setLeftImageContent(i,llyt_mainContainer,tf,object_SubNewsItem.getImageRatio(),object_SubNewsItem.getNewsImagePath(),object_SubNewsItem.getNewsContentSpan());             
+	              }else{
+	            	  setCenterImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());
+	              }
 			}
 			else if( object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_CENTER)
 			{
@@ -439,8 +453,12 @@ public class Activity_NewsDetails extends Activity {
 				
 			}else if(object_SubNewsItem.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
 			{
-				setRightImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());
-				
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+					setRightImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());                     
+	              }else{
+	            	  setCenterImageContent(i,llyt_mainContainer, tf, object_SubNewsItem.getImageRatio(), object_SubNewsItem.getNewsImagePath(), object_SubNewsItem.getNewsContentSpan());
+	              }
+		
 			}
 		}
 
