@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/menu1" android:duration="40" />
+  <!--   <item android:drawable="@drawable/menu1" android:duration="40" />
     <item android:drawable="@drawable/menu2" android:duration="40" />
     <item android:drawable="@drawable/menu3" android:duration="40" />
     <item android:drawable="@drawable/menu4" android:duration="40" />
@@ -13,5 +13,5 @@
     <item android:drawable="@drawable/menu11" android:duration="40" />
     <item android:drawable="@drawable/menu12" android:duration="40" />
     <item android:drawable="@drawable/menu13" android:duration="40" />
-
+--> 
 </animation-list>

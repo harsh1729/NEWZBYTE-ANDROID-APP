@@ -1,6 +1,5 @@
 <in.newzbyte.app.Custom_DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,41 +17,46 @@
         android:layout_height="match_parent" >
         </RelativeLayout>
             
-		        <Button 
-		     	android:id="@+id/btnMenu"
-		        android:layout_width="50dp"
-		    	android:layout_height="50dp"
-		    	android:background="@drawable/menu1" 
-		    	android:layout_marginTop="5dp"
-		    	android:layout_marginLeft="5dp"
-		    	android:layout_alignParentTop="true"
+        
+        <RelativeLayout 
+             android:id="@+id/rlytNewsHeaderIconContainer"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentTop="true"
+        	android:background="@color/app_very_tranparent_black"
+        	android:padding="10dp"
+            >
+		        <ImageView 
+		     	android:id="@+id/imgMenu"
+		        android:layout_width="20dp"
+		    	android:layout_height="20dp"
+		    	android:background="@drawable/menu" 
 		    	android:layout_alignParentLeft="true"
 		    	android:onClick="onClickMenu" />
 		        
 		        <ImageView 
-		        android:id="@+id/imgSettingsCog"
-		        android:layout_width ="35dp"
-				android:layout_height ="35dp"
-				android:layout_marginTop="10dp"
-		    	android:layout_marginRight="5dp"
+		        android:id="@+id/imgGoToTop"
+		        android:layout_width ="20dp"
+				android:layout_height ="20dp"
 				android:clickable="true"
-		    	android:layout_alignParentTop="true"
 		    	android:layout_alignParentRight="true"
-				android:src="@drawable/settings"
-				android:onClick="onClickSettings"/>
+				android:src="@drawable/refresh"
+				android:onClick="onClickRefresh"/>
 		        
-		    	<in.xercesblue.arcmenu.ArcMenu
-		            android:id="@+id/arcMenu1"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_marginRight="5dp"
-		            android:layout_marginBottom="5dp"
-			        custom:childSize="@dimen/menuChildSize"
-					custom:fromDegrees="@dimen/menuFromDegrees"
-					custom:toDegrees="@dimen/menuToDegrees"
-		            android:layout_alignParentRight="true"
-		            android:layout_alignParentBottom="true">
-		        </in.xercesblue.arcmenu.ArcMenu>
+		   </RelativeLayout>     
+		    	<!--  <in.xercesblue.arcmenu.ArcMenu
+		    	    android:id="@+id/arcMenu1"
+		    	    android:layout_width="wrap_content"
+		    	    android:layout_height="wrap_content"
+		    	    android:layout_alignParentBottom="true"
+		    	    android:layout_alignParentRight="true"
+		    	    android:layout_marginBottom="5dp"
+		    	    android:layout_marginRight="5dp"
+		    	    custom:childSize="@dimen/menuChildSize"
+		    	    custom:fromDegrees="@dimen/menuFromDegrees"
+		    	    custom:toDegrees="@dimen/menuToDegrees" >
+		    	</in.xercesblue.arcmenu.ArcMenu> -->
+
    </RelativeLayout>
     
     

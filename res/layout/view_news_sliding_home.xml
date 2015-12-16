@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llytHomeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_black"
     android:orientation="vertical" >
-
-   
-    
-
 
     <RelativeLayout
         android:id="@+id/rlytImgContainer"
@@ -105,13 +102,28 @@
  
     <ImageView
             android:id="@+id/imgShowDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="tapOnShowDetails"
             android:src="@drawable/show_detail"
             android:scaleType="centerCrop" />
+    
+    <in.xercesblue.arcmenu.ArcMenu
+		    	    android:id="@+id/arcMenu1"
+		    	    android:layout_width="wrap_content"
+		    	    android:layout_height="wrap_content"
+		    	    android:layout_alignParentBottom="true"
+		    	    android:layout_alignParentRight="true"
+		    	    android:layout_marginBottom="5dp"
+		    	    android:layout_marginRight="5dp"
+		    	    custom:childSize="@dimen/menuChildSize"
+		    	    custom:fromDegrees="@dimen/menuFromDegrees"
+		    	    custom:toDegrees="@dimen/menuToDegrees" >
+		    	</in.xercesblue.arcmenu.ArcMenu>
 
   </RelativeLayout>
 
