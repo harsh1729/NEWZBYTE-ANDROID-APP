@@ -42,10 +42,12 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,7 +65,9 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 
-public class Activity_Home extends Activity {
+public class Activity_Home extends Activity implements 
+GestureDetector.OnGestureListener,
+GestureDetector.OnDoubleTapListener {
 
 	private int currentNewsIndex = -1;
 	private ArrayList<Integer> arraySelectedCatIds ;
@@ -72,6 +76,7 @@ public class Activity_Home extends Activity {
 	View viewStatic;
 	View viewLoading;
 	View viewSettings;
+	
 	AnimationDrawable bAmin;
 
 	public int shareOptionNo = -1;
@@ -79,14 +84,15 @@ public class Activity_Home extends Activity {
 	float y = 0;
 	long startTime;
 
-	final int MAX_TOUCH_VALUE = 5;
-	final long DEFAULT_MAX_SLIDE_DURATION = 300;
-	final long DEFAULT_MIN_SLIDE_DURATION = 120;
+	//final int MAX_TOUCH_VALUE = 0;
+	final long DEFAULT_MAX_SLIDE_DURATION = 350;
+	final long DEFAULT_MIN_SLIDE_DURATION = 100;
 	final int  NO_OF_ROWS_NEWSCONTENT = 10;
 	private Boolean isSlideInProgress = false;
 	private Boolean isAnimInProgress = false;
 	private Boolean isDrawerOpen = false;
 	private Boolean isSlideUp = true;
+	private Boolean isMovingViewCurrent = true;
 	private Boolean isNoMoreNews = false;
 	private Boolean isFirstResume = true;
 	static Boolean comingFromPushMessage = false;
@@ -106,6 +112,9 @@ public class Activity_Home extends Activity {
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
 	private ProgressDialog mDialog;
 	private ArcMenu arcMenu;
+	
+	private static final String DEBUG_TAG = "Gestures";
+    private GestureDetectorCompat mDetector; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +122,25 @@ public class Activity_Home extends Activity {
 
 		setContentView(R.layout.activity_home);
 		
+		initHome();
+
+	}
+
+	private void initHome(){
+
+		arraySelectedCatIds = new ArrayList<Integer>();
+		DBHandler_Main db = new DBHandler_Main(this);
+		db.createDataBase();
+
+		// Instantiate the gesture detector with the
+        // application context and an implementation of
+        // GestureDetector.OnGestureListener
+        mDetector = new GestureDetectorCompat(this,this);
+        // Set the gesture detector as the double tap
+        // listener.
+        mDetector.setOnDoubleTapListener(this);
+        mDetector.setIsLongpressEnabled(false);
+
 		arcMenu = (ArcMenu)findViewById(R.id.arcMenu1);
 		
 		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
@@ -131,26 +159,15 @@ public class Activity_Home extends Activity {
 			});
         }
 		
-		initHome();
-
-	}
-
-	private void initHome(){
-
-		arraySelectedCatIds = new ArrayList<Integer>();
-		DBHandler_Main db = new DBHandler_Main(this);
-		db.createDataBase();
-
 		rlytDrawerPane = (RelativeLayout)findViewById(R.id.rlytDrawerPane);
 		rlytNewsContent = (RelativeLayout)findViewById(R.id.rlytNewsContent);
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 		btnMenu = (Button)findViewById(R.id.btnMenu);
 		imgSettingsCog = (ImageView)findViewById(R.id.imgSettingsCog);
-
-
+		
 		int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
-		rlytDrawerPane.getLayoutParams().width = drawerWidth;
+		//rlytDrawerPane.getLayoutParams().width = drawerWidth;
 
 		ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
 		btnCatAll.getLayoutParams().width = drawerWidth;
@@ -173,8 +190,8 @@ public class Activity_Home extends Activity {
 				super.onDrawerOpened(drawerView);
 				Log.i("Bytes", "onDrawerClosed: " + getTitle());
 				isDrawerOpen=true;
-				btnMenu.setBackgroundResource(R.drawable.anim_menu_to_arrow);
-				drawerEventAnim();
+				//btnMenu.setBackgroundResource(R.drawable.anim_menu_to_arrow);
+				//drawerEventAnim();
 			}
 
 			@Override
@@ -183,8 +200,8 @@ public class Activity_Home extends Activity {
 				Log.i("Bytes", "onDrawerClosed: " + getTitle());
 
 				isDrawerOpen=false;
-				btnMenu.setBackgroundResource(R.drawable.anim_arrow_to_menu);
-				drawerEventAnim();
+				//btnMenu.setBackgroundResource(R.drawable.anim_arrow_to_menu);
+				//drawerEventAnim();
 			}
 
 			@Override
@@ -304,7 +321,7 @@ public class Activity_Home extends Activity {
 		
 			
 			if(GCMIntentService.pushMessageNewsId > 0){
-				isSlideUp = true;
+				isMovingViewCurrent = true;
 				currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 			}
 			else
@@ -353,38 +370,51 @@ public class Activity_Home extends Activity {
 
 		//Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
 
-		if(isSlideUp){
-			if(currentNewsIndex >= listNewsItemServer.size() - 1){
-				currentNewsIndex = listNewsItemServer.size() - 1;
-				//Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
-				mDialog = Globals.showLoadingDialog(mDialog,this,false);
+		int copyCurrentNewsIndex = currentNewsIndex;
 				
-				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+		if(isMovingViewCurrent){
+			if(copyCurrentNewsIndex >= listNewsItemServer.size() - 1){
+				copyCurrentNewsIndex = listNewsItemServer.size() - 1;
+				currentNewsIndex = copyCurrentNewsIndex;
+				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				////////Commented to copy functionality of Murmur
+				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
+				
+				Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
 				getNewsDataFromServer(-1,Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
+				*/
 				return null;
 			}
 
-			currentNewsIndex ++;	
+			copyCurrentNewsIndex ++;	
+			//Special case when no slide
+			if(copyCurrentNewsIndex == 0)
+				currentNewsIndex = copyCurrentNewsIndex;
 		}
 
 		else{
-			if(currentNewsIndex <= 0){
-				currentNewsIndex  = 0;
-				//Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
-				mDialog = Globals.showLoadingDialog(mDialog,this,false);
+			if(copyCurrentNewsIndex <= 0){
+				copyCurrentNewsIndex  = 0;
+				currentNewsIndex = copyCurrentNewsIndex;
+				Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
+				//////Commented to copy functionality of Murmur
 				
-				Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
+				
+				Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
 				getNewsDataFromServer(-1,Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
+				*/
 				return null;
 			}
-			currentNewsIndex--;
+			copyCurrentNewsIndex--;
 		}
-		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+		Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 		//objNews = listNewsItemServer.get(currentNewsIndex);
 
 		if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
+			currentNewsIndex = copyCurrentNewsIndex;
 			return createNewsView();
 		}
 
@@ -393,10 +423,12 @@ public class Activity_Home extends Activity {
 
 		View newView = inflater.inflate(R.layout.view_news_sliding_home, rlytNewsContent,false);
 
-		setTextContainerHeight(newView,objNews.getHeadingSpan().toString(),objNews.getContentSpan().toString());
+		///setTextContainerHeight(newView,objNews.getHeadingSpan().toString(),objNews.getContentSpan().toString());
 
 
 		ImageView imgViewNews =(ImageView) newView.findViewById(R.id.imgHome);
+		
+		/*
 		TextView txtViewNews =(TextView) newView.findViewById(R.id.txtHeading);
 		TextView txtSummary =(TextView) newView.findViewById(R.id.txtSummary);
 		
@@ -406,34 +438,37 @@ public class Activity_Home extends Activity {
 		TextView txtSourceText=(TextView) newView.findViewById(R.id.txtSourceText);
 		TextView txtSource=(TextView) newView.findViewById(R.id.txtSource);
 		//ImageView imgShare = (ImageView)newView.findViewById(R.id.imgShareHome);
-
-
 		TextView txtTap = (TextView)newView.findViewById(R.id.txtTapToread);
 
 
 		TextView txtCategory = (TextView)newView.findViewById(R.id.txtHeadingCategory);
 		LinearLayout llyt = (LinearLayout)newView.findViewById(R.id.llytFooterLine);
+		
+		*/
 
 		int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 		imgViewNews.setBackgroundColor(catColor);
+		String textSummary = objNews.getContentSpan().toString();
+		/*
+		txtViewNews.setText(objNews.getHeadingSpan().toString());	
+		
 		//imgShare.setBackgroundColor(catColor);
 		txtCategory.setBackgroundColor(catColor);
 		llyt.setBackgroundColor(catColor);
 		txtTap.setTextColor(catColor);
 
-		String textSummary = objNews.getContentSpan().toString();
-
-		txtViewNews.setText(objNews.getHeadingSpan().toString());	
+		
 		txtSummary.setText(textSummary);
 		txtCategory.setText(objNews.getCatName());
 		txtAuthor.setText(objNews.getAuthor());
 		txtTime.setText("/ " +getFormatedDateTime(objNews.getDate()));
-
+	*/
 		//set FONT
 
 		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//Typeface tf = Typeface.createFromAsset(getAssets(), "Raleway-Regular.ttf");
+		/**
 		txtSummary.setTypeface(tf);
 		txtAuthorText.setTypeface(tf);
 		txtAuthor.setTypeface(tf);
@@ -443,6 +478,7 @@ public class Activity_Home extends Activity {
 		txtViewNews.setTypeface(tf,Typeface.BOLD);
 		txtTap.setTypeface(tf,Typeface.BOLD);
 		txtCategory.setTypeface(tfCat);
+		**/
 		// get Total Lines of textView Summary
 		Rect bounds = new Rect();
 		Paint paint = new Paint();
@@ -458,25 +494,26 @@ public class Activity_Home extends Activity {
 		Log.i("DARSH", "noOfLines "+noOfLines);
 
 		if(noOfLines >= NO_OF_ROWS_NEWSCONTENT - 1){
-			txtTap.setVisibility(View.VISIBLE);
+			///txtTap.setVisibility(View.VISIBLE);
 			//txtTap.setTextColor(catColor);
 			objNews.hasDetailNews = true;
 		}else{
 			objNews.hasDetailNews = false;
 		}
 
+		/**
 		if(objNews.getSource()!= null && !objNews.getSource().isEmpty()){
 			txtSource.setText(Html.fromHtml(objNews.getSource()));
 		}else{
 			txtSourceText.setVisibility(View.GONE);
 			txtSource.setVisibility(View.GONE);
 		}
-
+		**/
 
 
 		Globals.loadImageIntoImageView(imgViewNews, objNews.getImagePath(), this);
 
-		if(isSlideUp){
+		if(isMovingViewCurrent){
 			rlytNewsContent.addView(newView,0);
 		}
 
@@ -485,7 +522,7 @@ public class Activity_Home extends Activity {
 		}
 
 
-		if(isSlideInProgress && !isSlideUp){
+		if(isSlideInProgress && !isMovingViewCurrent){
 			newView.setY(-1*rlytNewsContent.getHeight());
 		}
 
@@ -661,11 +698,21 @@ public class Activity_Home extends Activity {
 			.translationY(height)
 			.alpha(1.0f);
 			Log.i("Bytes", "viewMoving not null");
+			
+			if(viewStatic != null){
+				ImageView imgViewNews =(ImageView) viewStatic.findViewById(R.id.imgHome);
+				float alpha = Math.abs((float)viewMoving.getY() /rlytNewsContent.getHeight()) ;
+				Log.i("DARSH", "alpha "+ alpha);
+				imgViewNews.setAlpha(alpha);
+			}else{
+				Log.i("viewStatic", "viewMoving is null");
+			}
 
 		}else{
 			Log.i("Bytes", "viewMoving is null");
 		}
 
+		
 	}
 
 	private void hideLoadingView(){
@@ -709,7 +756,7 @@ public class Activity_Home extends Activity {
 		}
 
 	}
-
+/**
 	private void setTextContainerHeight(View v,String title,String content){
 
 		LinearLayout container = (LinearLayout)v.findViewById(R.id.llytTextContainer);
@@ -734,7 +781,286 @@ public class Activity_Home extends Activity {
 
 		container.setLayoutParams(params);
 	}
-	private void slideComplete(float y2){
+	
+	**/
+	private void slideComplete(float velocity, float currentY){
+		if(isNoMoreNews){
+			isNoMoreNews = false;
+		}
+
+		if(isSlideInProgress){
+			int moveTo = 0;
+			isSlideInProgress = false;
+
+			
+			if(viewMoving != null){
+
+				if(isSlideUp ){
+					moveTo = -1 * rlytNewsContent.getHeight(); 
+					if(isMovingViewCurrent){
+						if(currentNewsIndex >= listNewsItemServer.size() - 1)
+							currentNewsIndex = listNewsItemServer.size() - 1;
+						else
+							currentNewsIndex ++;
+					}
+						
+				}else if(!isMovingViewCurrent){
+					if(currentNewsIndex <= 0)
+						currentNewsIndex  = 0;
+					else
+						currentNewsIndex--;
+				}
+				
+				/*
+				float currentMovement = Math.abs(y - y2) ;
+				long elapseTimeMilliSec =(long) (( System.nanoTime() - startTime )/ 1000000.0);
+				if(elapseTimeMilliSec > 0){
+				long speed = (long) ((currentMovement - MAX_TOUCH_VALUE)/elapseTimeMilliSec);
+				*/
+				float currentMovement = Math.abs(y - currentY) ;
+				long newDuration = DEFAULT_MAX_SLIDE_DURATION;
+				float speed = Math.abs(velocity);
+				long delay = 10;
+				if(speed > 0){
+					newDuration = (long) (((rlytNewsContent.getHeight() - currentMovement) * 1000) / speed);
+					delay =0;
+				}
+				
+				
+				
+				Log.i("Bytes", "newDuration = "+newDuration);
+
+				if(newDuration > DEFAULT_MAX_SLIDE_DURATION)
+					newDuration = DEFAULT_MAX_SLIDE_DURATION;
+				if(newDuration < DEFAULT_MIN_SLIDE_DURATION)
+					newDuration = DEFAULT_MIN_SLIDE_DURATION;
+
+
+				viewMoving.animate().setDuration(newDuration).setStartDelay(delay)
+				.translationY(moveTo)
+				.alpha(1.0f).setListener(new AnimatorListener() {
+
+					@Override
+					public void onAnimationStart(Animator animation) {
+						isAnimInProgress = true;
+					}
+
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						animationOver();
+
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation) {
+						animationOver();
+					}
+				});
+
+
+			}
+			
+		}
+
+
+	}
+
+	private void animationOver(){
+		
+		isAnimInProgress = false;
+		/*
+		if(isSlideUp && isMovingViewCurrent){
+			rlytNewsContent.removeView(viewMoving);
+		}else if (!isSlideUp && isMovingViewCurrent){
+			rlytNewsContent.removeView(viewStatic);						
+			viewStatic = viewMoving;
+		}else if (isSlideUp && !isMovingViewCurrent){
+			rlytNewsContent.removeView(viewMoving);
+		}else if(!isSlideUp && !isMovingViewCurrent)
+		*/
+		
+		if(!isSlideUp){
+			rlytNewsContent.removeView(viewStatic);						
+			viewStatic = viewMoving;
+
+		}else{
+			rlytNewsContent.removeView(viewMoving);
+		}
+		
+
+		if(viewMoving != null)
+			viewMoving.animate().setListener(null);
+		viewMoving = null;
+		
+		rlytNewsContent.bringChildToFront(viewStatic);
+		if(rlytNewsContent.getChildCount() > 1)
+			rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount() -1);
+	}
+	
+	
+	@Override 
+    public boolean onTouchEvent(MotionEvent touchevent){ 
+        this.mDetector.onTouchEvent(touchevent);
+        // Be sure to call the superclass implementation
+        
+        switch (touchevent.getAction())
+		{
+		// when user first touches the screen we get x and y coordinate
+			case (MotionEvent.ACTION_UP): 
+				 Log.d(DEBUG_TAG,"onTouchUp: " );
+				 slideComplete(0,touchevent.getY());
+				 return false;
+			case (MotionEvent.ACTION_CANCEL): 
+				 Log.d(DEBUG_TAG,"onTouchCancel: " );
+				slideComplete(0,touchevent.getY());
+				 return false;
+				 
+			default : 
+	            return super.onTouchEvent(touchevent);
+		}
+        
+        //return super.onTouchEvent(touchevent);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) { 
+        Log.d(DEBUG_TAG,"onDown: " );//+ event.toString()); 
+        y = event.getY();
+        return true;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, 
+            float velocityX, float velocityY) {
+        Log.d(DEBUG_TAG, "onFling: VelocityX = "+ velocityX + " VelocityY = "+ velocityY );//+ event1.toString()+event2.toString());
+        
+        if (e1.getX() < e2.getX()) {
+            Log.d(DEBUG_TAG, "Left to Right swipe performed");
+        }
+     
+        if (e1.getX() > e2.getX()) {
+            Log.d(DEBUG_TAG, "Right to Left swipe performed");
+        }
+     
+        if (e1.getY() < e2.getY() | e1.getY() > e2.getY()) {
+            Log.d(DEBUG_TAG, "Up to Down swipe performed");
+            slideComplete(velocityY,e2.getY());
+            
+        }
+     
+       // if (e1.getY() > e2.getY()) {
+          //  Log.d(DEBUG_TAG, "Down to Up swipe performed");
+       // }
+        
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+            float distanceY) {
+        Log.d(DEBUG_TAG, "onScroll: X = " + distanceX + " and Y = "+distanceY );//+ e1.toString()+e2.toString());
+
+        Log.d(DEBUG_TAG, "onScroll: e1.y = " + e1.getY() + " and e2.y = "+e2.getY() );
+        
+        if(isAnimInProgress || isNoMoreNews)
+			return true;
+        
+        y = e1.getY(); // Motion event for first touch of scroll.
+        float totalDisplacementY = Math.abs(e1.getY()-e2.getY());
+        
+        if(Math.abs(distanceY) > Math.abs(distanceX) ){
+        	if(distanceY > 0){
+        		isSlideUp = true;
+				Log.i("Bytes", "ACTION_MOVE UP");
+        	}else{
+        		isSlideUp = false;
+				Log.i("Bytes", "ACTION_MOVE DOWN");
+        	}
+        	
+			if(!isSlideInProgress ){
+				isSlideInProgress = true;
+				if(isSlideUp){
+					isMovingViewCurrent = true;
+					viewMoving = viewStatic;
+					//int backUpId = currentNewsIndex;
+					viewStatic = createNewsView();
+					if(viewStatic == null){
+						viewStatic = viewMoving;
+						viewMoving = null;
+						isNoMoreNews = true;
+						isSlideInProgress = false;
+						//currentNewsIndex = backUpId;
+						return false;
+					}
+				}else{
+					isMovingViewCurrent = false;
+					//int backUpId = currentNewsIndex;
+					viewMoving = createNewsView();
+					if(viewMoving == null){
+						isNoMoreNews = true;
+						isSlideInProgress = false;
+						//currentNewsIndex = backUpId;
+						return false;
+					}
+				}
+
+			}
+
+			if(isSlideInProgress){
+				if(isMovingViewCurrent)
+					slide(-1 *(int)totalDisplacementY,0); 
+				else
+					slide((-1*rlytNewsContent.getHeight()) + (int)totalDisplacementY,0);
+			}
+		}
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onLongPress: " );//+ event.toString()); 
+    }
+     
+   
+    @Override
+    public void onShowPress(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onShowPress: " );//+ event.toString());
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onSingleTapUp: " );//+ event.toString());
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onDoubleTap: " );//+ event.toString());
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onDoubleTapEvent: " );//+ event.toString());
+        return true;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent event) {
+        Log.d(DEBUG_TAG, "onSingleTapConfirmed: " );//+ event.toString());
+        tapOnView();
+        return true;
+    }
+    
+	/*
+	 
+	 
+	 private void slideComplete(float y2){
 		if(isNoMoreNews){
 			isNoMoreNews = false;
 		}
@@ -794,30 +1120,9 @@ public class Activity_Home extends Activity {
 
 			}
 		}
-
-
 	}
-
-	private void animationOver(){
-
-		isAnimInProgress = false;
-
-		if(!isSlideUp){
-			rlytNewsContent.removeView(viewStatic);						
-			viewStatic = viewMoving;
-
-		}else{
-			rlytNewsContent.removeView(viewMoving);
-		}
-
-		if(viewMoving != null)
-			viewMoving.animate().setListener(null);
-		viewMoving = null;
-
-		rlytNewsContent.bringChildToFront(viewStatic);
-		if(rlytNewsContent.getChildCount() > 1)
-			rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount() -1);
-	}
+	
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent touchevent) {	
 		//return super.onTouchEvent(event);
@@ -930,13 +1235,12 @@ public class Activity_Home extends Activity {
 			Log.i("Bytes", "ACTION_CANCEL");
 			break;
 		}
-
 		}
 
 		return false;		
 	}
 
-
+*/
 	private void tapOnView(){
 
 		if(viewLoading!= null )
@@ -1021,8 +1325,9 @@ public class Activity_Home extends Activity {
 		createDrawerCategories();
 		//mDrawerLayout.closeDrawer(Gravity.LEFT);
 		currentNewsIndex = -1;
-		isSlideUp = true;
+		isMovingViewCurrent = true;
 		View view = createNewsView();
+		
 		if(view != null){
 			viewStatic = view;
 		}
@@ -1544,7 +1849,7 @@ public class Activity_Home extends Activity {
 				}
 				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_OLD))
 				{ 
-					isSlideUp = true;
+					isMovingViewCurrent = true;
 					viewMoving = viewStatic;
 					viewStatic = createNewsView();
 					slide(-1*rlytNewsContent.getHeight(),DEFAULT_MAX_SLIDE_DURATION);
@@ -1555,7 +1860,7 @@ public class Activity_Home extends Activity {
 				}
 				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_NEW))
 				{
-					isSlideUp = false;
+					isMovingViewCurrent = false;
 					//isSlideInProgress = true;
 					viewMoving = createNewsView();
 					viewMoving.setY(-1*rlytNewsContent.getHeight());
@@ -1604,7 +1909,7 @@ public class Activity_Home extends Activity {
 						//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
 				
 					if(GCMIntentService.pushMessageNewsId > 0){
-						isSlideUp = true;
+						isMovingViewCurrent = true;
 						currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 					}
 					else

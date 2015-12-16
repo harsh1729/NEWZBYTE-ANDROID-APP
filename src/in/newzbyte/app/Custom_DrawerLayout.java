@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class Custom_DrawerLayout extends DrawerLayout {
-
+	 
 	public Custom_DrawerLayout(Context context) {
 		super(context);
 	}
@@ -25,9 +25,9 @@ public class Custom_DrawerLayout extends DrawerLayout {
 	@Override
 	public boolean onTouchEvent(MotionEvent arg0) {
 	    super.onTouchEvent(arg0);
-	    float edge = 50;//that's for a left drawer obviously. Use <parentWidth - 30> for the right one.
+	    //that's for a left drawer obviously. Use <parentWidth - 30> for the right one.
 	   View mDrawerListView = findViewById(R.id.rlytDrawerPane);
-
+	   float edge =100;// mDrawerListView.getLayoutParams().width; //50;
 	    if(isDrawerOpen(mDrawerListView) || 
 	            isDrawerVisible(mDrawerListView)){
 	        return true;
@@ -38,5 +38,5 @@ public class Custom_DrawerLayout extends DrawerLayout {
 	    return true;
 	    //return false;
 	}
-	
+
 }
