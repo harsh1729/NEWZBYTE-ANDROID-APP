@@ -44,7 +44,6 @@ import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -53,6 +52,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -700,10 +701,24 @@ GestureDetector.OnDoubleTapListener {
 			Log.i("Bytes", "viewMoving not null");
 			
 			if(viewStatic != null){
-				ImageView imgViewNews =(ImageView) viewStatic.findViewById(R.id.imgHome);
-				float alpha = Math.abs((float)viewMoving.getY() /rlytNewsContent.getHeight()) ;
-				Log.i("DARSH", "alpha "+ alpha);
-				imgViewNews.setAlpha(alpha);
+				RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
+				RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
+				float scale = Math.abs((float)viewMoving.getY() /rlytNewsContent.getHeight()) ;
+
+				
+				float alpha = 1 - scale; // scale 0 alpha is 1 and when scale is 1 aplha is 0
+				scale = (float) (0.80 + scale * 0.20); // 
+				 
+						
+				
+				Log.i("DARSH","scale"+scale+ "alpha "+ alpha);
+				imgCover.setAlpha(alpha);
+				//imgCover.animate()
+				//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
+				
+				
+				imgContainer.animate().setDuration(duration).scaleX(scale).scaleY(scale);
+				
 			}else{
 				Log.i("viewStatic", "viewMoving is null");
 			}
@@ -784,6 +799,8 @@ GestureDetector.OnDoubleTapListener {
 	
 	**/
 	private void slideComplete(float velocity, float currentY){
+		
+		Log.i("DARSH", "slideComplete");
 		if(isNoMoreNews){
 			isNoMoreNews = false;
 		}
@@ -852,25 +869,89 @@ GestureDetector.OnDoubleTapListener {
 
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						animationOver();
+						moveAnimationOver();
 
 					}
 
 					@Override
 					public void onAnimationCancel(Animator animation) {
-						animationOver();
+						//moveAnimationOver();
 					}
 				});
+				
+				if(viewStatic != null){
+					RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
+					RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
+					float alpha =1;
+					Log.i("DARSH", "alpha "+ alpha);
+					
+					if(isSlideUp ){
+						alpha = 0;
+					}
+					imgCover.animate().setStartDelay(delay).setDuration(newDuration).alpha(alpha);
+					
+					//imgCover.animate()
+					//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
+					
+					
+					imgContainer.animate().setStartDelay(delay).setDuration(newDuration).scaleX(1-alpha).scaleY(1-alpha).setListener(new AnimatorListener() {
 
+						@Override
+						public void onAnimationStart(Animator animation) {
+						}
 
+						@Override
+						public void onAnimationRepeat(Animator animation) {
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							scaleAnimationOver();
+
+						}
+
+						@Override
+						public void onAnimationCancel(Animator animation) {
+							//scaleAnimationOver();
+						}
+					});
+					
+				}else{
+					Log.i("viewStatic", "viewMoving is null");
+				}
 			}
-			
 		}
-
-
 	}
 
-	private void animationOver(){
+	private void scaleAnimationOver(){
+		Log.i("DARSH", "scaleAnimationOver");
+		if(!isAnimInProgress){
+			if(viewStatic != null){
+				
+				ImageView imageDeatil = (ImageView)viewStatic.findViewById(R.id.imgShowDetail);
+				//RelativeLayout rlytButtonsContainer = (RelativeLayout)findViewById(R.id.rlytButtonsContainer);
+				//RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)imageDeatil.getLayoutParams();
+				
+				//int originalX = lp.width;
+				//int originalY = lp.height;
+				
+				
+				//lp.height = 10;
+				//lp.width = 10;
+				
+				//imageDeatil.setLayoutParams(lp);
+				
+				Animation zoomin = AnimationUtils.loadAnimation(this, R.anim.zoomin);
+				Animation zoomout = AnimationUtils.loadAnimation(this, R.anim.zoomout);
+				imageDeatil.setAnimation(zoomin);
+				imageDeatil.setAnimation(zoomout);
+				
+				imageDeatil.startAnimation(zoomin);
+			}
+		}
+	}
+	private void moveAnimationOver(){
 		
 		isAnimInProgress = false;
 		/*
@@ -2083,15 +2164,15 @@ GestureDetector.OnDoubleTapListener {
 				}
 			}
 
-			//rlytDrawerPane.addView(viewSettings);
-			rlytMainContent.addView(viewSettings);
+			rlytDrawerPane.addView(viewSettings);
+			//rlytMainContent.addView(viewSettings);
 		}
-		//viewSettings.setY(-1*rlytDrawerPane.getHeight());
-		viewSettings.setY(-1*rlytMainContent.getHeight());
+		viewSettings.setY(-1*rlytDrawerPane.getHeight());
+		//viewSettings.setY(-1*rlytMainContent.getHeight());
 		
 		//disable functionality behind this setting activity
 		
-		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);		
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);		
 		/*btnMenu.setVisibility(View.GONE);
 		imgSettingsCog.setVisibility(View.GONE);
 		rlytNewsContent.setVisibility(View.GONE);*/
