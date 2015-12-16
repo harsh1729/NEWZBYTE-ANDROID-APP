@@ -28,6 +28,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -44,6 +45,7 @@ import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -65,6 +67,7 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.squareup.picasso.Picasso;
 
 public class Activity_Home extends Activity implements 
 GestureDetector.OnGestureListener,
@@ -97,8 +100,8 @@ GestureDetector.OnDoubleTapListener {
 	private Boolean isNoMoreNews = false;
 	private Boolean isFirstResume = true;
 	static Boolean comingFromPushMessage = false;
-	Button btnMenu;
-	ImageView imgSettingsCog;
+	ImageView imgMenu;
+	ImageView imgGoToTop;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 	private DrawerLayout mDrawerLayout;
@@ -112,7 +115,7 @@ GestureDetector.OnDoubleTapListener {
 	ArrayList<Object_ListItem_MainNews> listNewsItemServer;
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
 	private ProgressDialog mDialog;
-	private ArcMenu arcMenu;
+	//private ArcMenu arcMenu;
 	
 	private static final String DEBUG_TAG = "Gestures";
     private GestureDetectorCompat mDetector; 
@@ -142,6 +145,7 @@ GestureDetector.OnDoubleTapListener {
         mDetector.setOnDoubleTapListener(this);
         mDetector.setIsLongpressEnabled(false);
 
+        /*
 		arcMenu = (ArcMenu)findViewById(R.id.arcMenu1);
 		
 		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
@@ -159,13 +163,13 @@ GestureDetector.OnDoubleTapListener {
 				}
 			});
         }
-		
+		*/
 		rlytDrawerPane = (RelativeLayout)findViewById(R.id.rlytDrawerPane);
 		rlytNewsContent = (RelativeLayout)findViewById(R.id.rlytNewsContent);
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-		btnMenu = (Button)findViewById(R.id.btnMenu);
-		imgSettingsCog = (ImageView)findViewById(R.id.imgSettingsCog);
+		imgMenu = (ImageView)findViewById(R.id.imgMenu);
+		imgGoToTop = (ImageView)findViewById(R.id.imgGoToTop);
 		
 		int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
 		//rlytDrawerPane.getLayoutParams().width = drawerWidth;
@@ -185,7 +189,7 @@ GestureDetector.OnDoubleTapListener {
 		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//txt.setTypeface(tfCat);
 		
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.menu1, R.string.drawer_open, R.string.drawer_close) {
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.menu, R.string.drawer_open, R.string.drawer_close) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
@@ -229,27 +233,29 @@ GestureDetector.OnDoubleTapListener {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);	
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-		//mDrawerLayout.setEnabled(false);
-		addLoadingView();
 
-		if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
-
-			serverCallForCategoriesAndNews();
-
-			new Custom_GCM_Register(this);
-		}else{
-			loadNewsCatFromDB();
-			Globals.showAlertDialogOneButton(
-					Globals.TEXT_CONNECTION_ERROR_HEADING,
-					Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
-					Activity_Home.this, "OK", null, false);
-		}
-
-		
-		
-
+		refresh();
 	}
 
+	private void refresh(){
+		
+		//mDrawerLayout.setEnabled(false);
+				addLoadingView();
+
+				if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
+
+					serverCallForCategoriesAndNews();
+
+					new Custom_GCM_Register(this);
+				}else{
+					loadNewsCatFromDB();
+					Globals.showAlertDialogOneButton(
+							Globals.TEXT_CONNECTION_ERROR_HEADING,
+							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
+							Activity_Home.this, "OK", null, false);
+				}
+		
+	}
 	@Override
 	protected void onResume() {
 		
@@ -278,6 +284,8 @@ GestureDetector.OnDoubleTapListener {
 
 		}
 	}
+	
+	
 	
 	private int getNewsIndexById(long id){
 		int index = -1;
@@ -314,7 +322,7 @@ GestureDetector.OnDoubleTapListener {
 		listNewsItemServer = dbH.getAllMainNews();
 
 		currentNewsIndex = -1;
-		
+		isMovingViewCurrent = true;
 		if(comingFromPushMessage){
 			comingFromPushMessage = false;
 			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
@@ -322,7 +330,7 @@ GestureDetector.OnDoubleTapListener {
 		
 			
 			if(GCMIntentService.pushMessageNewsId > 0){
-				isMovingViewCurrent = true;
+				//isMovingViewCurrent = true;
 				currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 			}
 			else
@@ -332,7 +340,8 @@ GestureDetector.OnDoubleTapListener {
 		}
 		arraySelectedCatIds.clear();
 		viewStatic = createNewsView();
-
+		///Harsh
+		scaleAnimationOver();
 
 
 	}
@@ -389,9 +398,31 @@ GestureDetector.OnDoubleTapListener {
 			}
 
 			copyCurrentNewsIndex ++;	
+			
 			//Special case when no slide
-			if(copyCurrentNewsIndex == 0)
+			if(copyCurrentNewsIndex == 0){
+				imgGoToTop.setImageResource(R.drawable.refresh);
 				currentNewsIndex = copyCurrentNewsIndex;
+				imgGoToTop.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						onClickRefresh(arg0);
+						
+					}
+				});
+				
+			}else{
+				imgGoToTop.setImageResource(R.drawable.go_to_top);
+				imgGoToTop.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						setFirstView();
+						
+					}
+				});
+			}
 		}
 
 		else{
@@ -414,6 +445,9 @@ GestureDetector.OnDoubleTapListener {
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 		//objNews = listNewsItemServer.get(currentNewsIndex);
 
+		
+		
+		
 		if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
 			currentNewsIndex = copyCurrentNewsIndex;
 			return createNewsView();
@@ -526,6 +560,25 @@ GestureDetector.OnDoubleTapListener {
 		if(isSlideInProgress && !isMovingViewCurrent){
 			newView.setY(-1*rlytNewsContent.getHeight());
 		}
+		///Arc menu copied to each view
+		
+		final ArcMenu arcMenu = (ArcMenu)newView.findViewById(R.id.arcMenu1);
+		
+		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
+        {
+        	ImageView item = new ImageView(this);
+        	item.setImageResource(Globals.SHARE_INTENT_ITEMS[i]);
+        	final int position = i;
+        	arcMenu.addItem(item, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					arcMenu.switchShareArcmenu(true);
+					shareOptionNo = position;
+					//shareIntent(position);
+				}
+			});
+        }
 
 		return newView;
 	}
@@ -828,6 +881,28 @@ GestureDetector.OnDoubleTapListener {
 						currentNewsIndex--;
 				}
 				
+				if(currentNewsIndex == 0){
+					imgGoToTop.setImageResource(R.drawable.refresh);
+					imgGoToTop.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View arg0) {
+							onClickRefresh(arg0);
+							
+						}
+					});
+					
+				}else{
+					imgGoToTop.setImageResource(R.drawable.go_to_top);
+					imgGoToTop.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View arg0) {
+							setFirstView();
+							
+						}
+					});
+				}
 				/*
 				float currentMovement = Math.abs(y - y2) ;
 				long elapseTimeMilliSec =(long) (( System.nanoTime() - startTime )/ 1000000.0);
@@ -928,6 +1003,10 @@ GestureDetector.OnDoubleTapListener {
 		Log.i("DARSH", "scaleAnimationOver");
 		if(!isAnimInProgress){
 			if(viewStatic != null){
+				RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
+				imgContainer.animate().setListener(null);
+				
+				if((isSlideUp && isMovingViewCurrent) || (!isSlideUp && !isMovingViewCurrent)){
 				
 				ImageView imageDeatil = (ImageView)viewStatic.findViewById(R.id.imgShowDetail);
 				//RelativeLayout rlytButtonsContainer = (RelativeLayout)findViewById(R.id.rlytButtonsContainer);
@@ -936,18 +1015,18 @@ GestureDetector.OnDoubleTapListener {
 				//int originalX = lp.width;
 				//int originalY = lp.height;
 				
-				
 				//lp.height = 10;
 				//lp.width = 10;
 				
 				//imageDeatil.setLayoutParams(lp);
 				
 				Animation zoomin = AnimationUtils.loadAnimation(this, R.anim.zoomin);
-				Animation zoomout = AnimationUtils.loadAnimation(this, R.anim.zoomout);
+				//Animation zoomout = AnimationUtils.loadAnimation(this, R.anim.zoomout);
 				imageDeatil.setAnimation(zoomin);
-				imageDeatil.setAnimation(zoomout);
+				//imageDeatil.setAnimation(zoomout);
 				
 				imageDeatil.startAnimation(zoomin);
+				}
 			}
 		}
 	}
@@ -1322,7 +1401,22 @@ GestureDetector.OnDoubleTapListener {
 	}
 
 */
-	private void tapOnView(){
+    private void tapOnView(){
+    	
+    	if(viewStatic != null){
+    		ArcMenu arcMenu = (ArcMenu)viewStatic.findViewById(R.id.arcMenu1);
+    		if(arcMenu != null)
+    			if(arcMenu.getArcLayout().isExpanded()){
+    				arcMenu.getControlLayout().setBackgroundResource(R.drawable.arcmenu_share_share_btn);
+    				arcMenu.getArcLayout().switchState(true);
+    			}
+    				
+    	}
+    	
+    	
+    	
+    }
+	public void tapOnShowDetails(View v){
 
 		if(viewLoading!= null )
 			if(viewLoading.getVisibility() == View.VISIBLE)
@@ -1405,12 +1499,18 @@ GestureDetector.OnDoubleTapListener {
 
 		createDrawerCategories();
 		//mDrawerLayout.closeDrawer(Gravity.LEFT);
+		setFirstView();
+		
+	}
+	
+	private void setFirstView(){
 		currentNewsIndex = -1;
 		isMovingViewCurrent = true;
 		View view = createNewsView();
 		
 		if(view != null){
 			viewStatic = view;
+			scaleAnimationOver();
 		}
 		viewMoving = null;
 
@@ -1528,7 +1628,7 @@ GestureDetector.OnDoubleTapListener {
 			startActivity(Intent.createChooser(sendIntent, "Share Via"));
 		}
 	}
-
+/*
 	private void drawerEventAnim(){
 
 		try{
@@ -1539,7 +1639,7 @@ GestureDetector.OnDoubleTapListener {
 
 		}
 	}
-
+*/
 	private void createDrawerCategories(){
 
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
@@ -1983,7 +2083,7 @@ GestureDetector.OnDoubleTapListener {
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 				listNewsItemServer = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig
 						.getRootCatId());
-				
+				currentNewsIndex = -1;
 				if(comingFromPushMessage){
 					comingFromPushMessage = false;
 					//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
@@ -1998,11 +2098,13 @@ GestureDetector.OnDoubleTapListener {
 							Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
 				
 				}
-				
+				isMovingViewCurrent = true;
 				viewStatic = createNewsView();
 
 				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
 				dbH.insertNewsItemList(listNewsItemServer,true);
+				
+				preLoadImages();
 			}
 			// Now set Categories
 			if (response.has("categories_need_update")) {
@@ -2032,6 +2134,23 @@ GestureDetector.OnDoubleTapListener {
 			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
 		}
 
+	}
+	
+	private void preLoadImages(){
+		if(listNewsItemServer != null)
+		for (Object_ListItem_MainNews item : listNewsItemServer) {
+		     String url = item.getImagePath();
+		          if (!TextUtils.isEmpty(url)) {
+		               Picasso.with(getApplicationContext())
+		                    .load(url)
+		                    .fetch();
+		               
+		               //
+	                   // .resizeDimen(R.dimen.article_image_preview_width, R.dimen.article_image_preview_height)
+	                    //.centerCrop()
+		          }
+		     
+		}
 	}
 
 	private void navigateToNewsDetail(Object_ListItem_MainNews objNews) {
@@ -2135,6 +2254,10 @@ GestureDetector.OnDoubleTapListener {
 		return dateString;
 	}
 
+	public void onClickRefresh(View v){
+		refresh();
+	}
+	
 
 	public void onClickSettings(View v){
 
@@ -2200,7 +2323,7 @@ GestureDetector.OnDoubleTapListener {
 	public void onClickNotification(View v){
 		Object_AppConfig obj = new Object_AppConfig(this);
 
-		TextView txt =(TextView) rlytMainContent.findViewById(R.id.txtNotification);
+		TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
 		ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
 		ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
 		if(obj.isNotificationEnabled()){

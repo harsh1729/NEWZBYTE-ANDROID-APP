@@ -25,6 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,8 +108,10 @@ public class ArcLayout extends ViewGroup {
         final int perSize = childSize + childPadding;
 
         int radius = (int) ((perSize / 10) / Math.sin(Math.toRadians(perHalfDegrees)));
-
-        radius = Math.min(radius,(5*getScreenSize(activity).x/3 - perSize/2));
+        //Edit by Harsh
+        radius = (int) (getScreenSize(activity).x/1.7);//Math.min(radius,(5*getScreenSize(activity).x/3 - perSize/2));
+       
+        Log.i("Bytes", "radius "+ radius +" minRadius "+ minRadius);
         return Math.max(radius, minRadius);
     }
     

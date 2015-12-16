@@ -95,6 +95,11 @@ public class ArcMenu extends RelativeLayout {
     {
     	return this.mArcLayout;
     }
+    
+    public ViewGroup getControlLayout()
+    {
+    	return this.controlLayout;
+    }
     public void switchShareArcmenu(boolean doAnimation)
     {
     	if(!mArcLayout.isExpanded())
