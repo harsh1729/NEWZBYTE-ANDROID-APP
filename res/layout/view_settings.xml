@@ -3,9 +3,11 @@
     android:id="@+id/llytSettingsContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_settings"
     android:clickable="true"
+    android:background="@color/app_offwhite"
     android:orientation="vertical" >
+    
+<!--     android:background="@drawable/bg_settings" -->
 
     <RelativeLayout  
             android:id="@+id/rlytSettings"

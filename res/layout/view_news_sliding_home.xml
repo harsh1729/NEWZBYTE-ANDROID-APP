@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llytHomeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_black"
     android:orientation="vertical" >
+
+   
+    
+
 
     <RelativeLayout
         android:id="@+id/rlytImgContainer"
@@ -97,7 +101,19 @@
 <!--             android:text=""/> -->
 <!--             </LinearLayout> -->
 <!--         </LinearLayout> -->
-    </RelativeLayout>
+
+ 
+    <ImageView
+            android:id="@+id/imgShowDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/show_detail"
+            android:scaleType="centerCrop" />
+
+  </RelativeLayout>
 
 <!--     <LinearLayout  -->
 <!--       android:id="@+id/llytTextContainer" -->
@@ -166,4 +182,16 @@
 <!--         android:orientation="horizontal" > -->
 <!--     </LinearLayout> -->
 <!-- </LinearLayout> -->
-</LinearLayout>
+
+
+
+
+ <RelativeLayout 
+      android:id="@+id/rlytImgCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_black"
+        android:alpha="0.0">
+</RelativeLayout>
+
+</RelativeLayout>

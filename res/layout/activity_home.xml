@@ -67,21 +67,21 @@
         android:layout_gravity="left"> 
         
        <!-- Settings bar -->
-<!--         <RelativeLayout  
+       <RelativeLayout  
             android:id="@+id/rlytSettings"
             android:layout_width ="match_parent"
         	android:layout_height ="wrap_content"
         	android:layout_alignParentTop="true"
-        	android:background="@color/app_black_header"
         	android:padding="10dp">
             
             <ImageView 
                 android:layout_width ="40dp"
         		android:layout_height ="40dp"
         		android:clickable="true"
-        		android:src="@drawable/setting_white"
+        		android:layout_alignParentRight="true"
+        		android:src="@drawable/share_plus"
         		android:onClick="onClickSettings"/>
-        </RelativeLayout>-->
+        </RelativeLayout>
 <!--         <RelativeLayout -->
 <!-- 	    android:id="@+id/rlyt_detailHeader" -->
 <!--         android:layout_width="match_parent" -->
@@ -104,21 +104,21 @@
 <!--         android:textStyle="bold" /> -->
         
 <!--     </RelativeLayout> -->
-<!--     <LinearLayout -->
-<!--         android:id="@+id/llyt_hrline" -->
-<!-- 	    android:orientation="horizontal" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_below="@+id/rlyt_detailHeader" -->
-<!--         android:background="@drawable/bg_black_gradient" -->
-<!--         android:layout_height="4dp" > -->
+    <LinearLayout
+        android:id="@+id/llyt_hrline"
+	    android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rlytSettings"
+        android:background="@color/app_lightgray"
+        android:layout_height="1dp" >
 
         
-<!--    </LinearLayout> -->
+   </LinearLayout>
         <ScrollView
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       	android:layout_alignParentTop="true"
+       	android:layout_below="@+id/rlytSettings"
         android:layout_margin="0dp" >
 
        <LinearLayout
