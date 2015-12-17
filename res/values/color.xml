@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    
+     <color name="app_theme_color">#FE0200</color> 
+    
+    
     <color name="app_green">#00CC00</color>
     
     <color name="app_white">#FFFFFF</color> 

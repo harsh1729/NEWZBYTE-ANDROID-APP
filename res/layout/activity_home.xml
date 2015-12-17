@@ -83,7 +83,7 @@
         		android:layout_height ="40dp"
         		android:clickable="true"
         		android:layout_alignParentRight="true"
-        		android:src="@drawable/share_plus"
+        		android:src="@drawable/setting"
         		android:onClick="onClickSettings"/>
         </RelativeLayout>
 <!--         <RelativeLayout -->
@@ -129,22 +129,25 @@
             android:id="@+id/llytCatContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:gravity="left" >
             
-            <ImageView 
-     	android:id="@+id/btnCatAll"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:padding="10dp"
-    	android:background="@drawable/viewall_selected" 
-    	android:clickable="true"
-    	android:scaleType="fitXY" 
-    	android:layout_marginTop="10dp"
-    	android:layout_marginBottom="10dp"
-    	android:onClick="onClickAllCategory" />
+<!--             <ImageView  -->
+<!--      	android:id="@+id/btnCatAll" -->
+<!--         android:layout_width="wrap_content" -->
+<!--     	android:layout_height="wrap_content" -->
+<!--     	android:padding="10dp" -->
+<!--     	android:background="@drawable/viewall_selected"  -->
+<!--     	android:clickable="true" -->
+<!--     	android:scaleType="fitXY"  -->
+<!--     	android:layout_marginTop="10dp" -->
+<!--     	android:layout_marginBottom="10dp" -->
+<!--     	android:onClick="onClickAllCategory" /> -->
             	
             
             </LinearLayout>
+
+		
             
      	</ScrollView>   
  
