@@ -28,7 +28,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Movie;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -36,10 +35,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -56,7 +52,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -99,6 +94,7 @@ GestureDetector.OnDoubleTapListener {
 	private Boolean isMovingViewCurrent = true;
 	private Boolean isNoMoreNews = false;
 	private Boolean isFirstResume = true;
+	private Boolean isTopIconBarHidden = false;
 	static Boolean comingFromPushMessage = false;
 	ImageView imgMenu;
 	ImageView imgGoToTop;
@@ -174,8 +170,8 @@ GestureDetector.OnDoubleTapListener {
 		int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
 		//rlytDrawerPane.getLayoutParams().width = drawerWidth;
 
-		ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
-		btnCatAll.getLayoutParams().width = drawerWidth;
+		//ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+		//btnCatAll.getLayoutParams().width = drawerWidth;
 		
 		
 		Drawable d = getResources().getDrawable(R.drawable.viewall);
@@ -183,7 +179,7 @@ GestureDetector.OnDoubleTapListener {
 		int wImage = d.getIntrinsicWidth();  
 		
 		int newImageHeight = hImage * (drawerWidth - Globals.dpToPx(10+10)) / wImage;
-		btnCatAll.getLayoutParams().height = newImageHeight + Globals.dpToPx(10+10);
+		//btnCatAll.getLayoutParams().height = newImageHeight + Globals.dpToPx(10+10);
 		
 		//TextView txt = (TextView)findViewById(R.id.txtCatHeading);
 		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
@@ -1026,6 +1022,13 @@ GestureDetector.OnDoubleTapListener {
 				//imageDeatil.setAnimation(zoomout);
 				
 				imageDeatil.startAnimation(zoomin);
+				
+				if((isSlideUp && isMovingViewCurrent)){
+					hideTopIconsBar();
+				}else{
+					showTopIconsBar();
+				}
+				
 				}
 			}
 		}
@@ -1063,6 +1066,25 @@ GestureDetector.OnDoubleTapListener {
 	}
 	
 	
+	private void hideTopIconsBar(){
+		
+		if(!isTopIconBarHidden){
+			
+			RelativeLayout layout = (RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+			layout.animate().setDuration(300).translationY(-1*layout.getHeight());
+			isTopIconBarHidden = true;
+		}
+		
+	
+	}
+	
+	private void showTopIconsBar(){
+		if(isTopIconBarHidden){
+			RelativeLayout layout = (RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+			layout.animate().setDuration(300).translationY(0);
+			isTopIconBarHidden = false;
+		}
+	}
 	@Override 
     public boolean onTouchEvent(MotionEvent touchevent){ 
         this.mDetector.onTouchEvent(touchevent);
@@ -1413,7 +1435,10 @@ GestureDetector.OnDoubleTapListener {
     				
     	}
     	
-    	
+    	if(isTopIconBarHidden)
+    		showTopIconsBar();
+    	else
+    		hideTopIconsBar();
     	
     }
 	public void tapOnShowDetails(View v){
@@ -1643,66 +1668,66 @@ GestureDetector.OnDoubleTapListener {
 	private void createDrawerCategories(){
 
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
-		ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+		///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
 
-		if(llytCatContainer.getChildCount() > 1){
-			llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
+		if(llytCatContainer.getChildCount() > 0){
+			llytCatContainer.removeAllViews();
 		}
+		
+		///if(llytCatContainer.getChildCount() > 1){
+			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
+		///}
 
-		if(arraySelectedCatIds.size() == 0){
-			btnCatAll.setImageResource(R.drawable.viewall_selected);
-			btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
-		}else{
-			btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
-			btnCatAll.setBackgroundResource(R.color.app_transparent);
-		}
+		///if(arraySelectedCatIds.size() == 0){
+			///btnCatAll.setImageResource(R.drawable.viewall_selected);
+			///btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
+		///}else{
+			///btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
+			///btnCatAll.setBackgroundResource(R.color.app_transparent);
+		///}
 
 		LinearLayout row = null;
+		boolean firstInRow ;
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
-			/*if(i%2 == 0){
+			if(i%3 == 0){
+				firstInRow = true;
+			}else{
+				firstInRow = false;
+			}
+			if(firstInRow){
+				
 				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
 			}
 
 			if(row != null){
+				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow)) ;
 
-				row.addView(getCatImageView(listCatItemServer.get(i),row)) ;
-
-				if(i%2 == 0)
+				if(firstInRow)
 					llytCatContainer.addView(row);	
-			}*/
-			//if(i%2 == 0){
-				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
-		//	}
-
-			//if(row != null){
-
-				row.addView(getCatImageView(listCatItemServer.get(i),row)) ;
-
-				//if(i%2 == 0)
-					llytCatContainer.addView(row);	
-			//}
-
-
+			}
 
 		}
 	}
 
 
 	@SuppressLint("NewApi")
-	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row){
+	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow){
 
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-		int widthImage = rlytDrawerPane.getLayoutParams().width - 2* margin ;
-		int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
+		int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
+		
+		Log.d("DARSH","rlytDrawerPane.getWidth():"+rlytDrawerPane.getWidth());
+		Log.d("DARSH","widthImage:"+widthImage);
+		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
 		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
 
+		/*
 		if(isSelectedId(Integer.valueOf(objCat.getId())))
 		{
 
@@ -1723,22 +1748,32 @@ GestureDetector.OnDoubleTapListener {
 			item.setOnTouchListener(new Custom_OnTouchListener_ColoredBG(item, this, objCat.getId()));
 			item.setBackgroundResource(R.drawable.bg_rounded_shadow);
 		}
+		*/
 		//item.getLayoutParams().width = widthImage;
 		//item.getLayoutParams().height = item.getLayoutParams().width;
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
-		int heightImage =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
 				//100;//Globals.getScreenSize(this).y/5;
 		
-		item.setMinimumWidth(widthImage);
-		item.setMinimumHeight(heightImage);
+		//item.setMinimumWidth(widthImage);
+		//item.setMinimumHeight(heightImage);
 
-		LinearLayout.LayoutParams params =(LinearLayout.LayoutParams )item.getLayoutParams();
-		params.height = heightImage;
-		params.width = widthImage + margin;//;rlytDrawerPane.getLayoutParams().width - margin;
 		
-		params.gravity = Gravity.RIGHT;
-		item.setLayoutParams(params);
+		RelativeLayout.LayoutParams params =(RelativeLayout.LayoutParams )imgView.getLayoutParams();
+		params.height = heightImage;
+		params.width = widthImage ;//+ margin;//;rlytDrawerPane.getLayoutParams().width - margin;
+		
+		//params.gravity = Gravity.RIGHT;
+		imgView.setLayoutParams(params);
+		
+		
+		LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
+		
+		if(!firstInRow)
+			paramsParent.leftMargin = margin;
+		//params.gravity = Gravity.RIGHT;
+		item.setLayoutParams(paramsParent);
 
 		/*
 		new ImageView(this);
@@ -1751,14 +1786,15 @@ GestureDetector.OnDoubleTapListener {
 
 		 */
 
-		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
 
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		txtCategory.setTypeface(tfCat);
 		txtCategory.setText(objCat.getName());
-		txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
+		txtCategory.setMaxWidth(widthImage-margin);
+		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
 
 		return item;
 

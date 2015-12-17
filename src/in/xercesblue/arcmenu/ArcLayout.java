@@ -109,7 +109,7 @@ public class ArcLayout extends ViewGroup {
 
         int radius = (int) ((perSize / 10) / Math.sin(Math.toRadians(perHalfDegrees)));
         //Edit by Harsh
-        radius = (int) (getScreenSize(activity).x/1.7);//Math.min(radius,(5*getScreenSize(activity).x/3 - perSize/2));
+        radius = (int) (getScreenSize(activity).x/1.6);//Math.min(radius,(5*getScreenSize(activity).x/3 - perSize/2));
        
         Log.i("Bytes", "radius "+ radius +" minRadius "+ minRadius);
         return Math.max(radius, minRadius);
