@@ -18,12 +18,15 @@ public class Custom_URLs_Params {
 		return Globals.DEFAULT_APP_SERVER_PATH+"news/mob_get_cat_news";//?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;
 	}
 	
-	static Map<String, String> getParams_CatNewsFirstCall(int catVersionId,int appVersionId){
+	static Map<String, String> getParams_CatNewsFirstCall(int catVersionId,int appVersionId,Context context){
 		HashMap<String, String> mParams = new HashMap<String, String>();
+		Object_AppConfig obj = new Object_AppConfig(context);
 			        mParams.put("clientid", Globals.CLIENT_ID+"");
 			        //mParams.put("catversion", catVersionId+"");
 			        //mParams.put("appconfigversion", appVersionId+"");
 			        mParams.put("limit", Globals.FINAL_NEWS_LIMIT_FIRST_CALL+"");
+			        mParams.put("langid", obj.getLangId()+"");
+			        mParams.put("catid", Globals.getCatIdByComma(context));
 			        //mParams.put("isneedtopnews", "true");
 			        Log.i("DARSH", "getParams_CatNewsFirstCall --->" + mParams);
 			        return mParams;

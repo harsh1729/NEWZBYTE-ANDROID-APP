@@ -47,7 +47,7 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 		if (cur != null) {
 			if (cur.moveToFirst()) {
 				do {
-					;
+					
 					Ids.add(Integer.valueOf(cur.getInt(cur.getColumnIndex(KEY_CAT_ID))));
 					
 				} while (cur.moveToNext());
@@ -56,15 +56,13 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 
 		db.close();
 		
-		//setRootNewsOnTop(con, Cat_group);
-		
 		return Ids;
 
 	}
 	
 	public boolean containsCatId(int catId) {//Context con
 
-		Log.i("HARSH", " getAllCategories called!");
+		Log.i("HARSH", " containsCatId called!");
 		String selectQuery = "select * from " + TABLE_CATEGORY_SELECTION + " where "+ KEY_CAT_ID + " = " + catId ;
 
 		SQLiteDatabase db = this.getReadableDatabase();

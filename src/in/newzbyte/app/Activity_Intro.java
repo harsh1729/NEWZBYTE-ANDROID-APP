@@ -54,15 +54,16 @@ public class Activity_Intro extends FragmentActivity {
      */
     private PagerAdapter mPagerAdapter;
     boolean doubleBackToExitPressedOnce = false;
-    
+    boolean isBootomBarHidden = false;
     ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
 		if(!checkIfNeedsIntro()){
 			moveToNewsScreen();
             return;
 		}
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
 		
 		DBHandler_Main db = new DBHandler_Main(this);
@@ -77,17 +78,20 @@ public class Activity_Intro extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
             	Object_AppConfig obj = new Object_AppConfig(Activity_Intro.this);
-            	
+            	RadioGroup group = (RadioGroup)findViewById(R.id.radiogroup);
             	 switch (position){
                  case 0:
                      radioGroup.check(R.id.radioButton);
                      
+             		group.setVisibility(View.VISIBLE);
                      break;
                  case 1:
                      radioGroup.check(R.id.radioButton2);
                      
                      if(obj.getLangId() != 0)
                     	 onClickLang(obj.getLangId(),obj);
+                     
+             		group.setVisibility(View.VISIBLE);
                      break;
                  case 2:
                      radioGroup.check(R.id.radioButton3);
@@ -99,6 +103,8 @@ public class Activity_Intro extends FragmentActivity {
                     	 Toast.makeText(Activity_Intro.this, "Please first select language !", Toast.LENGTH_SHORT).show();
                     	 mPager.setCurrentItem(1);
                      }
+                     
+                     setBootomBarStatus();
                      //}else{
                     	 //createDrawerCategories();
                      //} user can go back and change language.
@@ -115,36 +121,52 @@ public class Activity_Intro extends FragmentActivity {
          this.finish();
 	}
 	
+	private void hideBottomView(){
+		
+		
+		if(!isBootomBarHidden){
+			
+			LinearLayout layout = (LinearLayout)findViewById(R.id.llytIntroScreenThird2);
+			
+			layout.animate().setDuration(10).translationY(layout.getHeight());
+			isBootomBarHidden = true;
+			
+			RadioGroup group = (RadioGroup)findViewById(R.id.radiogroup);
+			group.setVisibility(View.VISIBLE);
+		}
+	}
+	private void showBottomView(){
+		if(isBootomBarHidden){
+			LinearLayout layout = (LinearLayout)findViewById(R.id.llytIntroScreenThird2);
+			
+			layout.animate().setDuration(300).translationY(0);
+			isBootomBarHidden = false;
+			
+		}
+		RadioGroup group = (RadioGroup)findViewById(R.id.radiogroup);
+		group.setVisibility(View.GONE);
+	}
 	public void onClickIntroFinish(View v){
 		moveToNewsScreen();
 	}
 	private boolean checkIfNeedsIntro(){
-		 
-	            //  Initialize SharedPreferences
-	            SharedPreferences getPrefs = PreferenceManager
-	                    .getDefaultSharedPreferences(getBaseContext());
 
 	            //  Create a new boolean and preference and set it to true
-	            boolean isFirstStart = getPrefs.getBoolean("needsIntro", true);
+	            
+	            Object_AppConfig obj = new Object_AppConfig(this);
+
 
 	            //  If the activity has never started before...
-	            if (isFirstStart) {
+	            if ((obj.getLangId() == 0)) {
 
-	                //  Launch app intro
-	               
+	                //  Launch app needs intro
 
-	                //  Make a new preferences editor
-	                ///SharedPreferences.Editor e = getPrefs.edit();
-
-	                //  Edit preference to make it false because we don't want this to run again
-	               /// e.putBoolean("firstStart", false);
-
-	                //  Apply changes
-	               /// e.apply();
+	            	
+	            	return true;
 	            }
 	   
 
-	            return isFirstStart;
+	            return false;
 	}
 	
 	 /**
@@ -312,6 +334,7 @@ public class Activity_Intro extends FragmentActivity {
 		}
 		
 		
+		
 		///if(llytCatContainer.getChildCount() > 1){
 			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
 		///}
@@ -330,8 +353,6 @@ public class Activity_Intro extends FragmentActivity {
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
 		
 		ArrayList<Integer> Ids = dbH.getAllCategories();
-		
-		
 		
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
@@ -484,13 +505,58 @@ public class Activity_Intro extends FragmentActivity {
 				if(contains){
 					Globals.loadImageIntoImageView(imageView, obj.getImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
 				}else{
-					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
+					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading_selected,R.drawable.cat_loading_selected);
 				}
 			}
 			
 		}
 		
+		///Thread t = new Thread(new Runnable() {
+			
+			///@Override
+			///public void run() {
+				setBootomBarStatus();
+				
+				
+
+			///}
+		///});
+		///t.start();
+		
 		
 			
 		}
+    
+    private void setBootomBarStatus(){
+    	DBHandler_CategorySelection dbh = new  DBHandler_CategorySelection(Activity_Intro.this);
+		int count = dbh.getAllCategories().size();
+		
+    	TextView txtView = (TextView)findViewById(R.id.txtIntroScreen3Info);
+    	switch (count) {
+    	case 0:
+    		txtView.setText("");
+    		hideBottomView();
+    		txtView.setClickable(false);
+			break;
+		case 1:
+			txtView.setText("2 more to go!");
+			txtView.setClickable(false);
+			showBottomView();
+			break;
+		case 2:
+			txtView.setText("Just one more.");
+			txtView.setClickable(false);
+			showBottomView();
+			break;
+
+		default:
+			break;
+		}
+    	
+    	if(count > 2){
+    		txtView.setText("Bingo! Click here ..");
+    		txtView.setClickable(true);
+    		showBottomView();
+    	}
+    }
 }

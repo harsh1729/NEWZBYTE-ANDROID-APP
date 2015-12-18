@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -35,12 +34,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -65,7 +62,6 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.squareup.picasso.Picasso;
 
 public class Activity_Home extends Activity implements 
 GestureDetector.OnGestureListener,
@@ -1947,7 +1943,7 @@ GestureDetector.OnDoubleTapListener {
 
 			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
 					//objAppConfig.getVersionNoCategory()
-					url, Custom_URLs_Params.getParams_CatNewsFirstCall(0,objAppConfig.getVersionNoAppConfig()),
+					url, Custom_URLs_Params.getParams_CatNewsFirstCall(0,objAppConfig.getVersionNoAppConfig(),this),
 					new Listener<JSONObject>() {
 
 				@Override

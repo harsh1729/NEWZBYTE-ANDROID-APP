@@ -435,6 +435,27 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		
 	}
 	
+	public static String getCatIdByComma(Context context){
+		
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(context);
+		
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+		
+		String catIds ="";
+		boolean firstItem = true;
+		for(Integer id : Ids){
+			if(firstItem){
+				
+				catIds+= ""+id.intValue();
+				firstItem = false;		
+			}else{
+				catIds+= ","+id.intValue();
+			}
+		}
+		
+		return catIds;
+		
+	}
 	
 	/*public void takeScreenshot(View v) { 
 	    Date now = new Date(); 
