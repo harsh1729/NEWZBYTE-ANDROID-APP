@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+     >
+
+  <LinearLayout 
+      android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true" >
+
+      
+     <TextView
+        android:id="@+id/txtIntroFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A quick read on inspiring trends"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/app_black_dark"
+        android:textSize="@dimen/font_lbl_large"
+        android:layout_marginBottom="20dp"
+        /> 
+        
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/newzbyte" />
+    
+        
+     <ImageView
+        android:id="@+id/imgLogoName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgLogo"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/nb_name_icon_redstrip" />
+     
+     <TextView
+        android:id="@+id/txtIntroSecond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="At your fingertips daily at 6 PM"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/app_black_dark"
+        android:textSize="@dimen/font_lbl_large"
+        android:layout_below="@+id/imgLogoName"
+        android:layout_marginTop="20dp"
+        />
+     
+     </LinearLayout>
+
+</RelativeLayout>
+

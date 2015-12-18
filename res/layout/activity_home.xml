@@ -66,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rlytDrawerPane"
-        android:background="@color/app_offwhite"
+        android:background="@color/app_white"
         android:layout_marginLeft="-65dp"
         android:layout_gravity="left"> 
         
@@ -77,10 +77,28 @@
         	android:layout_height ="wrap_content"
         	android:layout_alignParentTop="true"
         	android:padding="10dp">
+		        
+           <ImageView 
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:src="@drawable/back"
+    		android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:onClick="onClickMenu"/>
+           
+            <TextView 
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="NewzByte"
+            android:textSize="@dimen/font_lbl_large"
+    		android:textStyle="bold"   	
+            android:layout_centerInParent="true"
+            android:textColor="@color/app_black_dark"/>
             
             <ImageView 
-                android:layout_width ="40dp"
-        		android:layout_height ="40dp"
+                android:layout_width ="30dp"
+        		android:layout_height ="30dp"
         		android:clickable="true"
         		android:layout_alignParentRight="true"
         		android:src="@drawable/setting"
@@ -123,6 +141,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        	android:layout_below="@+id/rlytSettings"
+       	
         android:layout_margin="0dp" >
 
        <LinearLayout

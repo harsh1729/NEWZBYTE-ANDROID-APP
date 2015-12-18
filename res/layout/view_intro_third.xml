@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical" >
+    
+    <LinearLayout  
+        android:layout_width="match_parent"
+    	android:layout_height="40dp"
+    	android:background="@color/app_theme_color" >
+    	 <TextView
+        android:id="@+id/txtCatChooser1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tell us about your interests"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/app_white"
+        android:textSize="@dimen/font_lbl_normal"
+        /> 
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewCat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       	android:layout_above="@+id/button1"
+        android:layout_margin="0dp" >
+
+       <LinearLayout
+            android:id="@+id/llytCatContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left" >     
+            </LinearLayout>
+        </ScrollView>
+    <Button
+        android:id="@+id/btnFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:onClick="onClickIntroFinish"
+        android:text="Button" />
+    
+    
+    <TextView
+        android:id="@+id/txtIntroScreen2Msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please wait while we load categories ..."
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="@color/app_black_dark"
+        android:textSize="@dimen/font_lbl_normal"
+        /> 
+    
+</RelativeLayout>
+

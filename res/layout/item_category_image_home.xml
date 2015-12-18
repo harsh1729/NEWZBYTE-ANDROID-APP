@@ -22,7 +22,7 @@
     				android:layout_height="wrap_content"
     				android:text ="CATEGORY"
     				android:layout_centerInParent="true"
-    				android:padding="5dp"
+    				android:padding="2dp"
     				android:gravity="center"
     				android:textSize="@dimen/font_lbl_very_small"
     				android:textColor="@color/app_theme_color"

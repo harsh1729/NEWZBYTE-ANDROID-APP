@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@color/app_offwhite"
+    android:background="@color/app_white"
     android:orientation="vertical" >
     
 <!--     android:background="@drawable/bg_settings" -->
@@ -23,8 +23,15 @@
     		android:textStyle="bold"   	
             android:layout_centerInParent="true"
             android:textColor="@color/app_black_dark"/>
-        
-        <TextView 
+        <ImageView 
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:src="@drawable/up"
+    		android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:onClick="onClickSettings2"/>
+        <!--  <TextView 
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="Done"
@@ -41,22 +48,24 @@
             android:textColor="@color/app_black_dark"
             android:onClick="onClickSettings2"/>
             
-          <!--   <ImageView 
+           <ImageView 
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
         		android:clickable="true"
         		android:layout_alignParentRight="true"
         		android:src="@drawable/setting_black"
         		android:onClick="onClickSettings2"/> -->
+        		
         </RelativeLayout>
       
-   <!--   <LinearLayout
+   <LinearLayout
+        android:id="@+id/llyt_hrline"
 	    android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:background="@color/app_black_dark"
-        android:padding="10dp"
-        android:layout_height="1dp" > 
-    </LinearLayout>-->
+        android:layout_below="@+id/rlytSettings"
+        android:background="@color/app_lightgray"
+        android:layout_height="1dp" >
+   </LinearLayout>
     <ImageView
         android:id="@+id/imgLogoName"
         android:layout_width="match_parent"
@@ -181,7 +190,7 @@
                 android:layout_width ="30dp"
         		android:layout_height ="30dp"
         		android:layout_marginRight="10dp"
-        		android:src="@drawable/share"
+        		android:src="@drawable/share_red"
         		/>
          
          <TextView 

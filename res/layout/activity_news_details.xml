@@ -15,11 +15,11 @@
 
 		<ImageView
 		    android:id="@+id/imgBack"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    android:layout_width="40dp"
+		    android:layout_height="40dp"
 		    android:onClick="goBack"
 		    android:layout_alignParentLeft="true"
-		    android:src="@drawable/selector_back_white_to_black" />
+		    android:src="@drawable/back" />
 		<TextView
         android:id="@+id/txtCat"
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
 		    android:layout_height="wrap_content"
 		    android:onClick="shareClick"
 		    android:layout_alignParentRight="true"
-		    android:src="@drawable/selector_share_white_to_black" />
+		    android:src="@drawable/share" />
 		
 		
 		

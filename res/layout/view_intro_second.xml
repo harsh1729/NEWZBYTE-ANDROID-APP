@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtChooseLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Choose your preferred language"
+            android:textColor="@color/app_black_dark"
+            android:textSize="@dimen/font_lbl_large"
+            android:textStyle="bold" />
+        
+         <ImageView
+        android:id="@+id/imageViewEnglish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClickEnglish"
+        android:src="@drawable/english_unselected" />
+         <ImageView
+        android:id="@+id/imageViewHindi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickHindi"
+        android:src="@drawable/hindi_unselected" />
+    </LinearLayout>
+
+   
+
+</RelativeLayout>

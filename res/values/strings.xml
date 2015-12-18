@@ -9,5 +9,6 @@
     <string name="keyTag">Tag</string>
     <string name="title_activity_activity__web_view">Activity_WebView</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_activity__intro">Activity_Intro</string>
 
 </resources>
