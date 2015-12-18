@@ -2202,9 +2202,7 @@ GestureDetector.OnDoubleTapListener {
 		for (Object_ListItem_MainNews item : listNewsItemServer) {
 		     String url = item.getImagePath();
 		          if (!TextUtils.isEmpty(url)) {
-		               Picasso.with(getApplicationContext())
-		                    .load(url)
-		                    .fetch();
+		        	Globals.preloadImage(getApplicationContext(), url) ;
 		               
 		               //
 	                   // .resizeDimen(R.dimen.article_image_preview_width, R.dimen.article_image_preview_height)

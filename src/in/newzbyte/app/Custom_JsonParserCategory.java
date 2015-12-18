@@ -33,11 +33,15 @@ public class Custom_JsonParserCategory {
 					ob.setName(Single_Cat.getString("name").trim());
 					if(Single_Cat.has("image"))
 						ob.setImageName(Single_Cat.getString("image").trim());
+					if(Single_Cat.has("selected_image"))
+						ob.setSelectedImageName(Single_Cat.getString("selected_image").trim());
+					if(Single_Cat.has("langid"))
+						ob.setLangId(Single_Cat.getInt("langid"));
 					if(Single_Cat.has("topnewsid"))
 						ob.setTopNewsId(Single_Cat.getInt("topnewsid"));
 					
 					Log.i("HARSH","name"+ob.getName());
-					
+					if(Single_Cat.has("parent_id"))
 					ob.setParentId(Single_Cat.getInt("parent_id"));
 					listCategories.add(ob);
 				}

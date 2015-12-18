@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -64,6 +65,8 @@ public class Activity_Intro extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
 		
+		DBHandler_Main db = new DBHandler_Main(this);
+		db.createDataBase();
 		// Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageTransformer(true, new Custom_ZoomOutPageTransform());
@@ -73,23 +76,29 @@ public class Activity_Intro extends FragmentActivity {
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+            	Object_AppConfig obj = new Object_AppConfig(Activity_Intro.this);
+            	
             	 switch (position){
                  case 0:
                      radioGroup.check(R.id.radioButton);
+                     
                      break;
                  case 1:
                      radioGroup.check(R.id.radioButton2);
+                     
+                     if(obj.getLangId() != 0)
+                    	 onClickLang(obj.getLangId(),obj);
                      break;
                  case 2:
                      radioGroup.check(R.id.radioButton3);
                      //if(listCatItemServer == null || listCatItemServer.size() == 0)
                      //{
-                     
-                     Object_AppConfig obj = new Object_AppConfig(Activity_Intro.this);
                      if(obj.getLangId() != 0)
                     	 serverCallForCategories();
-                     else
-                    	 Toast.makeText(Activity_Intro.this, "Please first select language !", duration)
+                     else{
+                    	 Toast.makeText(Activity_Intro.this, "Please first select language !", Toast.LENGTH_SHORT).show();
+                    	 mPager.setCurrentItem(1);
+                     }
                      //}else{
                     	 //createDrawerCategories();
                      //} user can go back and change language.
@@ -216,6 +225,14 @@ public class Activity_Intro extends FragmentActivity {
 			String url = Custom_URLs_Params.getURL_GetCategories();
 			Log.i("HARSH", "Cat URL -- "+url);
 
+			TextView txt = (TextView)findViewById(R.id.txtIntroScreen2Msg);
+			txt.setVisibility(View.VISIBLE);
+			LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
+			///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+
+			if(llytCatContainer.getChildCount() > 0){
+				llytCatContainer.removeAllViews();
+			}
 			//CustomRequest jsObjRequest = new CustomRequest(Method.POST, url, params, this.createRequestSuccessListener(), this.createRequestErrorListener());
 			Object_AppConfig objAppConfig = new Object_AppConfig(Activity_Intro.this);
 
@@ -227,7 +244,7 @@ public class Activity_Intro extends FragmentActivity {
 				@Override
 				public void onResponse(JSONObject response) {
 
-					parseAppConfigJson(response);
+					parseJson(response);
 					
 
 				}
@@ -260,7 +277,7 @@ public class Activity_Intro extends FragmentActivity {
 
     }
     
-    private void parseAppConfigJson(JSONObject response) {
+    private void parseJson(JSONObject response) {
 
 		if (response == null){
 			
@@ -269,12 +286,6 @@ public class Activity_Intro extends FragmentActivity {
 		Log.i("DARSH", "RESPONCE parseAppConfigJson is : "+response.toString());
 		try {
 
-			Object_AppConfig objConfig = new Object_AppConfig(this);
-
-			 boolean hasNews = false;
-			 boolean hasCategory = false;
-
-			
 			// Set Categories
 			if(response.has("categories")){
 
@@ -291,12 +302,15 @@ public class Activity_Intro extends FragmentActivity {
 	}
     private void createDrawerCategories(){
 
+    	TextView txt = (TextView)findViewById(R.id.txtIntroScreen2Msg);
+		txt.setVisibility(View.GONE);
+		
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
 		///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
-
 		if(llytCatContainer.getChildCount() > 0){
 			llytCatContainer.removeAllViews();
 		}
+		
 		
 		///if(llytCatContainer.getChildCount() > 1){
 			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
@@ -312,6 +326,13 @@ public class Activity_Intro extends FragmentActivity {
 
 		LinearLayout row = null;
 		boolean firstInRow ;
+		
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+		
+		
+		
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
 			if(i%3 == 0){
@@ -326,7 +347,15 @@ public class Activity_Intro extends FragmentActivity {
 			}
 
 			if(row != null){
-				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow)) ;
+				boolean contains = false;
+				for(Integer id : Ids){
+					if(id.intValue() == listCatItemServer.get(i).getId()){
+						contains = true;
+						break;
+					}
+				}
+				
+				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow,i,contains)) ;
 
 				if(firstInRow)
 					llytCatContainer.addView(row);	
@@ -335,7 +364,7 @@ public class Activity_Intro extends FragmentActivity {
 		}
 	}
     
-    private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow){
+    private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
 
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
 		int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
@@ -347,6 +376,7 @@ public class Activity_Intro extends FragmentActivity {
 
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
+		imgView.setTag(R.string.app_name, position);
 		int heightImage = widthImage;
 
 		
@@ -364,9 +394,16 @@ public class Activity_Intro extends FragmentActivity {
 			item.setLayoutParams(paramsParent);
 
 		
+		if(contains){
 
-		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
-
+			Globals.loadImageIntoImageView(imgView, objCat.getSelectedImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getImageName()) ;
+		}else{
+			Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getSelectedImageName()) ;
+		}
+		
+		
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
@@ -433,4 +470,27 @@ public class Activity_Intro extends FragmentActivity {
     	}
     }
     
+    public void onClickCategoryItem(View v){
+
+		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
+		boolean contains = Globals.categoryClick(selectedCatId, this);
+		
+		View cView = v.findViewById(R.id.imgViewCat);
+		if(cView!= null && cView.getClass() == ImageView.class){
+			ImageView imageView = (ImageView)cView;
+			int index = ((Integer)imageView.getTag(R.string.app_name)).intValue();
+			if(listCatItemServer!= null && listCatItemServer.size() > index){
+				Object_Category obj = listCatItemServer.get(index);
+				if(contains){
+					Globals.loadImageIntoImageView(imageView, obj.getImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
+				}else{
+					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
+				}
+			}
+			
+		}
+		
+		
+			
+		}
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -325,6 +326,15 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		
 	}
 	
+	public static void preloadImage(Context context, String url){
+		try{
+		 Picasso.with(context)
+         .load(url)
+         .fetch();
+		}catch(Exception ex){
+			
+		}
+	}
 	
 	public static int getAppVersion(Context context) {
 		try {
@@ -402,6 +412,29 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 	{
 	    return (int) (px / Resources.getSystem().getDisplayMetrics().density);
 	}
+	
+	public static boolean categoryClick(int catId, Context context){
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(context);
+		boolean contains = dbH.containsCatId(catId);
+		
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+		
+		for(Integer id : Ids){
+			if(id.intValue() == catId){
+				contains = true;
+				break;
+			}
+		}
+		
+		if(contains)
+			dbH.clearCategory(catId);
+		else
+			dbH.insertSelectedCat(catId);
+		
+		return contains;
+		
+	}
+	
 	
 	/*public void takeScreenshot(View v) { 
 	    Date now = new Date(); 

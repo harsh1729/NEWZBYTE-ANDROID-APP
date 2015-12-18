@@ -4,10 +4,12 @@ package in.newzbyte.app;
      * sequence.
      */
 import android.support.v4.app.Fragment;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 /**
  * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
@@ -64,6 +66,9 @@ public class Custom_IntroSlidePageFragment extends Fragment {
 		case 0:
 			view = (View) inflater
             .inflate(R.layout.view_intro_first, container, false);
+			ImageView image = (ImageView) view.findViewById(R.id.imgLogo);
+            //image.setBackgroundResource(R.drawable.anim_newzbyte_logo);
+            ((AnimationDrawable) image.getBackground()).start();
 			break;
 		case 1:
 			view = (View) inflater
