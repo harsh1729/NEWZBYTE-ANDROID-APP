@@ -75,6 +75,8 @@ public class Globals {
 	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";
 	public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
 	
+	public static final int LANG_ENG = 1;
+	public static final int LANG_HINDI = 2;
 	public static final int[] SHARE_INTENT_ITEMS = {
 														R.drawable.share_plus, 
 														R.drawable.share_gmail,

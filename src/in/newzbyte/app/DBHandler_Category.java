@@ -9,16 +9,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
+/* 
+ CREATE TABLE Category (Id INTEGER NOT NULL PRIMARY KEY,
+ CatName TEXT NOT NULL,ParentId INTEGER NOT NULL DEFAULT 0,
+ CatImage text,TopNewsId integer DEFAULT 0,LangId integer,CatSelectedImage text,IsSelected integer DEFAULT 0)
+ 
+ */
 public class DBHandler_Category extends SQLiteOpenHelper {
 
 	public static final String TABLE_CATEGORY = "Category";
 	public static final String KEY_ID = "Id";
 	public static final String KEY_NAME = "CatName";
 	public static final String KEY_IMAGE = "CatImage";
+	public static final String KEY_IS_SELECTED= "IsSelected";
 	public static final String KEY_PARENT_ID = "ParentId";
 	public static final String KEY_VERSION = "CatVersion";
 	public static final String KEY_TOP_NEWS_ID =  "TopNewsId";
-
+	public static final String KEY_SELECTEDIMAGE = "CatImage";
+	public static final String KEY_LANGID = "LangId";
+	
+	
 	public DBHandler_Category(Context context) {
 		super(context, DBHandler_Main.DB_NAME, null, DBHandler_Main.DB_VERSION);
 	}
@@ -72,10 +83,14 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 							.getColumnIndex(KEY_NAME)));
 					catParent.setId(cur.getInt(cur.getColumnIndex(KEY_ID)));
 					catParent.setParentId(cur.getInt(cur.getColumnIndex(KEY_PARENT_ID)));
+					catParent.setLangId(cur.getInt(cur.getColumnIndex(KEY_LANGID)));
 					catParent.setTopNewsId(cur.getInt(cur.getColumnIndex(KEY_TOP_NEWS_ID)));
 					catParent.setImageName(cur
 							.getString(cur.getColumnIndex(KEY_IMAGE)));
-
+					catParent.setIsSelected(cur
+							.getInt(cur.getColumnIndex(KEY_IS_SELECTED)));
+					catParent.setSelectedImageName(cur
+							.getString(cur.getColumnIndex(KEY_SELECTEDIMAGE)));
 					/***************************************************************/
 
 					String childQuery = "select * from " + TABLE_CATEGORY
@@ -96,9 +111,15 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 											.getString(cur.getColumnIndex(KEY_IMAGE)));
 									catChildFirst.setId(cur.getInt(cur
 											.getColumnIndex(KEY_ID)));
+									catChildFirst.setLangId(cur.getInt(cur.getColumnIndex(KEY_LANGID)));
 									catChildFirst.setTopNewsId(cur.getInt(cur.getColumnIndex(KEY_TOP_NEWS_ID)));
+									catChildFirst.setSelectedImageName(cur
+											.getString(cur.getColumnIndex(KEY_SELECTEDIMAGE)));
+									catChildFirst.setIsSelected(cur
+											.getInt(cur.getColumnIndex(KEY_IS_SELECTED)));
 									catParent.getListChildCategory().add(
 											catChildFirst);
+									
 									tempFlag = false;
 								}
 
@@ -109,9 +130,14 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 										.getString(childCur.getColumnIndex(KEY_IMAGE)));
 								catChild.setId(childCur.getInt(childCur
 										.getColumnIndex(KEY_ID)));
+								catChild.setLangId(cur.getInt(cur.getColumnIndex(KEY_LANGID)));
 								catChild.setTopNewsId(cur.getInt(cur.getColumnIndex(KEY_TOP_NEWS_ID)));
 								catChild.setParentId(childCur.getInt(childCur
 										.getColumnIndex(KEY_PARENT_ID)));
+								catChild.setSelectedImageName(cur
+										.getString(cur.getColumnIndex(KEY_SELECTEDIMAGE)));
+								catChild.setIsSelected(cur
+										.getInt(cur.getColumnIndex(KEY_IS_SELECTED)));
 								catParent.getListChildCategory().add(catChild);
 
 								System.out.println(childCur.getString(childCur
@@ -154,11 +180,15 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 					catParent.setName(cur.getString(cur
 							.getColumnIndex(KEY_NAME)));
 					catParent.setId(cur.getInt(cur.getColumnIndex(KEY_ID)));
+					catParent.setLangId(cur.getInt(cur.getColumnIndex(KEY_LANGID)));
 					catParent.setParentId(cur.getInt(cur.getColumnIndex(KEY_PARENT_ID)));
 					catParent.setTopNewsId(cur.getInt(cur.getColumnIndex(KEY_TOP_NEWS_ID)));
 					catParent.setImageName(cur
 							.getString(cur.getColumnIndex(KEY_IMAGE)));
-
+					catParent.setSelectedImageName(cur
+							.getString(cur.getColumnIndex(KEY_SELECTEDIMAGE)));
+					catParent.setIsSelected(cur
+							.getInt(cur.getColumnIndex(KEY_IS_SELECTED)));
 					Cat_group.add(catParent);
 
 				} while (cur.moveToNext());
@@ -203,9 +233,12 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 		for (Object_Category ob : list) {
 			values.put(KEY_ID, ob.getId());
 			values.put(KEY_PARENT_ID, ob.getParentId());
+			values.put(KEY_LANGID, ob.getLangId());
 			values.put(KEY_NAME, ob.getName());
 			//values.put(KEY_IMAGE, Globals.bitmapToByteArray(ob.getImage()));
 			values.put(KEY_IMAGE, ob.getImageName());
+			values.put(KEY_IS_SELECTED, ob.getIsSelected());
+			values.put(KEY_SELECTEDIMAGE, ob.getSelectedImageName());
 			//values.put(KEY_TOP_NEWS_ID, ob.getTopNewsId());
 			db.insert(TABLE_CATEGORY, null, values);
 		}

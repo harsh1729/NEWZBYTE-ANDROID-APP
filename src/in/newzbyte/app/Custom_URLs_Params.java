@@ -28,6 +28,23 @@ public class Custom_URLs_Params {
 			        Log.i("DARSH", "getParams_CatNewsFirstCall --->" + mParams);
 			        return mParams;
 	}
+	
+	static String getURL_GetCategories(){
+		//http://www.newstest2.tk/newsci/client_requests/news/mob_get_cat_news
+		//return Globals.DEFAULT_APP_SERVER_PATH+"getAppConfig.php?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;
+		
+		Log.i("HARSH", Globals.DEFAULT_APP_SERVER_PATH+"news/mob_get_category");
+		return Globals.DEFAULT_APP_SERVER_PATH+"news/mob_get_category";//?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;
+	}
+	
+	static Map<String, String> getParams_GetCategories(int catVersionId,int appVersionId,Context context){
+		HashMap<String, String> mParams = new HashMap<String, String>();
+		Object_AppConfig obj = new Object_AppConfig(context);
+			        mParams.put("clientid", Globals.CLIENT_ID+"");
+			        mParams.put("langid", obj.getLangId()+"");
+			        Log.i("DARSH", "getParams_CatNewsFirstCall --->" + mParams);
+			        return mParams;
+	}
 	static String getURL_NewsByCategory(){ //int catId , int lastNewsId, String callType
 		//http://www.newstest2.tk/newsci/client_requests/news/mob_get_news_by_category
 		//return  Globals.Globals.DEFAULT_APP_SERVER_PATH+"getnewsbycategory.php?CatId="+catId+ "&lastNewsId=" + lastNewsId + "&callType="+ callType;

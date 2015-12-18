@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -38,6 +39,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -96,6 +99,7 @@ GestureDetector.OnDoubleTapListener {
 	private Boolean isFirstResume = true;
 	private Boolean isTopIconBarHidden = false;
 	static Boolean comingFromPushMessage = false;
+	private boolean doubleBackToExitPressedOnce = false;
 	ImageView imgMenu;
 	ImageView imgGoToTop;
 
@@ -119,13 +123,13 @@ GestureDetector.OnDoubleTapListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_home);
-		
+
 		initHome();
 
 	}
 
+	
 	private void initHome(){
 
 		arraySelectedCatIds = new ArrayList<Integer>();
@@ -174,11 +178,11 @@ GestureDetector.OnDoubleTapListener {
 		//btnCatAll.getLayoutParams().width = drawerWidth;
 		
 		
-		Drawable d = getResources().getDrawable(R.drawable.viewall);
-		int hImage = d.getIntrinsicHeight(); 
-		int wImage = d.getIntrinsicWidth();  
+		//Drawable d = getResources().getDrawable(R.drawable.viewall);
+		//int hImage = d.getIntrinsicHeight(); 
+		//int wImage = d.getIntrinsicWidth();  
 		
-		int newImageHeight = hImage * (drawerWidth - Globals.dpToPx(10+10)) / wImage;
+		//int newImageHeight = hImage * (drawerWidth - Globals.dpToPx(10+10)) / wImage;
 		//btnCatAll.getLayoutParams().height = newImageHeight + Globals.dpToPx(10+10);
 		
 		//TextView txt = (TextView)findViewById(R.id.txtCatHeading);
@@ -2110,6 +2114,8 @@ GestureDetector.OnDoubleTapListener {
 
 			Object_AppConfig objConfig = new Object_AppConfig(this);
 
+			 boolean hasNews = false;
+			 boolean hasCategory = false;
 
 			//// If news is there insert new news News
 			if (response.has("news")) {
@@ -2136,11 +2142,9 @@ GestureDetector.OnDoubleTapListener {
 				}
 				isMovingViewCurrent = true;
 				viewStatic = createNewsView();
-
-				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
-				dbH.insertNewsItemList(listNewsItemServer,true);
-				
 				preLoadImages();
+				hasNews = true;
+				
 			}
 			// Now set Categories
 			if (response.has("categories_need_update")) {
@@ -2157,19 +2161,40 @@ GestureDetector.OnDoubleTapListener {
 						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(this);
 						listCatItemServer = parserObject.getCategoriesFromJson(Cat_Object_Array);
 						createDrawerCategories();
-
-						DBHandler_Category dbH = new DBHandler_Category(this);
-						dbH.setCategories(listCatItemServer);
+						hasCategory = true;
 					}
 
 				} 
 			} 
 
+			 Thread t = new Thread(new MyRunnable(hasNews,hasCategory));
+			 t.start();
 
 		} catch (Exception ex) {
 			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
 		}
 
+	}
+	
+	private class MyRunnable implements Runnable {
+		  private boolean hasNews;
+		  private boolean hasCategories;
+		  public MyRunnable(boolean hasNews,boolean hasCategories) {
+		    this.hasNews = hasNews;
+		    this.hasCategories = hasCategories;
+		  }
+
+		  public void run() {
+			  if(hasNews && listNewsItemServer != null){
+	        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+		        	dbH.insertNewsItemList(listNewsItemServer,true);
+	        	}
+	        	
+			  if(hasCategories && listNewsItemServer != null){
+				  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
+				  dbH2.setCategories(listCatItemServer);
+			  }
+		  }
 	}
 	
 	private void preLoadImages(){
@@ -2294,6 +2319,24 @@ GestureDetector.OnDoubleTapListener {
 		refresh();
 	}
 	
+	@Override
+    public void onBackPressed() {
+    	 if (doubleBackToExitPressedOnce) {
+    	        super.onBackPressed();
+    	        return;
+    	    }
+
+    	    this.doubleBackToExitPressedOnce = true;
+    	    Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT).show();
+
+    	    new Handler().postDelayed(new Runnable() {
+
+    	        @Override
+    	        public void run() {
+    	            doubleBackToExitPressedOnce=false;                       
+    	        }
+    	    }, 2000);
+    }
 
 	public void onClickSettings(View v){
 
@@ -2410,6 +2453,8 @@ GestureDetector.OnDoubleTapListener {
 			Toast.makeText(this, Globals.TEXT_NO_INTERNET_DETAIL_TOAST, Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	
 }
 
 

@@ -159,6 +159,20 @@ public class Object_AppConfig {
 		}
 	}
 	
+	public int getLangId() {
+		int id = 0;
+		if(prefs != null)
+			id = prefs.getInt("appConfig_langid", 0);
+		
+		return id;
+	}
+	public void setLangId(int langId) {
+		if (editor != null) {
+			editor.putInt("appConfig_langid", langId);
+			editor.commit();
+		}
+	}
+	
 	/* Sending full path fro server now
 	  
 	 

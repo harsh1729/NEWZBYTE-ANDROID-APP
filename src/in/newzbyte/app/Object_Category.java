@@ -9,8 +9,11 @@ public class Object_Category {
 	private int id;
 	private int parentId;
 	private int topNewsId;
+	private int langId;
 	private String Name;
 	private String imageName;
+	private String selectedImageName;
+	private int isSelected;
 	//private Bitmap image;
 	private ArrayList<Object_Category> listChildCategory= null;
 	
@@ -79,6 +82,30 @@ public class Object_Category {
 
 	public void setTopNewsId(int topNewsId) {
 		this.topNewsId = topNewsId;
+	}
+
+	public String getSelectedImageName() {
+		return selectedImageName;
+	}
+
+	public void setSelectedImageName(String selectedImageName) {
+		this.selectedImageName = selectedImageName;
+	}
+
+	public int getLangId() {
+		return langId;
+	}
+
+	public void setLangId(int langId) {
+		this.langId = langId;
+	}
+
+	public int getIsSelected() {
+		return isSelected;
+	}
+
+	public void setIsSelected(int isSelected) {
+		this.isSelected = isSelected;
 	}
 
 }
