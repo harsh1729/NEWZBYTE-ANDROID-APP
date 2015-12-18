@@ -4,13 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_white"
-    android:orientation="vertical" >
+    >
     
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_above="@+id/llytIntroScreenThird2"
+     	android:orientation="vertical">
     <LinearLayout  
         android:id="@+id/llytIntroScreenThirdContainer"
         android:layout_width="match_parent"
-    	android:layout_height="40dp"
+    	android:layout_height="50dp"
     	android:layout_marginBottom="20dp"
+    	android:gravity="center_vertical"
     	android:background="@color/app_theme_color" >
     	 <TextView
         android:id="@+id/txtCatChooser1"
@@ -23,6 +29,8 @@
         android:textSize="@dimen/font_lbl_normal"
         /> 
     </LinearLayout>
+    
+     
 
     <ScrollView
         android:id="@+id/scrollViewCat"
@@ -35,20 +43,12 @@
             android:id="@+id/llytCatContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left" >     
+            android:orientation="vertical" >     
+            
             </LinearLayout>
         </ScrollView>
-    <Button
-        android:id="@+id/btnFinish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
-        android:onClick="onClickIntroFinish"
-        android:text="Button" />
-    
+        
+    </LinearLayout>
     
     <TextView
         android:id="@+id/txtIntroScreen2Msg"
@@ -61,6 +61,26 @@
         android:textColor="@color/app_black_dark"
         android:textSize="@dimen/font_lbl_normal"
         /> 
-    
+   <LinearLayout  
+        android:id="@+id/llytIntroScreenThird2"
+        android:layout_width="match_parent"
+    	android:layout_height="50dp"
+    	android:gravity="center_vertical"
+    	android:layout_alignParentBottom="true"
+    	android:background="@color/app_theme_color" >
+    	 
+    	 <TextView
+        android:id="@+id/txtIntroScreen3Info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="scrollViewCat"
+        android:padding="10dp"
+        android:gravity="center"
+        android:clickable="false"
+        android:onClick="onClickIntroFinish"
+        android:textColor="@color/app_white"
+        android:textSize="@dimen/font_lbl_normal"
+        /> 
+    </LinearLayout>     
 </RelativeLayout>
 
