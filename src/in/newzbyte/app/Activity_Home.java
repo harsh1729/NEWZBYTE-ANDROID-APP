@@ -234,6 +234,7 @@ GestureDetector.OnDoubleTapListener {
 	private void refresh(){
 		
 		//mDrawerLayout.setEnabled(false);
+		isMovingViewCurrent = false;
 				addLoadingView();
 
 				if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
@@ -1513,10 +1514,14 @@ GestureDetector.OnDoubleTapListener {
 				
 				break;
 			case Globals.NEWS_TYPE_ID_VIDEO:
-				Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
+				//Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
+				try{
 				Intent i = new Intent(this, Custome_YouTubePlayerActivity.class);
 		    	//this.finish();
 		    	this.startActivity(i);
+				}catch (Exception e) {
+					
+				}
 				break;
 
 			default:
@@ -2033,6 +2038,9 @@ GestureDetector.OnDoubleTapListener {
 				}
 				isMovingViewCurrent = true;
 				viewStatic = createNewsView();
+				rlytNewsContent.bringChildToFront(viewStatic);
+				if(rlytNewsContent.getChildCount() > 1)
+					rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount()-1);
 				preLoadImages();
 				hasNews = true;
 				
@@ -2075,7 +2083,7 @@ GestureDetector.OnDoubleTapListener {
 		}
 
 	}
-	
+	/*
 	private class MyRunnable implements Runnable {
 		  private boolean hasNews;
 		  private boolean hasCategories;
@@ -2096,7 +2104,7 @@ GestureDetector.OnDoubleTapListener {
 			  }
 		  }
 	}
-	
+	*/
 	private void preLoadImages(){
 		if(listNewsItemServer != null)
 		for (Object_ListItem_MainNews item : listNewsItemServer) {
