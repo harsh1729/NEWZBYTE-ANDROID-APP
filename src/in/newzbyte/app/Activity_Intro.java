@@ -412,7 +412,7 @@ public class Activity_Intro extends FragmentActivity {
 		
 		if(!firstInRow)
 			paramsParent.leftMargin = margin;
-			item.setLayoutParams(paramsParent);
+		item.setLayoutParams(paramsParent);
 
 		
 		if(contains){
@@ -554,7 +554,7 @@ public class Activity_Intro extends FragmentActivity {
 		}
     	
     	if(count > 2){
-    		txtView.setText("Bingo! Click here ..");
+    		txtView.setText("Bingo! Click here ...");
     		txtView.setClickable(true);
     		showBottomView();
     	}

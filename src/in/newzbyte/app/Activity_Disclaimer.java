@@ -1,28 +1,27 @@
 package in.newzbyte.app;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Activity_Disclaimer extends Activity {
 
-	private WebView myWebView;
-	private String LOG_TAG = "AndroidWebViewActivity";
-	 
+	private String disclaimer= "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,7 +40,10 @@ public class Activity_Disclaimer extends Activity {
 			return;
 		}else{
 			Toast.makeText(this, "Loading Disclaimer, please wait!", Toast.LENGTH_SHORT).show();
+			serverCallForDisclaimer();
 		}
+		
+		/*
 		
 		myWebView = (WebView) findViewById(R.id.webView);
         
@@ -70,8 +72,89 @@ public class Activity_Disclaimer extends Activity {
         TextView txt = (TextView)findViewById(R.id.txtHeading);
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		txt.setTypeface(tfCat);
+		
+		*/
+		
+		
 	}
 	
+	private void serverCallForDisclaimer(){
+	try {
+		String url = Custom_URLs_Params.getURL_Disclaimer();
+		Log.i("HARSH", "Cat serverCallForDisclaimer -- "+url);
+
+		Custom_VolleyArrayRequest jsonObjectRQST = new Custom_VolleyArrayRequest(Request.Method.POST,
+				//objAppConfig.getVersionNoCategory()
+				url, null,
+				new Listener<JSONArray>() {
+
+			@Override
+			public void onResponse(JSONArray response) {
+				parseJson(response);
+				
+
+			}
+		}, new ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError err) {
+				Log.i("DARSH", "ERROR VolleyError");
+				Globals.showAlertDialogOneButton(
+						Globals.TEXT_CONNECTION_ERROR_HEADING,
+						Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+						Activity_Disclaimer.this, "OK", null, false);
+
+
+			}
+		});
+
+		Custom_AppController.getInstance().addToRequestQueue(
+				jsonObjectRQST);
+
+	}
+
+	catch (Exception e) {
+		Log.i("HARSH",
+				"Excetion FIRSTCALL" + e.getMessage() + "\n"
+						+ e.getStackTrace());
+
+
+	}
+	}
+	
+	private void parseJson(JSONArray response){
+		
+		for(int i=0; i<response.length(); i++){
+			JSONObject obj;
+			try {
+				obj = response.getJSONObject(i);
+
+				disclaimer = obj.getString("text");
+				 
+				 
+				 Activity_Disclaimer.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						TextView txt =(TextView) Activity_Disclaimer.this.findViewById(R.id.txtdisclaimer);
+						txt.setText(Html.fromHtml(disclaimer));
+						Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
+						txt.setTypeface(tf, Typeface.NORMAL);
+						
+					}
+				});
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	 public void goBack(View v){
+		 this.finish();
+	 }
+	 
+	/*
 	//customize your web view client to open links from your own site in the 
 	 //same web view otherwise just open the default browser activity with the URL
 	 private class MyWebViewClient extends WebViewClient {
@@ -127,7 +210,7 @@ public class Activity_Disclaimer extends Activity {
 	     return super.onKeyDown(keyCode, event);
 	 }
 	 
-	 public void goBack(View v){
-		 this.finish();
-	 }
+	
+	 
+	 */
 }

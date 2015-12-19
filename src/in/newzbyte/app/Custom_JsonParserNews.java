@@ -45,6 +45,12 @@ public class Custom_JsonParserNews {
 						objMainNews.setCatId(catId);
 					}
 					
+					if(jsonObjNews.has("posttypeid")){
+						objMainNews.setTypeId(jsonObjNews.getInt("posttypeid"));
+					}else{
+						objMainNews.setCatId(Globals.NEWS_TYPE_ID_ONLY_IMAGE);
+					}
+					
 					if(jsonObjNews.has("heading")){
 						objMainNews.setHeading(jsonObjNews.getString("heading").trim());
 					}

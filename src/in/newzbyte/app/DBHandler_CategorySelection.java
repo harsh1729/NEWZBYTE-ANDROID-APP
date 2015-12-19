@@ -89,11 +89,11 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 		try {
 				ContentValues values = new ContentValues();
 				values.put(KEY_CAT_ID, catId);
-				Log.i("DARSH", "Inserting News");
+				Log.i("HARSH", "Inserting Cat");
 				db.insert(TABLE_CATEGORY_SELECTION, null, values);
 			}
 			catch (Exception ex) {
-				Log.i("HARSH", "Exception in inserting main news");
+				Log.i("HARSH", "Exception in insertSelectedCat");
 			}
 
 	db.close();

@@ -33,6 +33,7 @@ import android.view.Display;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -78,6 +79,10 @@ public class Globals {
 	
 	public static final int LANG_ENG = 1;
 	public static final int LANG_HINDI = 2;
+	
+	public static final int NEWS_TYPE_ID_ONLY_IMAGE = 3;
+	public static final int NEWS_TYPE_ID_TEXT = 1;
+	public static final int NEWS_TYPE_ID_VIDEO = 2;
 	public static final int[] SHARE_INTENT_ITEMS = {
 														R.drawable.share_plus, 
 														R.drawable.share_gmail,
@@ -426,10 +431,17 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 			}
 		}
 		
-		if(contains)
-			dbH.clearCategory(catId);
-		else
+		if(contains){
+			if(Ids.size() > 1)
+				dbH.clearCategory(catId);
+			else
+				Toast.makeText(context, "You have to select atleast one category!", Toast.LENGTH_SHORT).show();
+			Log.d("HARSH", "dbH.clearCategory(catId) "+catId);
+		}
+		else{
 			dbH.insertSelectedCat(catId);
+			Log.d("HARSH", "dbH.insertCategory(catId) "+catId);
+		}
 		
 		return contains;
 		

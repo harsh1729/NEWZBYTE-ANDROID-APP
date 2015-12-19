@@ -50,15 +50,15 @@ public class Activity_NewsDetails extends Activity {
 		
 		if(objNews != null){
 			
-			RelativeLayout rlytHEader= (RelativeLayout)findViewById(R.id.llyt_detailHeader);
-			int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
+			//RelativeLayout rlytHEader= (RelativeLayout)findViewById(R.id.llyt_detailHeader);
+			//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 			//txtHeading.setBackgroundColor(catColor);
-			rlytHEader.setBackgroundColor(catColor);
+			//rlytHEader.setBackgroundColor(catColor);
 			
-			TextView txt = (TextView)findViewById(R.id.txtCat);
-			Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-			txt.setTypeface(tfCat);
-			txt.setText(objNews.getCatName());
+			//TextView txt = (TextView)findViewById(R.id.txtCat);
+			//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+			//txt.setTypeface(tfCat);
+			//txt.setText(objNews.getCatName());
 			
 			newsId = objNews.getId();
 			getNewsDetail();

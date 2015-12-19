@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.animation.Animator;
@@ -31,7 +30,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -68,7 +66,7 @@ GestureDetector.OnGestureListener,
 GestureDetector.OnDoubleTapListener {
 
 	private int currentNewsIndex = -1;
-	private ArrayList<Integer> arraySelectedCatIds ;
+	//private ArrayList<Integer> arraySelectedCatIds ;
 
 	View viewMoving;
 	View viewStatic;
@@ -128,7 +126,7 @@ GestureDetector.OnDoubleTapListener {
 	
 	private void initHome(){
 
-		arraySelectedCatIds = new ArrayList<Integer>();
+		///arraySelectedCatIds = new ArrayList<Integer>();
 		DBHandler_Main db = new DBHandler_Main(this);
 		db.createDataBase();
 
@@ -334,7 +332,7 @@ GestureDetector.OnDoubleTapListener {
 					Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
 		
 		}
-		arraySelectedCatIds.clear();
+		//arraySelectedCatIds.clear();
 		viewStatic = createNewsView();
 		///Harsh
 		scaleAnimationOver();
@@ -357,9 +355,47 @@ GestureDetector.OnDoubleTapListener {
 		//Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.xb, options);
 		//logo = Globals.scaleToWidth(logo,logoWidth);
 		//imgViewLogo.setImageBitmap(logo);
-
+		
+		animateROcket(200);
 		rlytMainContent.addView(viewLoading);
 
+	}
+	
+	private void animateROcket(int delay){
+		if(viewLoading == null || viewLoading.getVisibility() == View.GONE)
+			return;
+		
+		ImageView imgRocket =(ImageView) viewLoading.findViewById(R.id.imgLoadingRocket);
+		imgRocket.animate().setListener(null);
+		
+		imgRocket.setY(Globals.getScreenSize(this).y / 2);
+		imgRocket.animate().setDuration(900).setStartDelay(delay)
+		.translationY(-1*Globals.getScreenSize(this).y / 2).setListener(new AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				animateROcket(0);
+				
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	private View createNewsView(){
 
@@ -444,10 +480,10 @@ GestureDetector.OnDoubleTapListener {
 		
 		
 		
-		if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
-			currentNewsIndex = copyCurrentNewsIndex;
-			return createNewsView();
-		}
+		///if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
+			///currentNewsIndex = copyCurrentNewsIndex;
+			///return createNewsView();
+		///}
 
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
@@ -459,9 +495,9 @@ GestureDetector.OnDoubleTapListener {
 
 		ImageView imgViewNews =(ImageView) newView.findViewById(R.id.imgHome);
 		
-		/*
+		
 		TextView txtViewNews =(TextView) newView.findViewById(R.id.txtHeading);
-		TextView txtSummary =(TextView) newView.findViewById(R.id.txtSummary);
+		/*TextView txtSummary =(TextView) newView.findViewById(R.id.txtSummary);
 		
 		TextView txtAuthorText=(TextView) newView.findViewById(R.id.txtAuthorText);
 		TextView txtAuthor=(TextView) newView.findViewById(R.id.txtAuthor);
@@ -477,12 +513,12 @@ GestureDetector.OnDoubleTapListener {
 		
 		*/
 
-		int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
-		imgViewNews.setBackgroundColor(catColor);
-		String textSummary = objNews.getContentSpan().toString();
-		/*
-		txtViewNews.setText(objNews.getHeadingSpan().toString());	
+	   //int catColor = Globals.getCategoryColor(objNews.getCatId(), this));
+		imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
+		///String textSummary = objNews.getContentSpan().toString();
 		
+		txtViewNews.setText(objNews.getHeadingSpan().toString());	
+		/*
 		//imgShare.setBackgroundColor(catColor);
 		txtCategory.setBackgroundColor(catColor);
 		llyt.setBackgroundColor(catColor);
@@ -496,8 +532,8 @@ GestureDetector.OnDoubleTapListener {
 	*/
 		//set FONT
 
-		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
-		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		///Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
+		///Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//Typeface tf = Typeface.createFromAsset(getAssets(), "Raleway-Regular.ttf");
 		/**
 		txtSummary.setTypeface(tf);
@@ -511,26 +547,26 @@ GestureDetector.OnDoubleTapListener {
 		txtCategory.setTypeface(tfCat);
 		**/
 		// get Total Lines of textView Summary
-		Rect bounds = new Rect();
-		Paint paint = new Paint();
-		paint.setTextSize(getResources().getDimension(R.dimen.font_lbl_small_medium1));
-		paint.setTypeface(tf);
-		paint.getTextBounds(textSummary, 0, textSummary.length(), bounds);
+		///Rect bounds = new Rect();
+		///Paint paint = new Paint();
+		///paint.setTextSize(getResources().getDimension(R.dimen.font_lbl_small_medium1));
+		///paint.setTypeface(tf);
+		///paint.getTextBounds(textSummary, 0, textSummary.length(), bounds);
 
 				
-		float width = (float) Math.ceil( bounds.width());
+		///float width = (float) Math.ceil( bounds.width());
 
-		float noOfLines = width /(float) (Globals.getScreenSize(this).x - Globals.dpToPx(20));
+		///float noOfLines = width /(float) (Globals.getScreenSize(this).x - Globals.dpToPx(20));
 
-		Log.i("DARSH", "noOfLines "+noOfLines);
+		///Log.i("DARSH", "noOfLines "+noOfLines);
 
-		if(noOfLines >= NO_OF_ROWS_NEWSCONTENT - 1){
+		///if(noOfLines >= NO_OF_ROWS_NEWSCONTENT - 1){
 			///txtTap.setVisibility(View.VISIBLE);
 			//txtTap.setTextColor(catColor);
 			objNews.hasDetailNews = true;
-		}else{
-			objNews.hasDetailNews = false;
-		}
+		///}else{
+			///objNews.hasDetailNews = false;
+		///}
 
 		/**
 		if(objNews.getSource()!= null && !objNews.getSource().isEmpty()){
@@ -575,7 +611,25 @@ GestureDetector.OnDoubleTapListener {
 				}
 			});
         }
+		
+		ImageView imageDeatil = (ImageView)newView.findViewById(R.id.imgShowDetail);
+		
+		switch (objNews.getTypeId()) {
+		case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
+			imageDeatil.setVisibility(View.GONE);
+			break;
+		case Globals.NEWS_TYPE_ID_TEXT:
+			//imageDeatil.setVisibility(View.VISIBLE);
+			imageDeatil.setImageResource(R.drawable.show_detail);
+			
+			break;
+		case Globals.NEWS_TYPE_ID_VIDEO:
+			imageDeatil.setImageResource(R.drawable.play);
+			break;
 
+		default:
+			break;
+		}
 		return newView;
 	}
 	
@@ -1449,8 +1503,28 @@ GestureDetector.OnDoubleTapListener {
 
 		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size()) {
 			Object_ListItem_MainNews obj =	listNewsItemServer.get(currentNewsIndex);
-			if(obj.hasDetailNews)	
-				navigateToNewsDetail(obj);
+			
+			switch (obj.getTypeId()) {
+			case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
+				break;
+			case Globals.NEWS_TYPE_ID_TEXT:
+				if(obj.hasDetailNews)	
+					navigateToNewsDetail(obj);
+				
+				break;
+			case Globals.NEWS_TYPE_ID_VIDEO:
+				Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
+				Intent i = new Intent(this, Custome_YouTubePlayerActivity.class);
+		    	//this.finish();
+		    	this.startActivity(i);
+				break;
+
+			default:
+				break;
+			}
+			
+			
+			
 		}
 	}
 	public void onClickMenu(View v){
@@ -1463,71 +1537,70 @@ GestureDetector.OnDoubleTapListener {
 
 	}
 
+	/*
 	public void onClickAllCategory(View v){
 
 		arraySelectedCatIds.clear();
 		onClickCategory();
 	}
+	*/
 
 	public void onClickCategoryItem(View v){
 
-		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
-
-		if(!isSelectedId(selectedCatId))
-			arraySelectedCatIds.add(selectedCatId);
-		else
-			removeId(selectedCatId);
-
-		onClickCategory();
-
-	}
-
-	private void removeId(Integer catId){
-
-		int cnt = -1;
-
-		for(int i =0; i< arraySelectedCatIds.size();i++){
-			Integer intgr = arraySelectedCatIds.get(i);
-			if(intgr.compareTo(catId) == 0){ //equal
-				cnt = i;
-				break;
-			}
-		}
-		if(cnt > -1){
-			arraySelectedCatIds.remove(cnt);
-		}
-	}
-	private boolean isSelectedId(Integer catId){
-
-		for(Integer i : arraySelectedCatIds){
-			if(i.compareTo(catId) == 0){ //equal
-				return true;
-			}
-		}
-
-		return false;
-	}
-	
-	private boolean isNotContainsId(int id){
+		Log.d("HARSH", "onClickCategoryItem");
 		
-		boolean returnVal = true;
-		for(Object_ListItem_MainNews item : listNewsItemServer){
-			if(item.getId() == id){
-				returnVal = false;
+		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
+		
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		boolean contains = dbH.containsCatId(selectedCatId);
+		
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+		
+		for(Integer id : Ids){
+			if(id.intValue() == selectedCatId){
+				contains = true;
 				break;
+			}
+		}
+		
+		if(contains){
+			if(Ids.size() > 1)
+				dbH.clearCategory(selectedCatId);
+			else{
+				Toast.makeText(this, "You have to select atleast one category!", Toast.LENGTH_SHORT).show();
+				return;
+			}
+				
+			Log.d("HARSH", "dbH.clearCategory(catId) "+selectedCatId);
+		}
+		else{
+			dbH.insertSelectedCat(selectedCatId);
+			Log.d("HARSH", "dbH.insertCategory(catId) "+selectedCatId);
+		}
+		
+		View cView = v.findViewById(R.id.imgViewCat);
+		if(cView!= null && cView.getClass() == ImageView.class){
+			ImageView imageView = (ImageView)cView;
+			int index = ((Integer)imageView.getTag(R.string.app_name)).intValue();
+			if(listCatItemServer!= null && listCatItemServer.size() > index){
+				Object_Category obj = listCatItemServer.get(index);
+				if(contains){
+					Log.d("HARSH", "1");
+					Globals.loadImageIntoImageView(imageView, obj.getImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
+				}else{
+					Log.d("HARSH", "2");
+					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading_selected,R.drawable.cat_loading_selected);
+				}
 			}
 			
 		}
-		return returnVal;
-	}
-	private void onClickCategory() {
+	
+		//setBootomBarStatus();
 
-		createDrawerCategories();
-		//mDrawerLayout.closeDrawer(Gravity.LEFT);
-		setFirstView();
-		
 	}
 	
+	
+
 	private void setFirstView(){
 		currentNewsIndex = -1;
 		isMovingViewCurrent = true;
@@ -1542,6 +1615,23 @@ GestureDetector.OnDoubleTapListener {
 		if(rlytNewsContent.getChildCount() > 1)
 			rlytNewsContent.removeViews(1, rlytNewsContent.getChildCount() -1);
 	}
+
+	
+	private boolean isNotContainsId(int id){
+		
+		boolean returnVal = true;
+		for(Object_ListItem_MainNews item : listNewsItemServer){
+			if(item.getId() == id){
+				returnVal = false;
+				break;
+			}
+			
+		}
+		return returnVal;
+	}
+	
+	
+	
 
 	public File takeScreenshot(String txt) { 
 		Date now = new Date(); 
@@ -1688,6 +1778,10 @@ GestureDetector.OnDoubleTapListener {
 
 		LinearLayout row = null;
 		boolean firstInRow ;
+		
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+		
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
 			if(i%3 == 0){
@@ -1702,7 +1796,17 @@ GestureDetector.OnDoubleTapListener {
 			}
 
 			if(row != null){
-				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow)) ;
+				
+				boolean contains = false;
+				for(Integer id : Ids){
+					if(id.intValue() == listCatItemServer.get(i).getId()){
+						contains = true;
+						break;
+					}
+				}
+				
+				Log.d("HARSH", "contains"+contains);
+				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow,i,contains)) ;
 
 				if(firstInRow)
 					llytCatContainer.addView(row);	
@@ -1713,7 +1817,7 @@ GestureDetector.OnDoubleTapListener {
 
 
 	@SuppressLint("NewApi")
-	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow){
+	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
 
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
 		int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
@@ -1753,6 +1857,7 @@ GestureDetector.OnDoubleTapListener {
 		//item.getLayoutParams().height = item.getLayoutParams().width;
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
+		imgView.setTag(R.string.app_name, position);
 		int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
 				//100;//Globals.getScreenSize(this).y/5;
 		
@@ -1786,8 +1891,17 @@ GestureDetector.OnDoubleTapListener {
 
 		 */
 
-		Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+		//Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
 
+		if(contains){
+
+			Globals.loadImageIntoImageView(imgView, objCat.getSelectedImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getImageName()) ;
+		}else{
+			Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getSelectedImageName()) ;
+		}
+		
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
@@ -1801,128 +1915,7 @@ GestureDetector.OnDoubleTapListener {
 	}
 
 	
-	public void getNewsDataFromServer(final int catId, final String callType,int lastNewsId , int limit) 
-	{
-		Log.d("jaspal","catid:"+catId);
-		Log.d("jaspal","callType:"+callType);
-		Log.d("jaspal","lastNewsid:"+lastNewsId);
-		Log.d("jaspal","limit:"+limit);
-
-		try{
-			
-			Custom_ConnectionDetector cd = new Custom_ConnectionDetector(getApplicationContext());
-
-			if (!cd.isConnectingToInternet()) {
-				/*if (!isPullToRefresh) {
-					Globals.showAlertDialogOneButton(
-							Globals.TEXT_NO_INTERNET_HEADING,
-							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
-							Activity_Home.this, "OK", null, false);
-					//showNewsList(catId,callType);
-
-				} else {*/
-					Toast.makeText(
-							Activity_Home.this,
-							Globals.TEXT_NO_INTERNET_DETAIL_TOAST,
-							Toast.LENGTH_SHORT).show();
-					//listViewNews.onRefreshComplete();
-
-				/*}*/
-
-				Globals.hideLoadingDialog(mDialog);
-				return;
-			}
-
-			Log.i("HARSH", "getNewsDataFromServer Request CatId = " + catId);
-			//if (!isPullToRefresh)
-				//if(!isShowingLoadingScreen())
-					//mDialog = Globals.showLoadingDialog(mDialog, this,false);
-			
-			Log.d("jaspal","URL for more news is :\n"+Custom_URLs_Params.getURL_NewsByCategory());
-			Log.d("jaspal","\n\nParameters for more news is:\n"+Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit));
-			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
-					Custom_URLs_Params.getURL_NewsByCategory(), Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit),
-							new Listener<JSONObject>() {
-
-
-						
-						@Override
-						public void onResponse(JSONObject response) {
-							Log.d("jaspal","REsponse: \n"+response);
-
-							gotNewsResponse(response, catId,callType);
-							
-						}
-
-					}, new ErrorListener() {
-						@Override
-						public void onErrorResponse(VolleyError err) {
-							err.printStackTrace();
-							//listViewNews.onRefreshComplete();
-
-							/*if (!isPullToRefresh) {
-								Globals.showAlertDialogOneButton(
-										Globals.TEXT_CONNECTION_ERROR_HEADING,
-										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
-										Activity_Home.this, "OK", null, false);
-								Globals.hideLoadingDialog(mDialog);
-								//showNewsList(catId,callType);
-								//hideLoadingScreen();
-							} else {*/
-								Toast.makeText(
-										Activity_Home.this,
-										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
-										Toast.LENGTH_SHORT).show();
-								//listViewNews.onRefreshComplete();
-
-							/*}*/
-							Globals.hideLoadingDialog(mDialog);
-						}
-					});
-
-		
-			Custom_AppController.getInstance().addToRequestQueue(
-					jsonObjectRQST);
-			
-		}catch(Exception ex){
-
-		}
-	}
 	
-	private void gotNewsResponse(JSONObject response, int catId, final String callType) {
- 
-		try {
-			
-			if(response != null){
-				if(response.has("topnewsid"))
-				{
-					updateCatTopNewsId(catId,response.getInt("topnewsid"));
-				}
-				
-				if(response.has("news"))
-				{
-					Log.d("jaspal","Found News !!!");
-					parseNewsJson(response,callType);
-				}
-				/*if(response.has("news"))
-					if(insertNewAndDeleteOldNews(response.getJSONArray("news"),catId,isPullToRefresh))
-							showNewsList(catId,callType);*/
-						
-			}
-			Globals.hideLoadingDialog(mDialog);
-			
-		} catch (JSONException e) {
-			Globals.showAlertDialogOneButton(
-					Globals.TEXT_CONNECTION_ERROR_HEADING,
-					Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
-					Activity_Home.this, "OK", null, false);
-			
-			Globals.hideLoadingDialog(mDialog);
-			//hideLoadingScreen();
-			//showNewsList(catId,callType);
-		}
-	}
-
 	 
 	private void updateCatTopNewsId(int catId, int newsId){
 		DBHandler_Category dbH = new DBHandler_Category(this);
@@ -1999,105 +1992,7 @@ GestureDetector.OnDoubleTapListener {
 	
 	
 	
-	private void parseNewsJson(JSONObject response,String callType) {
 
-		if (response == null){
-			
-			return;
-		}
-		Log.i("DARSH", "RESPONsE parseAppConfigJson is : "+response.toString());
-		try {
-
-			Object_AppConfig objConfig = new Object_AppConfig(this);
-
-			int newsCount = 0;
-			//// If news is there insert new news News
-			if (response.has("news")) {
-
-				Log.i("DARSH", "insertNewAndDeleteOldNews news onResponse" + response);
-
-				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
-				 
-				ArrayList<Object_ListItem_MainNews> tempMainNewsList = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig.getRootCatId());
-				
-				 
-				if(callType.equals(Globals.CALL_TYPE_NEW))
-				{
-					currentNewsIndex += tempMainNewsList.size();
-					for(int i=tempMainNewsList.size()-1;i>=0;i--)
-					{
-						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
-							newsCount++;
-						if(isNotContainsId(tempMainNewsList.get(i).getId()))	
-							listNewsItemServer.add(0, tempMainNewsList.get(i));			
-					}
-				}
-				else if(callType.equals(Globals.CALL_TYPE_OLD))
-				{
-					for(int i=0;i<tempMainNewsList.size();i++)
-					{
-						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
-							newsCount++;
-						if(isNotContainsId(tempMainNewsList.get(i).getId()))
-							listNewsItemServer.add(tempMainNewsList.get(i));
-					}
-				}
-				
-				/*
-				 * 
-				 * Log.i("Bytes", "ACTION_MOVE UP");
-						isSlideUp = true;
-						viewMoving = viewStatic;
-
-						int backUpId = currentNewsIndex;
-						viewStatic = createNewsView();
-						if(viewStatic == null){
-							viewStatic = viewMoving;
-							viewMoving = null;
-							isNoMoreNews = true;
-							isSlideInProgress = false;
-							currentNewsIndex = backUpId;
-							return false;
-				 * */
-				
-				if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_OLD))
-				{
-					Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
-				}
-				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_OLD))
-				{ 
-					isMovingViewCurrent = true;
-					viewMoving = viewStatic;
-					viewStatic = createNewsView();
-					slide(-1*rlytNewsContent.getHeight(),DEFAULT_MAX_SLIDE_DURATION);
-				}
-				else if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_NEW))
-				{
-					Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
-				}
-				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_NEW))
-				{
-					isMovingViewCurrent = false;
-					//isSlideInProgress = true;
-					viewMoving = createNewsView();
-					viewMoving.setY(-1*rlytNewsContent.getHeight());
-					slide(0,DEFAULT_MAX_SLIDE_DURATION);
-				}
-				
-				Log.d("jaspal","currentNEWSiNDEX AFTER adding new News :"+currentNewsIndex);
-				
-				//viewStatic = createNewsView();
-
-				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
-				dbH.insertNewsItemList(tempMainNewsList,false);
-			}
-
-
-		} catch (Exception ex) {
-			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
-		}
-
-	}
 
 	private void parseAppConfigJson(JSONObject response) {
 
@@ -2163,8 +2058,17 @@ GestureDetector.OnDoubleTapListener {
 				} 
 			} 
 
-			 Thread t = new Thread(new MyRunnable(hasNews,hasCategory));
-			 t.start();
+			 //Thread t = new Thread(new MyRunnable(hasNews,hasCategory));
+			 //t.start();
+			if(hasNews && listNewsItemServer != null){
+        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+	        	dbH.insertNewsItemList(listNewsItemServer,true);
+        	}
+        	
+		  if(hasCategory && listCatItemServer != null){
+			  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
+			  dbH2.setCategories(listCatItemServer);
+		  }
 
 		} catch (Exception ex) {
 			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
@@ -2186,7 +2090,7 @@ GestureDetector.OnDoubleTapListener {
 		        	dbH.insertNewsItemList(listNewsItemServer,true);
 	        	}
 	        	
-			  if(hasCategories && listNewsItemServer != null){
+			  if(hasCategories && listCatItemServer != null){
 				  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
 				  dbH2.setCategories(listCatItemServer);
 			  }
@@ -2425,6 +2329,17 @@ GestureDetector.OnDoubleTapListener {
 		startActivity(i);
 
 	}
+	public void onClickLanguageChange(View v){
+		Object_AppConfig obj = new Object_AppConfig(this);
+		obj.setLangId(0);
+		
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		dbH.clearCategoryTable();
+		Intent i = new Intent(this,Activity_Intro.class);
+		startActivity(i);
+		
+		this.finish();
+	}
 
 	public void onClickShareApp(View v){
 
@@ -2536,4 +2451,252 @@ txtSummary.post(new Runnable() {
 
 			}
 		});
+		
+		public void getNewsDataFromServer(final int catId, final String callType,int lastNewsId , int limit) 
+	{
+		Log.d("jaspal","catid:"+catId);
+		Log.d("jaspal","callType:"+callType);
+		Log.d("jaspal","lastNewsid:"+lastNewsId);
+		Log.d("jaspal","limit:"+limit);
+
+		try{
+			
+			Custom_ConnectionDetector cd = new Custom_ConnectionDetector(getApplicationContext());
+
+			if (!cd.isConnectingToInternet()) {
+				/*if (!isPullToRefresh) {
+					Globals.showAlertDialogOneButton(
+							Globals.TEXT_NO_INTERNET_HEADING,
+							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
+							Activity_Home.this, "OK", null, false);
+					//showNewsList(catId,callType);
+
+//				} else {
+//					Toast.makeText(
+//							Activity_Home.this,
+//							Globals.TEXT_NO_INTERNET_DETAIL_TOAST,
+//							Toast.LENGTH_SHORT).show();
+//					//listViewNews.onRefreshComplete();
+//
+//				/}
+
+				Globals.hideLoadingDialog(mDialog);
+				return;
+			}
+
+			Log.i("HARSH", "getNewsDataFromServer Request CatId = " + catId);
+			//if (!isPullToRefresh)
+				//if(!isShowingLoadingScreen())
+					//mDialog = Globals.showLoadingDialog(mDialog, this,false);
+			
+			Log.d("jaspal","URL for more news is :\n"+Custom_URLs_Params.getURL_NewsByCategory());
+			Log.d("jaspal","\n\nParameters for more news is:\n"+Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit));
+			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
+					Custom_URLs_Params.getURL_NewsByCategory(), Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit),
+							new Listener<JSONObject>() {
+
+
+						
+						@Override
+						public void onResponse(JSONObject response) {
+							Log.d("jaspal","REsponse: \n"+response);
+
+							gotNewsResponse(response, catId,callType);
+							
+						}
+
+					}, new ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError err) {
+							err.printStackTrace();
+							//listViewNews.onRefreshComplete();
+
+							/*if (!isPullToRefresh) {
+								Globals.showAlertDialogOneButton(
+										Globals.TEXT_CONNECTION_ERROR_HEADING,
+										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+										Activity_Home.this, "OK", null, false);
+								Globals.hideLoadingDialog(mDialog);
+								//showNewsList(catId,callType);
+								//hideLoadingScreen();
+							} else {///
+								Toast.makeText(
+										Activity_Home.this,
+										Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+										Toast.LENGTH_SHORT).show();
+								//listViewNews.onRefreshComplete();
+
+							/*}
+							Globals.hideLoadingDialog(mDialog);
+						}
+					});
+
+		
+			Custom_AppController.getInstance().addToRequestQueue(
+					jsonObjectRQST);
+			
+		}catch(Exception ex){
+
+		}
+	}
+	
+	private void gotNewsResponse(JSONObject response, int catId, final String callType) {
+ 
+		try {
+			
+			if(response != null){
+				if(response.has("topnewsid"))
+				{
+					updateCatTopNewsId(catId,response.getInt("topnewsid"));
+				}
+				
+				if(response.has("news"))
+				{
+					Log.d("jaspal","Found News !!!");
+					parseNewsJson(response,callType);
+				}
+				///if(response.has("news"))
+					///if(insertNewAndDeleteOldNews(response.getJSONArray("news"),catId,isPullToRefresh))
+							///showNewsList(catId,callType);
+						
+			}
+			Globals.hideLoadingDialog(mDialog);
+			
+		} catch (JSONException e) {
+			Globals.showAlertDialogOneButton(
+					Globals.TEXT_CONNECTION_ERROR_HEADING,
+					Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+					Activity_Home.this, "OK", null, false);
+			
+			Globals.hideLoadingDialog(mDialog);
+			//hideLoadingScreen();
+			//showNewsList(catId,callType);
+		}
+	}
+	
+	
+		private void parseNewsJson(JSONObject response,String callType) {
+
+		if (response == null){
+			
+			return;
+		}
+		Log.i("DARSH", "RESPONsE parseAppConfigJson is : "+response.toString());
+		try {
+
+			Object_AppConfig objConfig = new Object_AppConfig(this);
+
+			int newsCount = 0;
+			//// If news is there insert new news News
+			if (response.has("news")) {
+
+				Log.i("DARSH", "insertNewAndDeleteOldNews news onResponse" + response);
+
+				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
+				 
+				ArrayList<Object_ListItem_MainNews> tempMainNewsList = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig.getRootCatId());
+				
+				 
+				if(callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					currentNewsIndex += tempMainNewsList.size();
+					for(int i=tempMainNewsList.size()-1;i>=0;i--)
+					{
+						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
+							newsCount++;
+						if(isNotContainsId(tempMainNewsList.get(i).getId()))	
+							listNewsItemServer.add(0, tempMainNewsList.get(i));			
+					}
+				}
+				else if(callType.equals(Globals.CALL_TYPE_OLD))
+				{
+					for(int i=0;i<tempMainNewsList.size();i++)
+					{
+						if(isSelectedId(tempMainNewsList.get(i).getCatId()));
+							newsCount++;
+						if(isNotContainsId(tempMainNewsList.get(i).getId()))
+							listNewsItemServer.add(tempMainNewsList.get(i));
+					}
+				}
+				
+//				 Log.i("Bytes", "ACTION_MOVE UP");
+//						isSlideUp = true;
+//						viewMoving = viewStatic;
+//
+//						int backUpId = currentNewsIndex;
+//						viewStatic = createNewsView();
+//						if(viewStatic == null){
+//							viewStatic = viewMoving;
+//							viewMoving = null;
+//							isNoMoreNews = true;
+//							isSlideInProgress = false;
+//							currentNewsIndex = backUpId;
+//							return false;
+				
+				
+				if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_OLD))
+				{
+					Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				}
+				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_OLD))
+				{ 
+					isMovingViewCurrent = true;
+					viewMoving = viewStatic;
+					viewStatic = createNewsView();
+					slide(-1*rlytNewsContent.getHeight(),DEFAULT_MAX_SLIDE_DURATION);
+				}
+				else if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
+				}
+				else if(newsCount > 0 && callType.equals(Globals.CALL_TYPE_NEW))
+				{
+					isMovingViewCurrent = false;
+					//isSlideInProgress = true;
+					viewMoving = createNewsView();
+					viewMoving.setY(-1*rlytNewsContent.getHeight());
+					slide(0,DEFAULT_MAX_SLIDE_DURATION);
+				}
+				
+				Log.d("jaspal","currentNEWSiNDEX AFTER adding new News :"+currentNewsIndex);
+				
+				//viewStatic = createNewsView();
+
+				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+				dbH.insertNewsItemList(tempMainNewsList,false);
+			}
+
+
+		} catch (Exception ex) {
+			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
+		}
+
+	}
+
+	
+//	private void removeId(Integer catId){
+//
+//		int cnt = -1;
+//
+//		for(int i =0; i< arraySelectedCatIds.size();i++){
+//			Integer intgr = arraySelectedCatIds.get(i);
+//			if(intgr.compareTo(catId) == 0){ //equal
+//				cnt = i;
+//				break;
+//			}
+//		}
+//		if(cnt > -1){
+//			arraySelectedCatIds.remove(cnt);
+//		}
+//	}
+//	private boolean isSelectedId(Integer catId){
+//
+//		for(Integer i : arraySelectedCatIds){
+//			if(i.compareTo(catId) == 0){ //equal
+//				return true;
+//			}
+//		}
+//
+//		return false;
+//	}
  */

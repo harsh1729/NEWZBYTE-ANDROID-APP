@@ -28,7 +28,7 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 	private String summary;
 	private String source;
 	private String author;
-	
+	private int typeId;
 	public Boolean hasDetailNews;
 	
 
@@ -217,6 +217,14 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 
 }

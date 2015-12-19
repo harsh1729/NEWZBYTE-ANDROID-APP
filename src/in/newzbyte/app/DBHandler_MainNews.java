@@ -30,6 +30,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 	private final String KEY_NEWS_CATNAME = "CategoryName";
 	private final String KEY_NEWS_SOURCE = "Source";
 	private final String KEY_NEWS_AUTHOR = "Author";
+	private final String KEY_NEWS_TYPE_ID = "TypeID";
 	//private final String TABLE_SAVED_NEWS = "SavedNews";
 	//private final String KEY_SAVED_NEWS_ID = "Id";
 	//private final String KEY_SAVED_NEWS_NEWS_ID = "NewsId";
@@ -81,6 +82,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 		Object_ListItem_MainNews objNews = new Object_ListItem_MainNews();
 		objNews.setId(cur.getInt(cur.getColumnIndex(KEY_NEWS_ID)));
 		objNews.setCatId(cur.getInt(cur.getColumnIndex(KEY_NEWS_CAT_ID)));
+		objNews.setTypeId(cur.getInt(cur.getColumnIndex(KEY_NEWS_TYPE_ID)));
 		objNews.setHeading(cur.getString(cur
 				.getColumnIndex(KEY_NEWS_HEADING)));
 		objNews.setImagePath(cur.getString(cur.getColumnIndex(KEY_NEWS_IMAGE)));
@@ -102,6 +104,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 				.getColumnIndex(KEY_NEWS_SOURCE)));
 		objNews.setAuthor(cur.getString(cur
 				.getColumnIndex(KEY_NEWS_AUTHOR)));
+		
 
 		return objNews;
 	}
@@ -129,6 +132,7 @@ public class DBHandler_MainNews extends SQLiteOpenHelper {
 				values.put(KEY_NEWS_SUMMARY, obMain.getSummary());
 				values.put(KEY_NEWS_SOURCE, obMain.getSource());
 				values.put(KEY_NEWS_AUTHOR, obMain.getAuthor());
+				values.put(KEY_NEWS_TYPE_ID, obMain.getTypeId());
 				db.insert(TABLE_NEWS, null, values);
 				Log.i("DARSH", "Inserting News");
 				if (!obMain.isListSubNewsNull()) {
