@@ -218,7 +218,6 @@
          android:paddingTop="10dp"
          android:paddingBottom="10dp"
          android:background="@drawable/selector_settings_options"
-         android:layout_marginBottom="10dp"
          android:gravity="center_vertical"
          android:clickable="true"
          android:onClick="onClickPrivacyPolicy">
@@ -234,6 +233,45 @@
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
     				android:text ="Disclaimer"
+    				android:textStyle="bold"
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_black_dark"
+    				/>
+
+    </LinearLayout>
+    <LinearLayout
+	    android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@color/app_lightgray"
+        android:layout_height="1dp" >
+    </LinearLayout>
+    <LinearLayout 
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:paddingLeft="10dp"
+         android:paddingRight="10dp"
+         android:paddingTop="10dp"
+         android:paddingBottom="10dp"
+         android:layout_marginBottom="10dp"
+         android:background="@drawable/selector_settings_options"
+         android:gravity="center_vertical"
+         android:clickable="true"
+         android:onClick="onClickLanguageChange">
+         
+        <ImageView 
+                android:layout_width ="30dp"
+        		android:layout_height ="30dp"
+        		android:padding="5dp"
+        		android:layout_marginRight="10dp"
+        		android:src="@drawable/language"
+        		android:scaleType="fitCenter"
+        		/>
+         
+         <TextView 
+        			android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:text ="Change Language"
     				android:textStyle="bold"
     				android:textSize="@dimen/font_lbl_normal"
     				android:textColor="@color/app_black_dark"

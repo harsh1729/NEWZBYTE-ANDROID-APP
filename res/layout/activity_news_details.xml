@@ -2,39 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     android:padding="0dp"
     tools:context="${relativePackage}.${activityClass}" >
     
 	<RelativeLayout
 	    android:id="@+id/llyt_detailHeader"
-	    android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="10dp"
         android:layout_alignParentTop="true" >
 
 		<ImageView
 		    android:id="@+id/imgBack"
-		    android:layout_width="40dp"
-		    android:layout_height="40dp"
+		    android:layout_width="30dp"
+		    android:layout_height="30dp"
 		    android:onClick="goBack"
 		    android:layout_alignParentLeft="true"
 		    android:src="@drawable/back" />
-		<TextView
+		 <!--  <TextView
         android:id="@+id/txtCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/app_white"
         android:textSize="@dimen/font_lbl_normal" 
         android:layout_centerInParent="true"   
-        android:textStyle="bold" />
+        android:textStyle="bold" /> -->
 		    
 		    <ImageView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    android:layout_width="30dp"
+		    android:layout_height="30dp"
 		    android:onClick="shareClick"
 		    android:layout_alignParentRight="true"
-		    android:src="@drawable/share" />
+		    android:src="@drawable/share"
+            android:clickable="true"/>
 		
 		
 		
@@ -45,12 +46,9 @@
 	    android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_below="@+id/llyt_detailHeader"
-        android:background="@drawable/bg_black_gradient"
-        android:padding="10dp"
-        android:layout_height="4dp" >
-
-        
-    </LinearLayout>
+        android:background="@color/app_lightgray"
+        android:layout_height="1dp" >
+   </LinearLayout>
     
    
 

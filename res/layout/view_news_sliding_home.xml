@@ -4,9 +4,39 @@
     android:id="@+id/llytHomeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_black"
+    android:background="@color/app_lightgray"
     android:orientation="vertical" >
 
+    <RelativeLayout 
+        android:id="@+id/rlytLoadingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        
+        android:padding="0dp">
+        <ImageView
+            android:id="@+id/imgHomeLoading"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/cartoon_image_loading"
+            android:scaleType="fitCenter" />
+        
+        <TextView 
+         android:id="@+id/txtHeading" 
+         android:layout_below="@+id/imgHomeLoading"
+         android:layout_width="match_parent" 
+         android:layout_height="wrap_content" 
+         android:gravity="center"
+         android:maxLines="3" 
+         android:layout_marginLeft="20dp" 
+         android:layout_marginRight="20dp" 
+         android:layout_marginTop="15dp"
+         android:textColor="@color/app_black"
+         android:textSize="@dimen/font_lbl_normal" 
+         android:textStyle="bold" /> 
+        
+
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rlytImgContainer"
         android:layout_width="match_parent"
@@ -17,7 +47,7 @@
             android:id="@+id/imgHome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="0.5dp"
+            android:background="@color/app_transparent"
             android:scaleType="centerCrop" />
 
 <!--         <LinearLayout -->
@@ -118,12 +148,25 @@
 		    	    android:layout_height="wrap_content"
 		    	    android:layout_alignParentBottom="true"
 		    	    android:layout_alignParentRight="true"
-		    	    android:layout_marginBottom="5dp"
-		    	    android:layout_marginRight="5dp"
+		    	    android:layout_marginBottom="10dp"
+		    	    android:layout_marginRight="10dp"
 		    	    custom:childSize="@dimen/menuChildSize"
 		    	    custom:fromDegrees="@dimen/menuFromDegrees"
 		    	    custom:toDegrees="@dimen/menuToDegrees" >
 		    	</in.xercesblue.arcmenu.ArcMenu>
+		    	
+    <ImageView
+            android:id="@+id/imgFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+		   	android:layout_alignParentLeft="true"
+		   	android:layout_marginBottom="10dp"
+		   	android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:onClick="tapOnShowDetails"
+            android:src="@drawable/favourite_selected"
+            android:scaleType="centerCrop" />
 
   </RelativeLayout>
 
