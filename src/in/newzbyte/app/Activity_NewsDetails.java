@@ -3,6 +3,8 @@ package in.newzbyte.app;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -149,14 +151,14 @@ public class Activity_NewsDetails extends Activity {
 			mDialog = Globals.showLoadingDialog(mDialog, this, true);
 			
 			
-			Custom_VolleyArrayRequest jsonObjectRQST = new Custom_VolleyArrayRequest(
+			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
 					Request.Method.POST,
 					Custom_URLs_Params.getURL_NewsDetail(),
 					Custom_URLs_Params.getParams_NewsDetail(newsId),
-					new Listener<JSONArray>() {
+					new Listener<JSONObject>() {
 
 						@Override
-						public void onResponse(JSONArray response) {
+						public void onResponse(JSONObject response) {
 							gotNewsDetailResponse(response);
 
 						}
@@ -385,13 +387,24 @@ public class Activity_NewsDetails extends Activity {
 		llyt_mainContainer.addView(singleSubNewsView);
 	}
 	
-	private void gotNewsDetailResponse(JSONArray response) {
+	private void gotNewsDetailResponse(JSONObject response) {
 
-		ArrayList<Object_SubNewsItem> subNewsList;
+		ArrayList<Object_SubNewsItem> subNewsList = new ArrayList<Object_SubNewsItem>();;
 		Log.i("DARSH", "gotNewsDetailResponce onResponse" + response);
 		Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 
-		subNewsList = parserObject.getParsedJsonSubNews(response, newsId);
+		if(response.has("subnews")){
+			JSONArray arraySubNews;
+			try {
+				arraySubNews = response.getJSONArray("subnews");
+				subNewsList = parserObject.getParsedJsonSubNews(arraySubNews, newsId);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+			
 		
 		Log.i("jaspal","subnews list size:"+subNewsList.size());
 		

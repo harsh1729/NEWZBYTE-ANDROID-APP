@@ -1835,7 +1835,7 @@ GestureDetector.OnDoubleTapListener {
 				
 				
 
-				String catColor = dbCat.getCategoryColor(objCat.getId());
+				String catColor = objCat.getColor();//dbCat.getCategoryColor(objCat.getId());
 				if(!catColor.isEmpty())
 					row.setBackgroundColor(Color.parseColor(catColor));
 				
@@ -1872,12 +1872,12 @@ GestureDetector.OnDoubleTapListener {
 			
 			
 			
-			String catColor1 = dbCat.getCategoryColor(listCatItemServer.get(0).getId());
+			String catColor1 = listCatItemServer.get(0).getColor();//dbCat.getCategoryColor(listCatItemServer.get(0).getId());
 			if(!catColor1.isEmpty()){
 				llytUpper.setBackgroundColor(Color.parseColor(catColor1));
 			}
 			
-			String catColor2 = dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
+			String catColor2 = listCatItemServer.get(listCatItemServer.size() - 1).getColor();//dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
 			if(!catColor2.isEmpty()){
 				llytLower.setBackgroundColor(Color.parseColor(catColor2));
 			}
@@ -1993,8 +1993,8 @@ GestureDetector.OnDoubleTapListener {
 		
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
-		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		txtCategory.setTypeface(tfCat);
+		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		//txtCategory.setTypeface(tfCat);
 		txtCategory.setText(objCat.getName());
 		txtCategory.setMaxWidth(widthImage-margin);
 		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
@@ -2425,7 +2425,7 @@ GestureDetector.OnDoubleTapListener {
 		
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
 		dbH.clearCategoryTable();
-		Intent i = new Intent(this,Activity_Intro.class);
+		Intent i = new Intent(this,Activity_ChooseLang.class);
 		startActivity(i);
 		
 		this.finish();

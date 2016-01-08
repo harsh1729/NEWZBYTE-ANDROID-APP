@@ -462,6 +462,7 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 				catIds+= ""+id.intValue();
 				firstItem = false;		
 			}else{
+				if(id.intValue() > 0)
 				catIds+= ","+id.intValue();
 			}
 		}

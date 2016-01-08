@@ -47,8 +47,9 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 		if (cur != null) {
 			if (cur.moveToFirst()) {
 				do {
-					
-					Ids.add(Integer.valueOf(cur.getInt(cur.getColumnIndex(KEY_CAT_ID))));
+					Integer id = Integer.valueOf(cur.getInt(cur.getColumnIndex(KEY_CAT_ID)));
+					if(id.intValue() > 0)
+					Ids.add(id);
 					
 				} while (cur.moveToNext());
 			}

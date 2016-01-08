@@ -61,6 +61,7 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 			}
 		}
 
+		
 		db.close();
 		return catName;
 	}
@@ -79,6 +80,8 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 			}
 		}
 
+		if(catColor.isEmpty())
+			catColor= "#47A3FF";
 		db.close();
 		return catColor;
 	}

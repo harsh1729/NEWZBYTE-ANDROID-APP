@@ -10,8 +10,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +26,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Activity_ChooseCat extends Activity {
 
@@ -37,7 +42,11 @@ public class Activity_ChooseCat extends Activity {
 		serverCallForCategories();
 	}
 	
-private void serverCallForCategories(){
+	 public void goBack(View v){
+		 this.finish();
+	 }
+	 
+	 private void serverCallForCategories(){
     	
     	try {
 			Log.i("HARSH", "FirstCall");			
@@ -120,45 +129,31 @@ private void serverCallForCategories(){
 		}
 
 	}
+    
     private void createDrawerCategories(){
 
     	TextView txt = (TextView)findViewById(R.id.txtIntroScreen3Msg);
 		txt.setVisibility(View.GONE);
-		
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
-		///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+		
 		if(llytCatContainer.getChildCount() > 0){
 			llytCatContainer.removeAllViews();
 		}
 		
-		
-		
-		///if(llytCatContainer.getChildCount() > 1){
-			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
-		///}
-
-		///if(arraySelectedCatIds.size() == 0){
-			///btnCatAll.setImageResource(R.drawable.viewall_selected);
-			///btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
-		///}else{
-			///btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
-			///btnCatAll.setBackgroundResource(R.color.app_transparent);
-		///}
 
 		LinearLayout row = null;
 		boolean firstInRow ;
 		
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
-		
 		ArrayList<Integer> Ids = dbH.getAllCategories();
-		
+		//DBHandler_Category dbCat = new DBHandler_Category(this);
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
-			if(i%3 == 0){
+			//if(i%3 == 0){
 				firstInRow = true;
-			}else{
-				firstInRow = false;
-			}
+			//}else{
+				//firstInRow = false;
+			//}
 			if(firstInRow){
 				
 				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -166,6 +161,7 @@ private void serverCallForCategories(){
 			}
 
 			if(row != null){
+				
 				boolean contains = false;
 				for(Integer id : Ids){
 					if(id.intValue() == listCatItemServer.get(i).getId()){
@@ -174,45 +170,110 @@ private void serverCallForCategories(){
 					}
 				}
 				
-				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow,i,contains)) ;
+				Log.d("HARSH", "contains"+contains);
+				Object_Category objCat = listCatItemServer.get(i);
+				row.addView(getCatImageView(objCat,row,firstInRow,i,contains)) ;
 
+
+				String catColor = objCat.getColor();//dbCat.getCategoryColor(objCat.getId());
+				Log.d("HARSH", "catColor"+catColor);
+				if(!catColor.isEmpty())
+					row.setBackgroundColor(Color.parseColor(catColor));
+
+				
 				if(firstInRow)
 					llytCatContainer.addView(row);	
 			}
 
 		}
+		
+		ScrollView.LayoutParams params2 = new ScrollView.LayoutParams(
+				ScrollView.LayoutParams.MATCH_PARENT,      
+				ScrollView.LayoutParams.WRAP_CONTENT
+		);
+		
+		int marginD = -1*Globals.getScreenSize(this).x/2;
+		params2.setMargins(marginD, 0, marginD, 0);
+		llytCatContainer.setLayoutParams(params2);
+		
+		llytCatContainer.setRotation(-1* getScrollViewDiagonalAngle());
+		
+		if(listCatItemServer.size() > 0){
+			
+			LinearLayout llytUpper = (LinearLayout)findViewById(R.id.llytDrwawerUpperHalf);
+			LinearLayout llytLower = (LinearLayout)findViewById(R.id.llytDrwawerLowerHalf);
+			
+			
+			
+			String catColor1 =listCatItemServer.get(0).getColor(); //dbCat.getCategoryColor(listCatItemServer.get(0).getId());
+			if(!catColor1.isEmpty()){
+				llytUpper.setBackgroundColor(Color.parseColor(catColor1));
+			}
+			
+			String catColor2 = listCatItemServer.get(listCatItemServer.size() - 1).getColor();//dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
+			if(!catColor2.isEmpty()){
+				llytLower.setBackgroundColor(Color.parseColor(catColor2));
+			}
+			
+		}
+		
 	}
-    
-    private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
+
+	private float getScrollViewDiagonalAngle(){
+		
+		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+		
+		if(scrollViewCat.getHeight() > 0 && scrollViewCat.getWidth() > 0){
+			
+			float angle = 90.0f - (float) Math.toDegrees(Math.atan((float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()));
+			//Log.d("DARSH","angle:"+ (float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()+ " " +Math.atan(scrollViewCat.getHeight()/scrollViewCat.getWidth()) + " " +angle);
+			//Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight() + "scrollViewCat.getWidth()"+scrollViewCat.getWidth());
+			return angle;
+		}
+		
+		return 30.0f;
+	}
+	@SuppressLint("NewApi")
+	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
 
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-		int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
+		//int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
 		
+		///
+		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+		int heightImage = (int) ((scrollViewCat.getHeight() - 6* margin )/6.0 ) ;
+		int widthImage = heightImage;
+		///
+		Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight());
+		Log.d("DARSH","widthImage:"+widthImage);
+		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
+
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
 		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
 
+		
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
 		imgView.setTag(R.string.app_name, position);
-		int heightImage = widthImage;
+		//int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+				//100;//Globals.getScreenSize(this).y/5;
+		
+		//item.setMinimumWidth(widthImage);
+		//item.setMinimumHeight(heightImage);
 
 		
 		RelativeLayout.LayoutParams params =(RelativeLayout.LayoutParams )imgView.getLayoutParams();
 		params.height = heightImage;
-		params.width = widthImage ;
+		params.width = widthImage ;//+ margin;//;rlytDrawerPane.getLayoutParams().width - margin;
 		
+		//params.gravity = Gravity.RIGHT;
 		imgView.setLayoutParams(params);
 		
 		
-		LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
 		
-		if(!firstInRow)
-			paramsParent.leftMargin = margin;
-		item.setLayoutParams(paramsParent);
 
-		
 		if(contains){
 
 			Globals.loadImageIntoImageView(imgView, objCat.getSelectedImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
@@ -222,18 +283,19 @@ private void serverCallForCategories(){
 			Globals.preloadImage(getApplicationContext(), objCat.getSelectedImageName()) ;
 		}
 		
-		
 		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
 
-		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		txtCategory.setTypeface(tfCat);
+		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		//txtCategory.setTypeface(tfCat);
 		txtCategory.setText(objCat.getName());
 		txtCategory.setMaxWidth(widthImage-margin);
+		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
 
+		item.setRotation(getScrollViewDiagonalAngle());
 		return item;
 
 	}
-    
+
     public void onClickCategoryItem(View v){
 
 		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
@@ -254,4 +316,19 @@ private void serverCallForCategories(){
 			
 		}
 		}
+    
+    public void moveToNewsScreen(View v){
+    	
+    	DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);		
+		ArrayList<Integer> Ids = dbH.getAllCategories();
+    	
+		if(Ids.size() > 2){
+		 Intent i = new Intent(this, Activity_Home.class);
+        startActivity(i);
+        
+        this.finish();
+		}else{
+			Toast.makeText(this, "Please choose atleast three categories!", Toast.LENGTH_SHORT).show();
+		}
+	}
 }
