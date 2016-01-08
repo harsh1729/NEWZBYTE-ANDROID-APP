@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">न्यूज़बाइट</string>
+    <string name="news_paper_name">न्यूज़बाइट</string>
+    <string name="txt_company_website">www.newzbyte.in</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="keyTag">Tag</string>
+    <string name="txt_intro_screen3_msg">श्रेणीयाँ लोड हो रही हैं कृपया प्रतीक्षा करें</string>
+    <string name="txt_intro3_cat_chooser">हमें अपनी दिलचस्पी के बारे में बताएँ</string>
+
+</resources>

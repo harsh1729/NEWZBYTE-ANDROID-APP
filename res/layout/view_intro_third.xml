@@ -22,7 +22,7 @@
         android:id="@+id/txtCatChooser1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tell us about your interests"
+        android:text="@string/txt_intro3_cat_chooser"
         android:padding="10dp"
         android:gravity="center"
         android:textColor="@color/app_white"
@@ -36,7 +36,6 @@
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       	android:layout_below="@+id/llytIntroScreenThirdContainer"
         android:layout_margin="0dp" >
 
        <LinearLayout
@@ -51,10 +50,10 @@
     </LinearLayout>
     
     <TextView
-        android:id="@+id/txtIntroScreen2Msg"
+        android:id="@+id/txtIntroScreen3Msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please wait while we load categories ..."
+        android:text="@string/txt_intro_screen3_msg"
         android:padding="10dp"
         android:gravity="center"
         android:layout_centerInParent="true"
@@ -73,7 +72,7 @@
         android:id="@+id/txtIntroScreen3Info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="scrollViewCat"
+        android:text=""
         android:padding="10dp"
         android:gravity="center"
         android:clickable="false"

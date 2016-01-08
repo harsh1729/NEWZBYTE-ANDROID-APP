@@ -7,8 +7,6 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="keyTag">Tag</string>
-    <string name="title_activity_activity__web_view">Activity_WebView</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_activity__intro">Activity_Intro</string>
-
+    <string name="txt_intro_screen3_msg">Please wait while we load categories ...</string>
+	<string name="txt_intro3_cat_chooser">Tell us about your interests</string>
 </resources>

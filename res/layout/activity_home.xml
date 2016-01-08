@@ -23,7 +23,6 @@
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:layout_alignParentTop="true"
-        	android:background="@color/app_very_tranparent_black"
         	android:padding="10dp"
             >
 		        <ImageView 
@@ -33,6 +32,16 @@
 		    	android:background="@drawable/menu" 
 		    	android:layout_alignParentLeft="true"
 		    	android:onClick="onClickMenu" />
+		        
+		        <TextView
+                android:id="@+id/txtCatHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@color/app_white"
+                android:textSize="@dimen/font_lbl_normal"
+                android:textStyle="bold" />
 		        
 		        <ImageView 
 		        android:id="@+id/imgGoToTop"
@@ -133,42 +142,59 @@
         android:layout_below="@+id/rlytSettings"
         android:background="@color/app_lightgray"
         android:layout_height="1dp" >
-
-        
    </LinearLayout>
-    <LinearLayout  
-        android:id="@+id/llytCategoryHeader"
-        android:layout_width="match_parent"
-    	android:layout_height="50dp"
-    	android:layout_marginBottom="20dp"
-    	android:gravity="center_vertical"
-    	android:layout_below="@+id/llyt_hrline"
-    	android:background="@color/app_verylightgray_trans" >
-    	 <TextView
-        android:id="@+id/txtCatChooser1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your Top Interests"
-        android:padding="10dp"
-        android:gravity="center"
-        android:textColor="@color/app_lightgray"
-        android:textSize="@dimen/font_lbl_normal"
-        /> 
-    </LinearLayout>
+<!--     <LinearLayout   -->
+<!--         android:id="@+id/llytCategoryHeader" -->
+<!--         android:layout_width="match_parent" -->
+<!--     	android:layout_height="50dp" -->
+<!--     	android:layout_marginBottom="20dp" -->
+<!--     	android:gravity="center_vertical" -->
+<!--     	android:layout_below="@+id/llyt_hrline" -->
+<!--     	android:background="@color/app_verylightgray_trans" > -->
+<!--     	 <TextView -->
+<!--         android:id="@+id/txtCatChooser1" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:text="Your Top Interests" -->
+<!--         android:padding="10dp" -->
+<!--         android:gravity="center" -->
+<!--         android:textColor="@color/app_lightgray" -->
+<!--         android:textSize="@dimen/font_lbl_normal" -->
+<!--         />  -->
+<!--     </LinearLayout> -->
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_below="@+id/llyt_hrline">
+<LinearLayout 
+    android:id="@+id/llytDrwawerUpperHalf"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+</LinearLayout> 
+<LinearLayout 
+    android:id="@+id/llytDrwawerLowerHalf"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+</LinearLayout>   
+</LinearLayout>
         <ScrollView
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       	android:layout_below="@+id/llytCategoryHeader"
-       	
-        android:layout_marginTop="10dp" >
-
+       	android:layout_below="@+id/llyt_hrline"
+        android:layout_marginTop="0dp" >
        <LinearLayout
             android:id="@+id/llytCatContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="left" >
+            android:gravity="center" >
             
 <!--             <ImageView  -->
 <!--      	android:id="@+id/btnCatAll" -->
@@ -181,12 +207,9 @@
 <!--     	android:layout_marginTop="10dp" -->
 <!--     	android:layout_marginBottom="10dp" -->
 <!--     	android:onClick="onClickAllCategory" /> -->
-            	
-            
+
             </LinearLayout>
 
-		
-            
      	</ScrollView>   
  
     </RelativeLayout>
