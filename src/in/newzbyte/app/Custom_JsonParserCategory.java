@@ -40,6 +40,9 @@ public class Custom_JsonParserCategory {
 					if(Single_Cat.has("topnewsid"))
 						ob.setTopNewsId(Single_Cat.getInt("topnewsid"));
 					
+					if(Single_Cat.has("color"))
+						ob.setColor(Single_Cat.getString("color"));
+					
 					Log.i("HARSH","name"+ob.getName());
 					if(Single_Cat.has("parent_id"))
 					ob.setParentId(Single_Cat.getInt("parent_id"));

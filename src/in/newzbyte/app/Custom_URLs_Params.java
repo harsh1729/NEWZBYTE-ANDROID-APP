@@ -8,7 +8,6 @@ import android.util.Log;
 
 public class Custom_URLs_Params {
 	
-	
 	static String getURL_Disclaimer(){
 		//http://www.newstest2.tk/newsci/client_requests/news/mob_get_cat_news
 		//return Globals.DEFAULT_APP_SERVER_PATH+"getAppConfig.php?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;

@@ -48,7 +48,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -515,12 +514,20 @@ GestureDetector.OnDoubleTapListener {
 		RelativeLayout rlytImgContainer =(RelativeLayout) newView.findViewById(R.id.rlytImgContainer);
 		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
 		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
-		rlytImgContainer.setBackgroundColor(catColor);
-		rlytNewsHeaderIconContainer.setBackgroundColor(catColor);
+		
+		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
+		DBHandler_Category dbCat = new DBHandler_Category(this);
+		
+		String catColor = dbCat.getCategoryColor(objNews.getCatId());
+		Log.i("Darsh", "catColor"+catColor);
+		if(!catColor.isEmpty()){
+			rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
+			rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
+		}
+		
 		txtCategory.setTypeface(tfCat);
 		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
-		txtCategory.setText("HARSH");//objNews.getCatName());
+		txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
 	   //imgViewNews.setBackgroundColor(catColor);
 		//imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
 		///String textSummary = objNews.getContentSpan().toString();
@@ -1521,7 +1528,11 @@ GestureDetector.OnDoubleTapListener {
 				
 				break;
 			case Globals.NEWS_TYPE_ID_VIDEO:
-				//Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
+				if(obj.getVideo() == null || obj.getVideo().isEmpty()){
+					Toast.makeText(getApplicationContext(), "Video not available", Toast.LENGTH_SHORT).show();
+				}
+				Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
+				Log.d("HARSH", "videoKey"+Custome_YouTubePlayerActivity.videoKey);
 				try{
 				Intent i = new Intent(this, Custome_YouTubePlayerActivity.class);
 		    	//this.finish();
@@ -1793,7 +1804,7 @@ GestureDetector.OnDoubleTapListener {
 		
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
 		ArrayList<Integer> Ids = dbH.getAllCategories();
-		
+		DBHandler_Category dbCat = new DBHandler_Category(this);
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
 			//if(i%3 == 0){
@@ -1821,8 +1832,12 @@ GestureDetector.OnDoubleTapListener {
 				Object_Category objCat = listCatItemServer.get(i);
 				row.addView(getCatImageView(objCat,row,firstInRow,i,contains)) ;
 
-				int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
-				row.setBackgroundColor(catColor);
+				
+				
+
+				String catColor = dbCat.getCategoryColor(objCat.getId());
+				if(!catColor.isEmpty())
+					row.setBackgroundColor(Color.parseColor(catColor));
 				
 //				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 //						Globals.getScreenSize(this).x*3/2,      
@@ -1855,11 +1870,18 @@ GestureDetector.OnDoubleTapListener {
 			LinearLayout llytUpper = (LinearLayout)findViewById(R.id.llytDrwawerUpperHalf);
 			LinearLayout llytLower = (LinearLayout)findViewById(R.id.llytDrwawerLowerHalf);
 			
-			int catColor1 = this.getResources().getColor(Globals.getCategoryColor(listCatItemServer.get(0).getId(), this));
-			llytUpper.setBackgroundColor(catColor1);
 			
-			int catColor2 = this.getResources().getColor(Globals.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId(), this));
-			llytLower.setBackgroundColor(catColor2);
+			
+			String catColor1 = dbCat.getCategoryColor(listCatItemServer.get(0).getId());
+			if(!catColor1.isEmpty()){
+				llytUpper.setBackgroundColor(Color.parseColor(catColor1));
+			}
+			
+			String catColor2 = dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
+			if(!catColor2.isEmpty()){
+				llytLower.setBackgroundColor(Color.parseColor(catColor2));
+			}
+			
 		}
 		
 	}

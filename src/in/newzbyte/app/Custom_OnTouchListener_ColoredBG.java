@@ -2,6 +2,7 @@ package in.newzbyte.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build.VERSION;
@@ -26,12 +27,19 @@ public class Custom_OnTouchListener_ColoredBG implements OnTouchListener {
 	public boolean onTouch(final View view, final MotionEvent motionEvent) {	
 			switch (motionEvent.getAction()) {
 
-			case MotionEvent.ACTION_DOWN:      			
-				int catColor = context.getResources().getColor(Globals.getCategoryColor(catId, context));
+			case MotionEvent.ACTION_DOWN:      	
 				
+				DBHandler_Category dbCat = new DBHandler_Category(context);
 				GradientDrawable shape =  new GradientDrawable();
 				 //shape.setCornerRadius(10);
-				 shape.setColor(catColor);
+				 
+				String catColor = dbCat.getCategoryColor(catId);
+				if(!catColor.isEmpty()){
+					shape.setColor(Color.parseColor(catColor));
+				}
+				//int catColor = context.getResources().getColor(Globals.getCategoryColor(catId, context));
+				
+				
 				 if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN){                   
 					 view.setBackground(shape);
 				    } 

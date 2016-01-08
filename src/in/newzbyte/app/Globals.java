@@ -382,6 +382,7 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		return output;
 		}
 	
+	/*
 	public static int getCategoryColor(int catId , Context context){
 		int colorNo = catId % 10;
 		
@@ -393,7 +394,7 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		
 		return colorResourceId;
 	}
-	
+	*/
 	public static int getRowHeight(Context context, float textSize, int deviceWidth,boolean isBold, String text,Typeface typeFace) {
 	    TextView textView = new TextView(context);
 	    textView.setText("Harsh");

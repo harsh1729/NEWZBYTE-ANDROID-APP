@@ -14,6 +14,7 @@ public class Object_Category {
 	private String imageName;
 	private String selectedImageName;
 	private int isSelected;
+	private String color;
 	//private Bitmap image;
 	private ArrayList<Object_Category> listChildCategory= null;
 	
@@ -106,6 +107,14 @@ public class Object_Category {
 
 	public void setIsSelected(int isSelected) {
 		this.isSelected = isSelected;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }
