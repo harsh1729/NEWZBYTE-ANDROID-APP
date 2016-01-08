@@ -19,7 +19,7 @@
 
     <dimen name="font_lbl_small_medium1">14sp</dimen>
     <dimen name="font_lbl_small">13sp</dimen>
-    <dimen name="font_lbl_very_small">11sp</dimen>
+    <dimen name="font_lbl_very_small">10sp</dimen>
 	<dimen name="font_lbl_large">20sp</dimen>
 	<dimen name="font_lbl_very_large">24sp</dimen>
 	<dimen name="font_lbl_normal">16sp</dimen>

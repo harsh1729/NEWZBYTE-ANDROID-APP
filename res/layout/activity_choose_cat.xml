@@ -6,36 +6,98 @@
     android:background="@color/app_white"
     >
     
-    <LinearLayout 
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:layout_above="@+id/llytIntroScreenThird2"
-     	android:orientation="vertical">
-    <LinearLayout  
-        android:id="@+id/llytIntroScreenThirdContainer"
-        android:layout_width="match_parent"
-    	android:layout_height="50dp"
-    	android:layout_marginBottom="20dp"
-    	android:gravity="center_vertical"
-    	android:background="@color/app_theme_color" >
-    	 <TextView
-        android:id="@+id/txtCatChooser1"
+<!--     <LinearLayout  -->
+<!--         android:layout_width="match_parent" -->
+<!--     	android:layout_height="match_parent" -->
+<!--      	android:orientation="vertical"> -->
+<!--     <LinearLayout   -->
+<!--         android:id="@+id/llytIntroScreenThirdContainer" -->
+<!--         android:layout_width="match_parent" -->
+<!--     	android:layout_height="50dp" -->
+<!--     	android:layout_marginBottom="20dp" -->
+<!--     	android:gravity="center_vertical" -->
+<!--     	android:background="@color/app_theme_color" > -->
+<!--     	 <TextView -->
+<!--         android:id="@+id/txtCatChooser1" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:text="@string/txt_intro3_cat_chooser" -->
+<!--         android:padding="10dp" -->
+<!--         android:gravity="center" -->
+<!--         android:textColor="@color/app_white" -->
+<!--         android:textSize="@dimen/font_lbl_normal" -->
+<!--         />  -->
+<!--     </LinearLayout> -->
+    
+    <RelativeLayout
+	    android:id="@+id/llyt_detailHeader"
+	    android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_white"
+        android:padding="10dp" >
+
+		<ImageView
+		    android:id="@+id/imgBack"
+		    android:layout_width="30dp"
+		    android:layout_height="30dp"
+		    android:onClick="goBack"
+		    android:layout_alignParentLeft="true"
+		    android:src="@drawable/back" />
+		<TextView
+        android:id="@+id/txtHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/app_black_dark"
+        android:textSize="@dimen/font_lbl_small_medium2"   
+        android:layout_centerInParent="true"
         android:text="@string/txt_intro3_cat_chooser"
-        android:padding="10dp"
-        android:gravity="center"
-        android:textColor="@color/app_white"
-        android:textSize="@dimen/font_lbl_normal"
-        /> 
-    </LinearLayout>
+        android:textStyle="bold" />
+        <ImageView
+		    android:id="@+id/imgOK"
+		    android:layout_width="30dp"
+		    android:layout_height="30dp"
+		    android:onClick="moveToNewsScreen"
+		    android:layout_alignParentRight="true"
+		    android:src="@drawable/back" />
+    </RelativeLayout>
     
-     
+     <LinearLayout
+        android:id="@+id/llyt_hrline"
+	    android:orientation="horizontal"
+	    android:layout_below="@+id/llyt_detailHeader"
+        android:layout_width="match_parent"
+        android:background="@color/app_lightgray"
+        android:layout_height="1dp" >
+   </LinearLayout>
+
+     <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_below="@+id/llyt_hrline">
+<LinearLayout 
+    android:id="@+id/llytDrwawerUpperHalf"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+</LinearLayout> 
+<LinearLayout 
+    android:id="@+id/llytDrwawerLowerHalf"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+</LinearLayout>   
+</LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/llyt_hrline"
         android:layout_margin="0dp" >
 
        <LinearLayout
@@ -47,7 +109,7 @@
             </LinearLayout>
         </ScrollView>
         
-    </LinearLayout>
+<!--     </LinearLayout> -->
     
     <TextView
         android:id="@+id/txtIntroScreen3Msg"
@@ -60,26 +122,26 @@
         android:textColor="@color/app_black_dark"
         android:textSize="@dimen/font_lbl_normal"
         /> 
-   <LinearLayout  
-        android:id="@+id/llytIntroScreenThird2"
-        android:layout_width="match_parent"
-    	android:layout_height="50dp"
-    	android:gravity="center_vertical"
-    	android:layout_alignParentBottom="true"
-    	android:background="@color/app_theme_color" >
+<!--    <LinearLayout   -->
+<!--         android:id="@+id/llytIntroScreenThird2" -->
+<!--         android:layout_width="match_parent" -->
+<!--     	android:layout_height="50dp" -->
+<!--     	android:gravity="center_vertical" -->
+<!--     	android:layout_alignParentBottom="true" -->
+<!--     	android:background="@color/app_theme_color" > -->
     	 
-    	 <TextView
-        android:id="@+id/txtIntroScreen3Info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:padding="10dp"
-        android:gravity="center"
-        android:clickable="false"
-        android:onClick="onClickIntroFinish"
-        android:textColor="@color/app_white"
-        android:textSize="@dimen/font_lbl_normal"
-        /> 
-    </LinearLayout>     
+<!--     	 <TextView -->
+<!--         android:id="@+id/txtIntroScreen3Info" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:text="" -->
+<!--         android:padding="10dp" -->
+<!--         android:gravity="center" -->
+<!--         android:clickable="false" -->
+<!--         android:onClick="onClickIntroFinish" -->
+<!--         android:textColor="@color/app_white" -->
+<!--         android:textSize="@dimen/font_lbl_normal" -->
+<!--         />  -->
+<!--     </LinearLayout>      -->
 </RelativeLayout>
 

@@ -21,12 +21,12 @@
     <TextView android:id="@+id/txtCategory"
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
-    				android:text ="CATEGORY"
+    				android:text =""
     				android:layout_centerInParent="true"
     				android:padding="2dp"
     				android:gravity="center"
     				android:textSize="@dimen/font_lbl_very_small"
-    				android:textColor="@color/app_theme_color"
+    				android:textColor="@color/app_white"
     				/>
         
 <!--     </LinearLayout> -->
