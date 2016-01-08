@@ -389,15 +389,30 @@ public class Activity_NewsDetails extends Activity {
 	
 	private void gotNewsDetailResponse(JSONObject response) {
 
-		ArrayList<Object_SubNewsItem> subNewsList = new ArrayList<Object_SubNewsItem>();;
+		ArrayList<Object_SubNewsItem> subNewsList = new ArrayList<Object_SubNewsItem>();
+		ArrayList<Object_NewsComment>commentsList =new ArrayList<Object_NewsComment>();
 		Log.i("DARSH", "gotNewsDetailResponce onResponse" + response);
-		Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
+		
 
 		if(response.has("subnews")){
 			JSONArray arraySubNews;
 			try {
+				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 				arraySubNews = response.getJSONArray("subnews");
 				subNewsList = parserObject.getParsedJsonSubNews(arraySubNews, newsId);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if(response.has("comment")){
+			JSONArray arrayComments;
+			try {
+				Custom_JsonParserNewsComments parserObject = new Custom_JsonParserNewsComments();
+				arrayComments = response.getJSONArray("comment");
+				commentsList = parserObject.getCommentsFromJson(arrayComments);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -419,6 +434,7 @@ public class Activity_NewsDetails extends Activity {
 		if(!objNews.getImagePath().equals(""))
 			allImages.add(objNews.getImagePath());
 		
+		/*Main Image is not shown inside now
 		if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 		{
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -443,6 +459,7 @@ public class Activity_NewsDetails extends Activity {
               }
 		}
 				
+				*/
 		
 		int i =0;
 		for (final Object_SubNewsItem object_SubNewsItem : subNewsList) {
@@ -475,6 +492,13 @@ public class Activity_NewsDetails extends Activity {
 			}
 		}
 
+		if(commentsList.size() > 0){
+			
+			for(Object_NewsComment obj : commentsList){
+				
+			}
+		}
+		
 		Globals.hideLoadingDialog(mDialog);
 		//showNewsDetails();
 	}
