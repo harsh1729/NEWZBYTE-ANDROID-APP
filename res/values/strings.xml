@@ -8,5 +8,7 @@
     <string name="drawer_close">Close</string>
     <string name="keyTag">Tag</string>
     <string name="txt_intro_screen3_msg">Please wait while we load categories ...</string>
-	<string name="txt_intro3_cat_chooser">Tell us about your interests</string>
+    <string name="txt_intro3_cat_chooser">Tell us about your interests</string>
+
+
 </resources>
