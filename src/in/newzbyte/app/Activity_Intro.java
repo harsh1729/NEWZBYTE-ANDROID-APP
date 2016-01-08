@@ -247,7 +247,7 @@ public class Activity_Intro extends FragmentActivity {
 			String url = Custom_URLs_Params.getURL_GetCategories();
 			Log.i("HARSH", "Cat URL -- "+url);
 
-			TextView txt = (TextView)findViewById(R.id.txtIntroScreen2Msg);
+			TextView txt = (TextView)findViewById(R.id.txtIntroScreen3Msg);
 			txt.setVisibility(View.VISIBLE);
 			LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
 			///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
@@ -324,7 +324,7 @@ public class Activity_Intro extends FragmentActivity {
 	}
     private void createDrawerCategories(){
 
-    	TextView txt = (TextView)findViewById(R.id.txtIntroScreen2Msg);
+    	TextView txt = (TextView)findViewById(R.id.txtIntroScreen3Msg);
 		txt.setVisibility(View.GONE);
 		
 		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);

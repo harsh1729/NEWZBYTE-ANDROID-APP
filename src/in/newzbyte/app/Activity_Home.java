@@ -48,11 +48,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -477,10 +479,6 @@ GestureDetector.OnDoubleTapListener {
 		}
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 		//objNews = listNewsItemServer.get(currentNewsIndex);
-
-		
-		
-		
 		///if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
 			///currentNewsIndex = copyCurrentNewsIndex;
 			///return createNewsView();
@@ -494,10 +492,10 @@ GestureDetector.OnDoubleTapListener {
 		///setTextContainerHeight(newView,objNews.getHeadingSpan().toString(),objNews.getContentSpan().toString());
 
 
-		ImageView imgViewNews =(ImageView) newView.findViewById(R.id.imgHome);
+		ImageView imgViewNews = (ImageView) newView.findViewById(R.id.imgHome);
 		
 		
-		TextView txtViewNews =(TextView) newView.findViewById(R.id.txtHeading);
+		TextView txtViewNews = (TextView) newView.findViewById(R.id.txtHeading);
 		/*TextView txtSummary =(TextView) newView.findViewById(R.id.txtSummary);
 		
 		TextView txtAuthorText=(TextView) newView.findViewById(R.id.txtAuthorText);
@@ -513,9 +511,18 @@ GestureDetector.OnDoubleTapListener {
 		LinearLayout llyt = (LinearLayout)newView.findViewById(R.id.llytFooterLine);
 		
 		*/
-
-	   //int catColor = Globals.getCategoryColor(objNews.getCatId(), this));
-		imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
+		TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
+		RelativeLayout rlytImgContainer =(RelativeLayout) newView.findViewById(R.id.rlytImgContainer);
+		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
+		rlytImgContainer.setBackgroundColor(catColor);
+		rlytNewsHeaderIconContainer.setBackgroundColor(catColor);
+		txtCategory.setTypeface(tfCat);
+		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
+		txtCategory.setText("HARSH");//objNews.getCatName());
+	   //imgViewNews.setBackgroundColor(catColor);
+		//imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
 		///String textSummary = objNews.getContentSpan().toString();
 		
 		txtViewNews.setText(objNews.getHeadingSpan().toString());	
@@ -1789,11 +1796,11 @@ GestureDetector.OnDoubleTapListener {
 		
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
-			if(i%3 == 0){
+			//if(i%3 == 0){
 				firstInRow = true;
-			}else{
-				firstInRow = false;
-			}
+			//}else{
+				//firstInRow = false;
+			//}
 			if(firstInRow){
 				
 				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1811,23 +1818,78 @@ GestureDetector.OnDoubleTapListener {
 				}
 				
 				Log.d("HARSH", "contains"+contains);
-				row.addView(getCatImageView(listCatItemServer.get(i),row,firstInRow,i,contains)) ;
+				Object_Category objCat = listCatItemServer.get(i);
+				row.addView(getCatImageView(objCat,row,firstInRow,i,contains)) ;
 
+				int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
+				row.setBackgroundColor(catColor);
+				
+//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//						Globals.getScreenSize(this).x*3/2,      
+//						LinearLayout.LayoutParams.WRAP_CONTENT
+//				);
+//				
+//				int marginD = -1*Globals.getScreenSize(this).x/4;
+//				params.setMargins(marginD, 0, marginD, 0);
+//				row.setLayoutParams(params);
+				
 				if(firstInRow)
 					llytCatContainer.addView(row);	
 			}
 
 		}
+		
+		ScrollView.LayoutParams params2 = new ScrollView.LayoutParams(
+				ScrollView.LayoutParams.MATCH_PARENT,      
+				ScrollView.LayoutParams.WRAP_CONTENT
+		);
+		
+		int marginD = -1*Globals.getScreenSize(this).x/2;
+		params2.setMargins(marginD, 0, marginD, 0);
+		llytCatContainer.setLayoutParams(params2);
+		
+		llytCatContainer.setRotation(-1* getScrollViewDiagonalAngle());
+		
+		if(listCatItemServer.size() > 0){
+			
+			LinearLayout llytUpper = (LinearLayout)findViewById(R.id.llytDrwawerUpperHalf);
+			LinearLayout llytLower = (LinearLayout)findViewById(R.id.llytDrwawerLowerHalf);
+			
+			int catColor1 = this.getResources().getColor(Globals.getCategoryColor(listCatItemServer.get(0).getId(), this));
+			llytUpper.setBackgroundColor(catColor1);
+			
+			int catColor2 = this.getResources().getColor(Globals.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId(), this));
+			llytLower.setBackgroundColor(catColor2);
+		}
+		
 	}
 
-
+	private float getScrollViewDiagonalAngle(){
+		
+		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+		
+		if(scrollViewCat.getHeight() > 0 && scrollViewCat.getWidth() > 0){
+			
+			float angle = 90.0f - (float) Math.toDegrees(Math.atan((float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()));
+			//Log.d("DARSH","angle:"+ (float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()+ " " +Math.atan(scrollViewCat.getHeight()/scrollViewCat.getWidth()) + " " +angle);
+			//Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight() + "scrollViewCat.getWidth()"+scrollViewCat.getWidth());
+			return angle;
+		}
+		
+		return 30.0f;
+	}
 	@SuppressLint("NewApi")
 	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
 
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-		int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
+		//int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
 		
-		Log.d("DARSH","rlytDrawerPane.getWidth():"+rlytDrawerPane.getWidth());
+		///
+		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+		int heightImage = (int) ((scrollViewCat.getHeight() - 6* margin )/6.0 ) ;
+		int widthImage = heightImage;
+		///
+		Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight());
 		Log.d("DARSH","widthImage:"+widthImage);
 		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
@@ -1863,7 +1925,7 @@ GestureDetector.OnDoubleTapListener {
 
 		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
 		imgView.setTag(R.string.app_name, position);
-		int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		//int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
 				//100;//Globals.getScreenSize(this).y/5;
 		
 		//item.setMinimumWidth(widthImage);
@@ -1878,12 +1940,12 @@ GestureDetector.OnDoubleTapListener {
 		imgView.setLayoutParams(params);
 		
 		
-		LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
+		//LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
 		
-		if(!firstInRow)
-			paramsParent.leftMargin = margin;
+		//if(!firstInRow)
+			//paramsParent.leftMargin = margin;
 		//params.gravity = Gravity.RIGHT;
-		item.setLayoutParams(paramsParent);
+		//item.setLayoutParams(paramsParent);
 
 		/*
 		new ImageView(this);
@@ -1915,6 +1977,7 @@ GestureDetector.OnDoubleTapListener {
 		txtCategory.setMaxWidth(widthImage-margin);
 		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
 
+		item.setRotation(getScrollViewDiagonalAngle());
 		return item;
 
 	}
@@ -1922,10 +1985,7 @@ GestureDetector.OnDoubleTapListener {
 	
 	
 	 
-	private void updateCatTopNewsId(int catId, int newsId){
-		DBHandler_Category dbH = new DBHandler_Category(this);
-		dbH.updateCategoryTopNews(catId, newsId);
-	}
+	
 
 
 
@@ -2378,6 +2438,11 @@ GestureDetector.OnDoubleTapListener {
 
 /*
 
+private void updateCatTopNewsId(int catId, int newsId){
+		DBHandler_Category dbH = new DBHandler_Category(this);
+		dbH.updateCategoryTopNews(catId, newsId);
+	}
+	
 case MotionEvent.ACTION_MOVE:
 		{
 
