@@ -88,8 +88,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity
-            android:name=".Custome_YouTubePlayerActivity" >
+        <activity android:name=".Custome_YouTubePlayerActivity" >
+        </activity>
+        <activity
+            android:name=".Activity_ChooseLang" 
+            android:configChanges="orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activity_ChooseCat" 
+            android:configChanges="orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
