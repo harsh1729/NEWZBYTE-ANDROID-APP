@@ -88,7 +88,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Custome_YouTubePlayerActivity" >
+        <activity android:name=".Custom_YouTubePlayerActivity" >
         </activity>
         <activity
             android:name=".Activity_ChooseLang" 
