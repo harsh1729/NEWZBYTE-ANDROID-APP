@@ -47,7 +47,7 @@ public class Globals {
 
 	public final static String APP_TITLE = "Newz Byte App";
 	public final static String APP_PNAME = "in.newzbyte.app";
-	public final static String SHARE_URL = "https://play.google.com/store/apps/details?id="+APP_PNAME;
+	public final static String SHARE_URL = "goo.gl/k3Cvyl";//"https://play.google.com/store/apps/details?id="+APP_PNAME;
 	public final static String GCM_SENDER_ID = "82788197303";
 	public static final String DEFAULT_APP_SERVER_PATH= "http://app.newzbyte.in:9393/v2/client_requests/";//"http://103.248.80.133:9393/delhinewsserver/delhi-newsci/client_requests/";//"http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";

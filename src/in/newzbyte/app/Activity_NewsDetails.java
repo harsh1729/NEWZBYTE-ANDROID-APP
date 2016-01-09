@@ -13,15 +13,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,7 +38,6 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.google.android.gms.cast.Cast.ApplicationConnectionResult;
 
 public class Activity_NewsDetails extends Activity {
 
@@ -126,18 +127,18 @@ public class Activity_NewsDetails extends Activity {
 							+ objNews.getShareLink()
 							+ "\nvia "
 							+ getResources().getString(
-									R.string.news_paper_name) +" for Android");
+									R.string.news_paper_name) +" for Android "+"\nDownload at "+ Globals.SHARE_URL);
 		} 
 		else 
 		{
 			sendIntent.putExtra(
 					Intent.EXTRA_TEXT,
-					"Read more @\n"
+					//"Read more @\n"
+							//+ getResources().getString(
+									//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+							 "via "
 							+ getResources().getString(
-									R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							+ "\nvia "
-							+ getResources().getString(
-									R.string.news_paper_name)+" for Android");
+									R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
 		}
 		
 		
@@ -448,10 +449,26 @@ public class Activity_NewsDetails extends Activity {
 		LinearLayout llyt_mainContainer = (LinearLayout)findViewById(R.id.llyt_mainContainer);
 		
 		TextView txtHeading = (TextView)findViewById(R.id.txtHeading);
+		TextView txtReporterName = (TextView)findViewById(R.id.txtReporterName);
+		TextView txtSourcesValue = (TextView)findViewById(R.id.txtSourcesValue);
+		TextView txtSources = (TextView)findViewById(R.id.txtSources);
 		
 		txtHeading.setText(objNews.getHeadingSpan());
 		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
 		txtHeading.setTypeface(tf, Typeface.BOLD);
+		
+		
+		txtReporterName.setTypeface(tf, Typeface.BOLD);
+		txtReporterName.setText("by "+ objNews.getAuthor());
+		
+		if(objNews.getSource().trim().isEmpty()){
+			txtSources.setVisibility(View.GONE);
+			txtSourcesValue.setVisibility(View.GONE);
+		}else{
+			txtSourcesValue.setText(objNews.getSourceSpan());
+		}
+		
+		
 		
 		if(!objNews.getImagePath().equals(""))
 			allImages.add(objNews.getImagePath());
@@ -515,17 +532,42 @@ public class Activity_NewsDetails extends Activity {
 
 		showComments();
 		
-		if(isNavigationForComment){
-			isNavigationForComment = false;
-			//ScrollView scrollNewsDetail = new ScrollView(this);
-			//scrollNewsDetail.scr
+		if(!isNavigationForComment){
+
+			ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+			scroll.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					 ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+					 scroll.scrollTo(0, 0);
+					
+				}
+			},500);
 			
-			View targetView = findViewById(R.id.edtWriteComments);  
-			//targetView.getParent().requestChildFocus(targetView,targetView);
-			
-			Log.i("HARSH", "targetView.getY()"+targetView.getY());
-			//scrollNewsDetail.scrollTo(0, (int) targetView.getY());
+			/*new Handler().postDelayed(new Runnable()
+			{
+			   @Override
+			   public void run()
+			   {
+				   ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+				   scroll.scrollTo(0, 0);
+			   }
+			}, 500);
+		    
+		     ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+			scroll.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+		    scroll.setFocusable(true);
+		    scroll.setFocusableInTouchMode(true);
+		    scroll.setOnTouchListener(new View.OnTouchListener() {
+		        @Override
+		        public boolean onTouch(View v, MotionEvent event) {
+		            v.requestFocusFromTouch();
+		            return false;
+		        }
+		    });*/
 		}
+		isNavigationForComment = false;
 		Globals.hideLoadingDialog(mDialog);
 		//showNewsDetails();
 	}

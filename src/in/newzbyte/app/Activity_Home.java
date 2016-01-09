@@ -48,7 +48,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,7 +73,7 @@ GestureDetector.OnDoubleTapListener {
 
 	View viewMoving;
 	View viewStatic;
-	View viewLoading;
+	RelativeLayout viewLoading;
 	View viewSettings;
 	
 	AnimationDrawable bAmin;
@@ -115,6 +117,8 @@ GestureDetector.OnDoubleTapListener {
 	private static final String DEBUG_TAG = "Gestures";
     private GestureDetectorCompat mDetector; 
 
+    LinearLayout llytYellow;
+    LinearLayout llytGreen;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -316,7 +320,9 @@ GestureDetector.OnDoubleTapListener {
 
 		DBHandler_MainNews dbH = new DBHandler_MainNews(this);
 		listNewsItemServer = dbH.getAllMainNews();
-
+		Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
+		objDummySettings.setId(-999);
+		listNewsItemServer.add(objDummySettings);
 		currentNewsIndex = -1;
 		isMovingViewCurrent = true;
 		if(comingFromPushMessage){
@@ -343,10 +349,14 @@ GestureDetector.OnDoubleTapListener {
 	}
 	private void  addLoadingView(){
 
+		if(viewLoading == null){
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 
-		viewLoading = inflater.inflate(R.layout.view_loading, rlytMainContent,false);
+		viewLoading =(RelativeLayout) inflater.inflate(R.layout.view_loading, rlytMainContent,false);
+		}
+		
+		viewLoading.setVisibility(View.VISIBLE);
 
 		//ImageView imgViewLogo = (ImageView)viewLoading.findViewById(R.id.imgLogoXB);
 
@@ -358,21 +368,30 @@ GestureDetector.OnDoubleTapListener {
 		//logo = Globals.scaleToWidth(logo,logoWidth);
 		//imgViewLogo.setImageBitmap(logo);
 		
-		animateROcket(200);
+		
 		rlytMainContent.addView(viewLoading);
+		startAnimationLoading(100);
 
 	}
 	
-	private void animateROcket(int delay){
+	
+	private void startAnimationLoading(int delay){
 		if(viewLoading == null || viewLoading.getVisibility() == View.GONE)
 			return;
 		
-		ImageView imgRocket =(ImageView) viewLoading.findViewById(R.id.imgLoadingRocket);
-		imgRocket.animate().setListener(null);
 		
-		imgRocket.setY(Globals.getScreenSize(this).y / 2);
-		imgRocket.animate().setDuration(900).setStartDelay(delay)
-		.translationY(-1*Globals.getScreenSize(this).y / 2).setListener(new AnimatorListener() {
+		viewLoading.removeAllViews();
+		
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+	    llytGreen=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+		llytGreen.setBackgroundResource(R.color.app_loading_color_1);
+		
+		llytGreen.setY(-1*Globals.getScreenSize(this).y);
+		viewLoading.addView(llytGreen);
+		
+		llytGreen.animate().setDuration(400).setStartDelay(delay)
+		.translationY(0).setListener(new AnimatorListener() {
 			
 			@Override
 			public void onAnimationStart(Animator arg0) {
@@ -387,8 +406,49 @@ GestureDetector.OnDoubleTapListener {
 			}
 			
 			@Override
-			public void onAnimationEnd(Animator arg0) {
-				animateROcket(0);
+			public void onAnimationEnd(Animator arg0) {///
+				animationYellowMove();
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+	private void animationYellowMove(){
+
+		
+		LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+	    llytYellow=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+	    llytYellow.setBackgroundResource(R.color.app_loading_color_2);
+		
+	    llytYellow.setY(Globals.getScreenSize(Activity_Home.this).y);
+		viewLoading.addView(llytYellow);
+		
+		llytYellow.animate().setDuration(400).setStartDelay(300)
+		.translationY(0).setListener(new AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) { ///
+				
+				animationYellowFade();
 				
 			}
 			
@@ -398,6 +458,98 @@ GestureDetector.OnDoubleTapListener {
 				
 			}
 		});
+	}
+	private void animationYellowFade(){
+		viewLoading.removeView(llytGreen);
+		ImageView imgView = new ImageView(Activity_Home.this);
+		imgView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		imgView.setImageResource(R.drawable.collarge);
+		
+		viewLoading.addView(imgView, 0);
+		Animation fadeOut = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_out);
+		fadeOut.setStartOffset(300);
+		fadeOut.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {////
+            	//llytYellow.setVisibility(View.GONE);
+            	animationWhiteFadeIn();
+            }
+        });
+        llytYellow.startAnimation(fadeOut);
+	}
+	private void animationWhiteFadeIn(){
+		llytYellow.setAnimation(null);
+		viewLoading.removeView(llytYellow);
+    	LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+    	LinearLayout llytWhite=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+    	llytWhite.setBackgroundResource(R.color.app_white);
+    	Animation fadeIn = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_in);
+    	viewLoading.addView(llytWhite);
+    	fadeIn.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            	animationMOveNewzByteLogo();
+            }
+        });
+    	fadeIn.setStartOffset(100);
+    	
+    	llytWhite.startAnimation(fadeIn);
+	}
+	
+	private void animationMOveNewzByteLogo(){
+		
+		ImageView imgView = new ImageView(Activity_Home.this);
+		int size = 200;
+		imgView.setLayoutParams(new LayoutParams(size, size));
+		imgView.setImageResource(R.drawable.newzbyte);
+		viewLoading.addView(imgView);
+		
+		imgView.setY(Globals.getScreenSize(Activity_Home.this).y);
+		imgView.setX(Globals.getScreenSize(Activity_Home.this).x/2 - size/2);
+			
+		imgView.animate().setDuration(300).setStartDelay(100)
+			.translationY(Globals.getScreenSize(Activity_Home.this).y/2 - size/2).setListener(new AnimatorListener() {
+				
+				@Override
+				public void onAnimationStart(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationEnd(Animator arg0) { 
+					//startAnimationLoading(1000);
+				}
+				
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 	}
 	private View createNewsView(){
 
@@ -417,10 +569,17 @@ GestureDetector.OnDoubleTapListener {
 		int copyCurrentNewsIndex = currentNewsIndex;
 				
 		if(isMovingViewCurrent){
-			if(copyCurrentNewsIndex >= listNewsItemServer.size() - 1){
-				copyCurrentNewsIndex = listNewsItemServer.size() - 1;
-				currentNewsIndex = copyCurrentNewsIndex;
-				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+			if(currentNewsIndex >= listNewsItemServer.size() - 1){
+				
+				//if(copyCurrentNewsIndex == listNewsItemServer.size() - 1){
+					//currentNewsIndex++;
+					//rlytNewsContent.addView(initViewSetting(),0);
+					//return viewSettings;
+				//}else{
+					//currentNewsIndex = listNewsItemServer.size() ;
+				//}
+				currentNewsIndex = listNewsItemServer.size() - 1;
+				//Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
 				////////Commented to copy functionality of Murmur
 				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
 				
@@ -484,6 +643,12 @@ GestureDetector.OnDoubleTapListener {
 			///return createNewsView();
 		///}
 
+		if(objNews.getId() == -999){
+			currentNewsIndex = copyCurrentNewsIndex;
+			View viewSettting = initViewSetting(true);
+			rlytNewsContent.addView(viewSettting,0);
+			return viewSettting;
+		}
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -648,7 +813,7 @@ GestureDetector.OnDoubleTapListener {
 	//TODO
 	public void shareIntent()
     {    
-		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size()) {
+		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
 
 			Object_ListItem_MainNews currentNewsItem = listNewsItemServer.get(currentNewsIndex);
 			Intent sendIntent = new Intent();
@@ -665,24 +830,25 @@ GestureDetector.OnDoubleTapListener {
 						+ currentNewsItem.getShareLink()
 								+ "\nvia "
 								+ getResources().getString(
-										R.string.news_paper_name) +" for Android");
+										R.string.news_paper_name) +" for Android" + "\nDownload at "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
 				sendIntent.putExtra(
 						Intent.EXTRA_TEXT,
-						"Read more @\n"
-								+ getResources().getString(
-										R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-										+ "\nvia "
+						//"Read more @\n"
+								//+ getResources().getString(
+										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+										"via "
 										+ getResources().getString(
-												R.string.news_paper_name)+" for Android");
+												R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
 			}
 
-			File imgF = takeScreenshot("Read more @ "
-					+ getResources().getString(
-							R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							+ " via "
+			File imgF = takeScreenshot(
+					//"Read more @ "
+					//+ getResources().getString(
+							//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+							"via "
 							+ getResources().getString(
 									R.string.news_paper_name)+" for Android");
 
@@ -815,7 +981,7 @@ GestureDetector.OnDoubleTapListener {
 			.alpha(1.0f);
 			Log.i("Bytes", "viewMoving not null");
 			
-			if(viewStatic != null){
+			if(viewStatic != null && currentNewsIndex < listNewsItemServer.size()-1){
 				RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
 				RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
 				float scale = Math.abs((float)viewMoving.getY() /rlytNewsContent.getHeight()) ;
@@ -827,11 +993,12 @@ GestureDetector.OnDoubleTapListener {
 						
 				
 				Log.i("DARSH","scale"+scale+ "alpha "+ alpha);
+				if(imgCover!= null)
 				imgCover.setAlpha(alpha);
 				//imgCover.animate()
 				//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
 				
-				
+				if(imgContainer!= null)
 				imgContainer.animate().setDuration(duration).scaleX(scale).scaleY(scale);
 				
 			}else{
@@ -1030,7 +1197,7 @@ GestureDetector.OnDoubleTapListener {
 					}
 				});
 				
-				if(viewStatic != null){
+				if(viewStatic != null && currentNewsIndex < listNewsItemServer.size()-1){
 					RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
 					RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
 					float alpha =1;
@@ -1039,12 +1206,13 @@ GestureDetector.OnDoubleTapListener {
 					if(isSlideUp ){
 						alpha = 0;
 					}
+					if(imgCover!= null)
 					imgCover.animate().setStartDelay(delay).setDuration(newDuration).alpha(alpha);
 					
 					//imgCover.animate()
 					//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
 					
-					
+					if(imgContainer!= null)
 					imgContainer.animate().setStartDelay(delay).setDuration(newDuration).scaleX(1-alpha).scaleY(1-alpha).setListener(new AnimatorListener() {
 
 						@Override
@@ -1077,6 +1245,7 @@ GestureDetector.OnDoubleTapListener {
 	
 	private void setHeader(){
 		
+		if(currentNewsIndex >=0 && currentNewsIndex < listNewsItemServer.size() - 1){
 		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
 		DBHandler_Category dbCat = new DBHandler_Category(this);
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
@@ -1090,6 +1259,7 @@ GestureDetector.OnDoubleTapListener {
 		txtCategory.setTypeface(tfCat);
 		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
 		txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
+		}
 	}
 
 	private void scaleAnimationOver(){
@@ -1544,7 +1714,7 @@ GestureDetector.OnDoubleTapListener {
 			if(viewLoading.getVisibility() == View.VISIBLE)
 				return;
 
-		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size()) {
+		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
 			Object_ListItem_MainNews obj =	listNewsItemServer.get(currentNewsIndex);
 			
 			switch (obj.getTypeId()) {
@@ -1737,7 +1907,7 @@ GestureDetector.OnDoubleTapListener {
 
 	public void onClickShare(View v) {
 
-		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size()) {
+		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
 
 
 
@@ -1758,29 +1928,30 @@ GestureDetector.OnDoubleTapListener {
 				sendIntent.putExtra(
 						Intent.EXTRA_TEXT,
 						// currentNewsItem.getContent()
-						"Read more @\n"
-						+ getResources().getString(
-								R.string.txt_company_website)
-								+ "\nvia "
+						//"Read more @\n"
+						//+ getResources().getString(
+								//R.string.txt_company_website)
+								"via "
 								+ getResources().getString(
-										R.string.news_paper_name) +" for Android");
+										R.string.news_paper_name) +" for Android" + "\nDownload at "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
 				sendIntent.putExtra(
 						Intent.EXTRA_TEXT,
-						"Read more @\n"
-								+ getResources().getString(
-										R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-										+ "\nvia "
+						//"Read more @\n"
+								//+ getResources().getString(
+										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+										 "via "
 										+ getResources().getString(
-												R.string.news_paper_name)+" for Android");
+												R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
 			}
 
-			File imgF = takeScreenshot("Read more @ "
-					+ getResources().getString(
-							R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							+ " via "
+			File imgF = takeScreenshot(
+					//"Read more @ "
+					//+ getResources().getString(
+							//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+							 " via "
 							+ getResources().getString(
 									R.string.news_paper_name)+" for Android");
 
@@ -2131,6 +2302,9 @@ GestureDetector.OnDoubleTapListener {
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 				listNewsItemServer = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig
 						.getRootCatId());
+				Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
+				objDummySettings.setId(-999);
+				listNewsItemServer.add(objDummySettings);
 				currentNewsIndex = -1;
 				if(comingFromPushMessage){
 					comingFromPushMessage = false;
@@ -2354,7 +2528,8 @@ GestureDetector.OnDoubleTapListener {
     	    }, 2000);
     }
 
-	public void initViewSetting(){
+	public View initViewSetting( boolean isLast){
+		View viewSettings = null;
 		if(viewSettings == null){
 			LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
@@ -2367,6 +2542,13 @@ GestureDetector.OnDoubleTapListener {
 			TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
 			ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
 			ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
+			RelativeLayout rlytSettings =(RelativeLayout) viewSettings.findViewById(R.id.rlytSettings);
+			TextView txtSeeU =(TextView) viewSettings.findViewById(R.id.txtSeeYouAt);
+			
+			if(isLast){
+				rlytSettings.setBackgroundResource(R.color.app_white);
+				txtSeeU.setText("See You At");
+			}
 			if(txt !=null){
 				if(obj.isNotificationEnabled()){
 					txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
@@ -2387,13 +2569,19 @@ GestureDetector.OnDoubleTapListener {
 			}else if(obj.getLangId() == Globals.LANG_HINDI){
 				txtLanguage.setText("हिंदी");
 			}
-			rlytDrawerPane.addView(viewSettings);
+			
 			//rlytMainContent.addView(viewSettings);
 		}
+		
+		return viewSettings;
 	}
 	public void onClickSettings(View v){
 
-		initViewSetting();
+		if(viewSettings == null){
+			viewSettings = initViewSetting(false);
+			rlytDrawerPane.addView(viewSettings);
+		}
+		
 		viewSettings.setY(-1*rlytDrawerPane.getHeight());
 		//viewSettings.setY(-1*rlytMainContent.getHeight());
 		
@@ -2472,7 +2660,7 @@ GestureDetector.OnDoubleTapListener {
 
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, Globals.getShareAppMsg()+ "\n "+Globals.SHARE_URL);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, Globals.getShareAppMsg()+ "\n "+ Globals.SHARE_URL);
 		//sendIntent.setPackage("com.whatsapp");
 		sendIntent.setType("text/plain");
 		startActivity(sendIntent);

@@ -206,6 +206,9 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 	public String getSource() {
 		return source;
 	}
+	public Spanned getSourceSpan() {
+		return Html.fromHtml(source) ;
+	}
 
 	public void setSource(String source) {
 		this.source = source;

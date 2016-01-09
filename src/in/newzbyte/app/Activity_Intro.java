@@ -159,7 +159,7 @@ public class Activity_Intro extends Activity {
 	            }else{
 	            	try{
 	            		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
-	            		if(dbH.getAllCategories().size() > 0)
+	            		if(dbH.getAllCategories().size() == 0)
 	            			return true;
 	            	}catch(Exception ex){
 	            		
