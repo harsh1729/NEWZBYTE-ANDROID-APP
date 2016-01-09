@@ -2354,9 +2354,7 @@ GestureDetector.OnDoubleTapListener {
     	    }, 2000);
     }
 
-	public void onClickSettings(View v){
-
-		//
+	public void initViewSetting(){
 		if(viewSettings == null){
 			LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
@@ -2381,10 +2379,21 @@ GestureDetector.OnDoubleTapListener {
 					imgImageView2.setImageResource(R.drawable.notification_off);
 				}
 			}
+			
+			TextView txtLanguage = (TextView) viewSettings.findViewById(R.id.txtLanguageSelected);
 
+			if(obj.getLangId() == Globals.LANG_ENG){
+				txtLanguage.setText("English");
+			}else if(obj.getLangId() == Globals.LANG_HINDI){
+				txtLanguage.setText("हिंदी");
+			}
 			rlytDrawerPane.addView(viewSettings);
 			//rlytMainContent.addView(viewSettings);
 		}
+	}
+	public void onClickSettings(View v){
+
+		initViewSetting();
 		viewSettings.setY(-1*rlytDrawerPane.getHeight());
 		//viewSettings.setY(-1*rlytMainContent.getHeight());
 		

@@ -594,17 +594,36 @@ public class Activity_NewsDetails extends Activity {
 		objConfig.setUserName(edtName.getText().toString());
 		
 
-		Custom_VolleyArrayRequest jsonObjectRQST = new Custom_VolleyArrayRequest(Request.Method.POST,
+		Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
 				//objAppConfig.getVersionNoCategory()
 				Custom_URLs_Params.getURL_SubmitComment(), Custom_URLs_Params.getParams_SubmitComments(Activity_NewsDetails.this, newsId, edtName.getText().toString(), edtEmail.getText().toString(), edtComment.getText().toString()),
-				new Listener<JSONArray>() {
+				new Listener<JSONObject>() {
 
 			@Override
-			public void onResponse(JSONArray response) {
+			public void onResponse(JSONObject jsonObj) {
 
 				Toast.makeText(Activity_NewsDetails.this, "Posted Successfully!", Toast.LENGTH_SHORT).show();
 				onClickCommentContainer(null);
 				//get Object
+
+				Object_NewsComment ob = new Object_NewsComment();
+				if(jsonObj.has("name"))
+					try {
+						ob.setName(jsonObj.getString("name").trim());
+						if(jsonObj.has("comment"))
+							ob.setComment(jsonObj.getString("comment").trim());
+						if(jsonObj.has("date"))
+							ob.setDate(jsonObj.getString("date").trim());
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				if(!ob.getComment().isEmpty()){
+					commentsList.add(0, ob);
+				}
+				
 				showComments();
 			}
 		}, new ErrorListener() {

@@ -33,7 +33,7 @@ public class Custom_JsonParserNewsComments {
 					if(jsonObj.has("comment"))
 						ob.setComment(jsonObj.getString("comment").trim());
 					if(jsonObj.has("date"))
-						ob.setComment(jsonObj.getString("date").trim());
+						ob.setDate(jsonObj.getString("date").trim());
 					
 					listComments.add(ob);
 				}

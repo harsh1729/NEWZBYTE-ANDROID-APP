@@ -1,5 +1,7 @@
 package in.newzbyte.app;
 
+import com.google.android.gms.internal.db;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -34,13 +36,14 @@ public class Activity_Intro extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		DBHandler_Main db = new DBHandler_Main(this);
+		db.createDataBase();
 		if(!checkIfNeedsIntro()){
 			moveToNewsScreen();
             return;
 		}
 		setContentView(R.layout.activity_intro);
-		DBHandler_Main db = new DBHandler_Main(this);
-		db.createDataBase();
+		
 		
 		/*
 		
@@ -150,10 +153,17 @@ public class Activity_Intro extends Activity {
 
 	            //  If the activity has never started before...
 	            if ((obj.getLangId() == 0)) {
-
 	                //  Launch app needs intro
 
 	            	return true;
+	            }else{
+	            	try{
+	            		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+	            		if(dbH.getAllCategories().size() > 0)
+	            			return true;
+	            	}catch(Exception ex){
+	            		
+	            	}
 	            }
 	            return false;
 	}
