@@ -50,5 +50,7 @@
     
     <color name="app_setting_item_color">#383838</color>
     
+    <color name="app_loading_color_1">#33FFCC</color>
+    <color name="app_loading_color_2">#FFCC00</color>
     
 </resources>

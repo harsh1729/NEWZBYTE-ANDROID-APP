@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_white"
-    android:clickable="true"
     android:orientation="vertical" >
 
     <!-- android:background="@drawable/bg_settings" -->
@@ -62,14 +61,14 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/llyt_hrline"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/rlytSettings"
-        android:background="@color/app_lightgray"
-        android:orientation="horizontal" >
-    </LinearLayout>
+<!--     <LinearLayout -->
+<!--         android:id="@+id/llyt_hrline" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="1dp" -->
+<!--         android:layout_below="@+id/rlytSettings" -->
+<!--         android:background="@color/app_lightgray" -->
+<!--         android:orientation="horizontal" > -->
+<!--     </LinearLayout> -->
 
     <TextView
         android:layout_width="match_parent"
@@ -91,10 +90,11 @@
         android:src="@drawable/newzbyte" />
 
     <TextView
+         android:id="@+id/txtSeeYouAt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="See You At"
+        android:text="Everyday At"
         android:textColor="@color/app_black_dark"
         android:textSize="@dimen/font_lbl_very_large"
         android:textStyle="bold" />
