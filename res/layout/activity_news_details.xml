@@ -20,7 +20,7 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:onClick="goBack"
-            android:src="@drawable/back" />
+            android:src="@drawable/back_white" />
 
         <TextView
             android:id="@+id/txtCat"
@@ -37,7 +37,7 @@
             android:layout_alignParentRight="true"
             android:clickable="true"
             android:onClick="shareClick"
-            android:src="@drawable/share" />
+            android:src="@drawable/share_white" />
     </RelativeLayout>
 
     <LinearLayout
@@ -143,6 +143,7 @@
                 android:id="@+id/llyt_commentsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_below="@+id/llyt_commentsContainer2"
                 android:orientation="vertical" >
                 </LinearLayout>

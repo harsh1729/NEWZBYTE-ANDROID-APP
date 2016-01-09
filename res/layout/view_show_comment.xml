@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="10dp"
     android:orientation="horizontal" >
     
     <ImageView
-        	android:layout_marginTop="2dp"
+        	android:layout_marginTop="4dp"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/dot" />
@@ -21,7 +21,7 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/app_black"
+                android:textColor="@color/app_black_dark"
                 android:maxLines="1"
                 android:textSize="@dimen/font_lbl_normal" />
     <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:textColor="@color/app_lightgray"
-                android:textSize="@dimen/font_lbl_normal" />
+                android:textSize="@dimen/font_lbl_small_medium1" />
     </LinearLayout>
 
 </LinearLayout>
