@@ -6,6 +6,7 @@ public class Object_NewsComment {
 	
 	private String name;
 	private String comment;
+	private String date;
 	public String getComment() {
 		return comment;
 	}
@@ -17,6 +18,12 @@ public class Object_NewsComment {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 

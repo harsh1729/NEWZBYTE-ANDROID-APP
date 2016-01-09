@@ -47,13 +47,13 @@ public class Activity_NewsDetails extends Activity {
 	public static Object_ListItem_MainNews objNews = null;
 	public static ArrayList<String> allImages;// = new ArrayList<String>();
 	LinearLayout commentContainer;
-	
+	ArrayList<Object_NewsComment> commentsList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_news_details);
 		allImages = new ArrayList<String>();
-		
+		commentsList =new ArrayList<Object_NewsComment>();
 		
 		
 		if(objNews != null){
@@ -412,7 +412,7 @@ public class Activity_NewsDetails extends Activity {
 	private void gotNewsDetailResponse(JSONObject response) {
 
 		ArrayList<Object_SubNewsItem> subNewsList = new ArrayList<Object_SubNewsItem>();
-		ArrayList<Object_NewsComment>commentsList =new ArrayList<Object_NewsComment>();
+		
 		Log.i("DARSH", "gotNewsDetailResponce onResponse" + response);
 		
 
@@ -513,12 +513,7 @@ public class Activity_NewsDetails extends Activity {
 			}
 		}
 
-		if(commentsList.size() > 0){
-			
-			for(Object_NewsComment obj : commentsList){
-				
-			}
-		}
+		showComments();
 		
 		if(isNavigationForComment){
 			isNavigationForComment = false;
@@ -533,6 +528,24 @@ public class Activity_NewsDetails extends Activity {
 		}
 		Globals.hideLoadingDialog(mDialog);
 		//showNewsDetails();
+	}
+	
+	private void showComments(){
+		if(commentsList.size() > 0){
+			LinearLayout llyt_commentsContainer = (LinearLayout)findViewById(R.id.llyt_commentsContainer);
+			llyt_commentsContainer.removeAllViews();
+			for(Object_NewsComment obj : commentsList){
+				LinearLayout llytshowComment = (LinearLayout) getLayoutInflater().inflate(R.layout.view_show_comment, llyt_commentsContainer, false);
+				TextView txtName =(TextView) llytshowComment.findViewById(R.id.txtName);
+				TextView txtComment =(TextView) llytshowComment.findViewById(R.id.txtComment);
+				TextView txtDate =(TextView) llytshowComment.findViewById(R.id.txtDate);
+				
+				txtName.setText(obj.getName());
+				txtComment.setText(obj.getComment());
+				txtDate.setText(obj.getDate());
+				llyt_commentsContainer.addView(llytshowComment);
+			}
+		}
 	}
 	
 	public void onClickWriteComment(View v){
@@ -591,6 +604,8 @@ public class Activity_NewsDetails extends Activity {
 
 				Toast.makeText(Activity_NewsDetails.this, "Posted Successfully!", Toast.LENGTH_SHORT).show();
 				onClickCommentContainer(null);
+				//get Object
+				showComments();
 			}
 		}, new ErrorListener() {
 			@Override
