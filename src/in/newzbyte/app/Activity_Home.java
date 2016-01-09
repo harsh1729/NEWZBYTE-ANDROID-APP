@@ -445,6 +445,7 @@ GestureDetector.OnDoubleTapListener {
 						
 					}
 				});
+				setHeader();
 				
 			}else{
 				imgGoToTop.setImageResource(R.drawable.go_to_top);
@@ -510,10 +511,7 @@ GestureDetector.OnDoubleTapListener {
 		LinearLayout llyt = (LinearLayout)newView.findViewById(R.id.llytFooterLine);
 		
 		*/
-		TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
 		RelativeLayout rlytImgContainer =(RelativeLayout) newView.findViewById(R.id.rlytImgContainer);
-		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
-		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		
 		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 		DBHandler_Category dbCat = new DBHandler_Category(this);
@@ -522,12 +520,9 @@ GestureDetector.OnDoubleTapListener {
 		Log.i("Darsh", "catColor"+catColor);
 		if(!catColor.isEmpty()){
 			rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
-			rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
 		}
 		
-		txtCategory.setTypeface(tfCat);
-		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
-		txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
+		
 	   //imgViewNews.setBackgroundColor(catColor);
 		//imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
 		///String textSummary = objNews.getContentSpan().toString();
@@ -628,10 +623,11 @@ GestureDetector.OnDoubleTapListener {
         }
 		
 		ImageView imageDeatil = (ImageView)newView.findViewById(R.id.imgShowDetail);
-		
+		ImageView imgComment = (ImageView)newView.findViewById(R.id.imgComment);
 		switch (objNews.getTypeId()) {
 		case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
 			imageDeatil.setVisibility(View.GONE);
+			imgComment.setVisibility(View.GONE);
 			break;
 		case Globals.NEWS_TYPE_ID_TEXT:
 			//imageDeatil.setVisibility(View.VISIBLE);
@@ -640,6 +636,7 @@ GestureDetector.OnDoubleTapListener {
 			break;
 		case Globals.NEWS_TYPE_ID_VIDEO:
 			imageDeatil.setImageResource(R.drawable.play);
+			imgComment.setVisibility(View.GONE);
 			break;
 
 		default:
@@ -926,24 +923,32 @@ GestureDetector.OnDoubleTapListener {
 		if(isSlideInProgress){
 			int moveTo = 0;
 			isSlideInProgress = false;
-
+			boolean newViewShown = false;;
 			
 			if(viewMoving != null){
 
 				if(isSlideUp ){
 					moveTo = -1 * rlytNewsContent.getHeight(); 
 					if(isMovingViewCurrent){
+
+						newViewShown = true;
 						if(currentNewsIndex >= listNewsItemServer.size() - 1)
 							currentNewsIndex = listNewsItemServer.size() - 1;
-						else
+						else{
 							currentNewsIndex ++;
+						}
+							
 					}
 						
 				}else if(!isMovingViewCurrent){
+					newViewShown = true;
 					if(currentNewsIndex <= 0)
 						currentNewsIndex  = 0;
-					else
+					else{
+						
 						currentNewsIndex--;
+					}
+						
 				}
 				
 				if(currentNewsIndex == 0){
@@ -968,6 +973,12 @@ GestureDetector.OnDoubleTapListener {
 						}
 					});
 				}
+				
+				if(newViewShown){
+					
+					setHeader();
+				}
+				
 				/*
 				float currentMovement = Math.abs(y - y2) ;
 				long elapseTimeMilliSec =(long) (( System.nanoTime() - startTime )/ 1000000.0);
@@ -1062,6 +1073,23 @@ GestureDetector.OnDoubleTapListener {
 				}
 			}
 		}
+	}
+	
+	private void setHeader(){
+		
+		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+		DBHandler_Category dbCat = new DBHandler_Category(this);
+		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+		String catColor = dbCat.getCategoryColor(objNews.getCatId());
+		Log.i("Darsh", "catColor"+catColor);
+		if(!catColor.isEmpty()){
+			rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
+		}
+		TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
+		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		txtCategory.setTypeface(tfCat);
+		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
+		txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
 	}
 
 	private void scaleAnimationOver(){
@@ -1531,10 +1559,10 @@ GestureDetector.OnDoubleTapListener {
 				if(obj.getVideo() == null || obj.getVideo().isEmpty()){
 					Toast.makeText(getApplicationContext(), "Video not available", Toast.LENGTH_SHORT).show();
 				}
-				Custome_YouTubePlayerActivity.videoKey = obj.getVideo();
-				Log.d("HARSH", "videoKey"+Custome_YouTubePlayerActivity.videoKey);
+				Custom_YouTubePlayerActivity.videoKey = obj.getVideo();
+				Log.d("HARSH", "videoKey"+Custom_YouTubePlayerActivity.videoKey);
 				try{
-				Intent i = new Intent(this, Custome_YouTubePlayerActivity.class);
+				Intent i = new Intent(this, Custom_YouTubePlayerActivity.class);
 		    	//this.finish();
 		    	this.startActivity(i);
 				}catch (Exception e) {
@@ -2440,7 +2468,15 @@ GestureDetector.OnDoubleTapListener {
 		sendIntent.setType("text/plain");
 		startActivity(sendIntent);
 	}
+	
+	public void onClickComment(View v){
+		
+		Activity_NewsDetails.isNavigationForComment = true;
+		tapOnShowDetails(v);
+	}
 
+	
+	
 	public void onClickRateApp(View v){
 
 		Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);

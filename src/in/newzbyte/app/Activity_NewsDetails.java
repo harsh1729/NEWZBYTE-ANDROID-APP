@@ -10,8 +10,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -21,10 +23,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,15 +36,17 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.android.gms.cast.Cast.ApplicationConnectionResult;
 
 public class Activity_NewsDetails extends Activity {
 
 	private int newsId;
 	private Boolean firstTime = true;
 	private ProgressDialog mDialog;
-	
+	public static boolean isNavigationForComment = false;;
 	public static Object_ListItem_MainNews objNews = null;
 	public static ArrayList<String> allImages;// = new ArrayList<String>();
+	LinearLayout commentContainer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +58,27 @@ public class Activity_NewsDetails extends Activity {
 		
 		if(objNews != null){
 			
-			//RelativeLayout rlytHEader= (RelativeLayout)findViewById(R.id.llyt_detailHeader);
+			RelativeLayout rlytHeader= (RelativeLayout)findViewById(R.id.llyt_detailHeader);
 			//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 			//txtHeading.setBackgroundColor(catColor);
-			//rlytHEader.setBackgroundColor(catColor);
+			DBHandler_Category dbCat = new DBHandler_Category(this);
 			
-			//TextView txt = (TextView)findViewById(R.id.txtCat);
-			//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-			//txt.setTypeface(tfCat);
-			//txt.setText(objNews.getCatName());
+			String catColor = dbCat.getCategoryColor(objNews.getCatId());
+			Log.i("Darsh", "catColor"+catColor);
+			if(!catColor.isEmpty()){
+				rlytHeader.setBackgroundColor(Color.parseColor(catColor));
+			}
+			
+			
+			TextView txt = (TextView)findViewById(R.id.txtCat);
+			Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+			txt.setTypeface(tfCat);
+			txt.setText(objNews.getCatName());
 			
 			newsId = objNews.getId();
 			getNewsDetail();
-		}
+			
+			}
 		else {
 			Globals.showAlertDialogError(this,"Error","Please try again");
 		}
@@ -217,6 +231,7 @@ public class Activity_NewsDetails extends Activity {
 		//Globals.loadImageIntoImageView(img, objNews.getImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
 		//loadImageIntoImageView( ImageView iv ,String imgURL, Context context ,int loadingImgId, int errorImgId ,int height,int width)
 		//Globals.loadImageIntoImageView(img, objNews.getImagePath(),this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+		if(imgpath != null && !imgpath.isEmpty())
 		Globals.loadImageIntoImageView(img, imgpath,this,R.drawable.loading, R.drawable.loading,hgt,wdth);
 		
 		final TextView txt = (TextView)singleNewsView.findViewById(R.id.txt_newscontent);
@@ -285,17 +300,24 @@ public class Activity_NewsDetails extends Activity {
 //		TextView hdg = (TextView)singleNewsView.findViewById(R.id.txt_newsheading);
 //		hdg.setVisibility(View.GONE);
 		
+		
 		ImageView img = (ImageView)singleNewsView.findViewById(R.id.img_newsimage);
-		int wdth = (Globals.getScreenSize(this).x-20);
-		int hgt = (int) (wdth*imgratio);
-		
-		img.setTag(R.id.img_newsimage,Integer.valueOf(imgtag));
-		
-		LinearLayout.LayoutParams img_lp = new LinearLayout.LayoutParams(wdth,hgt);
-		img.setLayoutParams(img_lp);
-		
 		//Globals.loadImageIntoImageView(img, objNews.getImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
-		Globals.loadImageIntoImageView(img, imgpath,this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+		if(imgpath != null && !imgpath.isEmpty()){
+			
+			int wdth = (Globals.getScreenSize(this).x-20);
+			int hgt = (int) (wdth*imgratio);
+			
+			img.setTag(R.id.img_newsimage,Integer.valueOf(imgtag));
+			
+			LinearLayout.LayoutParams img_lp = new LinearLayout.LayoutParams(wdth,hgt);
+			img.setLayoutParams(img_lp);
+
+			Globals.loadImageIntoImageView(img, imgpath,this,R.drawable.loading, R.drawable.loading,hgt,wdth);
+			
+		}else{
+			img.setVisibility(View.GONE);
+		}
 		TextView txt = (TextView)singleNewsView.findViewById(R.id.txt_newscontent);
 		txt.setTypeface(tf);
 		txt.setText(content);
@@ -326,7 +348,7 @@ public class Activity_NewsDetails extends Activity {
 		subimg.setLayoutParams(subimg_lp);
 		
 		//Globals.loadImageIntoImageView(subimg,object_SubNewsItem.getNewsImagePath(), this,R.drawable.loading_image_small,R.drawable.no_image_small);
-		
+		if(imgpath != null && !imgpath.isEmpty())
 		Globals.loadImageIntoImageView(subimg, imgpath,this,R.drawable.loading, R.drawable.loading,imghgt,imgwdth);
 		
 		final TextView subtxt_imgside = (TextView)singleSubNewsView.findViewById(R.id.txt_newscontent_imgside);
@@ -434,20 +456,21 @@ public class Activity_NewsDetails extends Activity {
 		if(!objNews.getImagePath().equals(""))
 			allImages.add(objNews.getImagePath());
 		
-		/*Main Image is not shown inside now
+		/*Main Image is not shown inside now  instead of objNews.getImagePath() I am sending empty string*/
+		
 		if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_LEFT)
 		{
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
 				setLeftImageContent(0,llyt_mainContainer,tf,objNews.getImageRatio(),objNews.getImagePath(),objNews.getContentSpan());                          
              }else{
-           	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+           	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), "", objNews.getContentSpan());
              }
 			
 			
 		}
 		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_CENTER )
 		{
-			setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+			setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), "", objNews.getContentSpan());
 			
 		}
 		else if(objNews.getImageAlign() == Globals.IMAGE_ALIGN_RIGHT)
@@ -455,11 +478,9 @@ public class Activity_NewsDetails extends Activity {
 			 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
 				 setRightImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());                           
               }else{
-            	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), objNews.getImagePath(), objNews.getContentSpan());
+            	  setCenterImageContent(0,llyt_mainContainer, tf, objNews.getImageRatio(), "", objNews.getContentSpan());
               }
 		}
-				
-				*/
 		
 		int i =0;
 		for (final Object_SubNewsItem object_SubNewsItem : subNewsList) {
@@ -499,7 +520,96 @@ public class Activity_NewsDetails extends Activity {
 			}
 		}
 		
+		if(isNavigationForComment){
+			isNavigationForComment = false;
+			//ScrollView scrollNewsDetail = new ScrollView(this);
+			//scrollNewsDetail.scr
+			
+			View targetView = findViewById(R.id.edtWriteComments);  
+			//targetView.getParent().requestChildFocus(targetView,targetView);
+			
+			Log.i("HARSH", "targetView.getY()"+targetView.getY());
+			//scrollNewsDetail.scrollTo(0, (int) targetView.getY());
+		}
 		Globals.hideLoadingDialog(mDialog);
 		//showNewsDetails();
 	}
+	
+	public void onClickWriteComment(View v){
+		RelativeLayout rlyt = (RelativeLayout)findViewById(R.id.rlyt_newsdetail_conatiner);
+		if(commentContainer== null){
+			
+			commentContainer =(LinearLayout) getLayoutInflater().inflate(R.layout.view_comment, rlyt, false);
+		}
+		commentContainer.setVisibility(View.VISIBLE);
+		EditText edtEmail = (EditText)commentContainer.findViewById(R.id.edtEmail);
+		EditText edtName = (EditText)commentContainer.findViewById(R.id.edtName);
+		Object_AppConfig objConfig = new Object_AppConfig(this);
+		edtEmail.setText(objConfig.getUserEmail());
+		edtName.setText(objConfig.getUserName());
+		rlyt.addView(commentContainer);
+	}
+	public void onClickCommentContainer(View v){
+		RelativeLayout rlyt = (RelativeLayout)findViewById(R.id.rlyt_newsdetail_conatiner);
+		commentContainer.setVisibility(View.VISIBLE);
+		rlyt.removeView(commentContainer);
+	}
+	
+	public void onClickCommentPost(View v){
+		EditText edtEmail = (EditText)commentContainer.findViewById(R.id.edtEmail);
+		EditText edtName = (EditText)commentContainer.findViewById(R.id.edtName);
+		EditText edtComment = (EditText)commentContainer.findViewById(R.id.edtComments);
+		
+		
+		if(edtEmail.getText() == null || edtEmail.getText().toString().isEmpty()){
+			Toast.makeText(this, "Please enter your email !", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		if(edtName.getText() == null || edtName.getText().toString().isEmpty()){
+			Toast.makeText(this, "Please enter your name !", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		if(edtComment.getText() == null || edtComment.getText().toString().isEmpty()){
+			Toast.makeText(this, "Please enter your comments !", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		Object_AppConfig objConfig = new Object_AppConfig(this);
+		objConfig.setUserEmail(edtEmail.getText().toString());
+		objConfig.setUserName(edtName.getText().toString());
+		
+
+		Custom_VolleyArrayRequest jsonObjectRQST = new Custom_VolleyArrayRequest(Request.Method.POST,
+				//objAppConfig.getVersionNoCategory()
+				Custom_URLs_Params.getURL_SubmitComment(), Custom_URLs_Params.getParams_SubmitComments(Activity_NewsDetails.this, newsId, edtName.getText().toString(), edtEmail.getText().toString(), edtComment.getText().toString()),
+				new Listener<JSONArray>() {
+
+			@Override
+			public void onResponse(JSONArray response) {
+
+				Toast.makeText(Activity_NewsDetails.this, "Posted Successfully!", Toast.LENGTH_SHORT).show();
+				onClickCommentContainer(null);
+			}
+		}, new ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError err) {
+				Log.i("DARSH", "ERROR VolleyError");
+				Globals.showAlertDialogOneButton(
+						Globals.TEXT_CONNECTION_ERROR_HEADING,
+						Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
+						Activity_NewsDetails.this, "OK", null, false);
+
+
+			}
+		});
+		
+		Custom_AppController.getInstance().addToRequestQueue(
+				jsonObjectRQST);
+		
+	}
+	
+	
+	
 }

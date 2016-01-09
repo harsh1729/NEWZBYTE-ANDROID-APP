@@ -11,7 +11,7 @@ import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class Custome_YouTubePlayerActivity extends YouTubeBaseActivity implements OnInitializedListener {
+public class Custom_YouTubePlayerActivity extends YouTubeBaseActivity implements OnInitializedListener {
 
 	private YouTubePlayer player;
 	private String api_key = "AIzaSyAbYhYtq67dzVmX65Muq7mMCSH2W5zU2dM";

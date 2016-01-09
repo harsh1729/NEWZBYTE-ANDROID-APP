@@ -24,6 +24,10 @@ public class Custom_URLs_Params {
 		return Globals.DEFAULT_APP_SERVER_PATH+"news/mob_get_cat_news";//?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;
 	}
 	
+
+
+	
+	
 	static Map<String, String> getParams_CatNewsFirstCall(int catVersionId,int appVersionId,Context context){
 		HashMap<String, String> mParams = new HashMap<String, String>();
 		Object_AppConfig obj = new Object_AppConfig(context);
@@ -34,6 +38,24 @@ public class Custom_URLs_Params {
 			        mParams.put("langid", obj.getLangId()+"");
 			        mParams.put("catid", Globals.getCatIdByComma(context));
 			        //mParams.put("isneedtopnews", "true");
+			        Log.i("DARSH", "getParams_CatNewsFirstCall --->" + mParams);
+			        return mParams;
+	}
+	
+	static String getURL_SubmitComment(){
+		//http://app.newzbyte.in:9393/v2/client_requests/news/submit_comment
+		
+		Log.i("HARSH", Globals.DEFAULT_APP_SERVER_PATH+"news/submit_comment");
+		return Globals.DEFAULT_APP_SERVER_PATH+"news/submit_comment";//?CatVersion="+catVersionId+"&AppConfigVersion=0"+appVersionId;
+	}
+	
+	static Map<String, String> getParams_SubmitComments(Context context,int newsId,String name,String email,String comment){
+		HashMap<String, String> mParams = new HashMap<String, String>();
+			        mParams.put("newsid", newsId+"");
+			        mParams.put("name", name);
+			        mParams.put("comment", comment);
+			        mParams.put("email", email);
+			        mParams.put("deviceid", Globals.getDeviceIMEI(context));
 			        Log.i("DARSH", "getParams_CatNewsFirstCall --->" + mParams);
 			        return mParams;
 	}

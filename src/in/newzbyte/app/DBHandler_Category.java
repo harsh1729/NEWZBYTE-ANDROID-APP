@@ -61,6 +61,8 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 			}
 		}
 
+		if(catName.isEmpty())
+			catName= "NewzByte";
 		
 		db.close();
 		return catName;
@@ -81,7 +83,7 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 		}
 
 		if(catColor.isEmpty())
-			catColor= "#47A3FF";
+			catColor= "#009A9D";
 		db.close();
 		return catColor;
 	}

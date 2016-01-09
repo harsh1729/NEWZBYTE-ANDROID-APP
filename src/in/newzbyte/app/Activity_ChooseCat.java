@@ -72,7 +72,7 @@ public class Activity_ChooseCat extends Activity {
 
 				@Override
 				public void onResponse(JSONObject response) {
-
+					
 					parseJson(response);
 					
 
@@ -122,6 +122,8 @@ public class Activity_ChooseCat extends Activity {
 						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(this);
 						listCatItemServer = parserObject.getCategoriesFromJson(Cat_Object_Array);
 						createDrawerCategories();
+						showToast();
+						
 			}
 
 		} catch (Exception ex) {
@@ -328,7 +330,10 @@ public class Activity_ChooseCat extends Activity {
         
         this.finish();
 		}else{
-			Toast.makeText(this, "Please choose atleast three categories!", Toast.LENGTH_SHORT).show();
+			showToast();
 		}
 	}
+    private void showToast(){
+    	Toast.makeText(this, "Please choose atleast three categories!", Toast.LENGTH_SHORT).show();
+    }
 }

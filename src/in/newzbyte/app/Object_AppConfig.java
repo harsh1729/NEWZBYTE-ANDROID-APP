@@ -142,6 +142,22 @@ public class Object_AppConfig {
 			editor.commit();
 		}
 	}
+	
+	public String getUserEmail() {
+		String email = "";
+		if(prefs != null)
+			email = prefs.getString("appConfig_email", "");
+		
+		return email;
+	}
+	public void setUserEmail(String mail) {
+		if (editor != null) {
+			editor.putString("appConfig_email", mail);
+			editor.commit();
+		}
+	}
+	
+	
 
 	public boolean isNotificationEnabled() {
 		boolean notificationEnabled = true;
@@ -172,6 +188,8 @@ public class Object_AppConfig {
 			editor.commit();
 		}
 	}
+	
+	
 	
 	/* Sending full path fro server now
 	  
