@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/imgHomeLoading"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="200dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/loading" />
 
@@ -140,8 +140,8 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
             android:clickable="true"
             android:onClick="tapOnShowDetails"
             android:scaleType="centerCrop"
@@ -153,25 +153,38 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
             custom:childSize="@dimen/menuChildSize"
             custom:fromDegrees="@dimen/menuFromDegrees"
             custom:toDegrees="@dimen/menuToDegrees" >
         </in.xercesblue.arcmenu.ArcMenu>
 
         <ImageView
-            android:id="@+id/imgFavorite"
+            android:id="@+id/imgRate"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="60dp"
             android:clickable="true"
-            android:onClick="tapOnShowDetails"
+            android:onClick="onClickRateApp"
             android:scaleType="centerCrop"
-            android:src="@drawable/favourite_selected" />
+            android:src="@drawable/rate_circular" />
+        
+        <ImageView
+            android:id="@+id/imgComment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+             android:layout_alignParentBottom="true"
+           	android:layout_toLeftOf="@+id/imgRate"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:clickable="true"
+            android:onClick="onClickComment"
+            android:scaleType="centerCrop"
+            android:src="@drawable/comment_box" />
     </RelativeLayout>
 
     <!-- <LinearLayout -->

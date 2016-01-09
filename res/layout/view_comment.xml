@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llytContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:onClick="onClickCommentContainer"
+    android:background="@color/app_tranparent_black"
+    android:gravity="center"
+    android:padding="20dp"
+    android:orientation="vertical" >
+    
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_white"
+    android:padding="20dp"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+      <EditText
+                    android:id="@+id/edtEmail"
+        			android:layout_width="match_parent"
+    				android:layout_height="wrap_content"
+    				android:hint="Enter your email ..."
+    				android:layout_marginTop="10dp"
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_gray"/>
+      
+      <EditText
+                    android:id="@+id/edtName"
+        			android:layout_width="match_parent"
+    				android:layout_height="wrap_content"
+    				android:layout_marginTop="10dp"
+    				android:hint="Enter your name ..."
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_gray"/>
+      
+      <EditText
+                    android:id="@+id/edtComments"
+        			android:layout_width="match_parent"
+    				android:layout_height="wrap_content"
+    				android:layout_marginTop="10dp"
+                    android:minLines="3"
+    				android:hint="Enter your comments ..."
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_gray"/>
+      
+      <ImageView
+		    android:id="@+id/imgCommentPost"
+		    android:layout_marginTop="20dp"
+		    android:layout_marginBottom="10dp"
+		    android:layout_width="80dp"
+		    android:layout_height="40dp"
+		    android:onClick="onClickCommentPost"
+		    android:src="@drawable/selector_btn_post" />
+      
+  </LinearLayout>
+    
+
+    
+</LinearLayout>

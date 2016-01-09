@@ -1,91 +1,88 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/rlyt_newsdetail_conatiner"
     android:layout_height="match_parent"
     android:background="@color/app_white"
     android:padding="0dp"
     tools:context="${relativePackage}.${activityClass}" >
-    
-	<RelativeLayout
-	    android:id="@+id/llyt_detailHeader"
+
+    <RelativeLayout
+        android:id="@+id/llyt_detailHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:padding="10dp" >
 
-		<ImageView
-		    android:id="@+id/imgBack"
-		    android:layout_width="30dp"
-		    android:layout_height="30dp"
-		    android:onClick="goBack"
-		    android:layout_alignParentLeft="true"
-		    android:src="@drawable/back" />
-		 <!--  <TextView
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:onClick="goBack"
+            android:src="@drawable/back" />
+        
+        <TextView
         android:id="@+id/txtCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/app_white"
         android:textSize="@dimen/font_lbl_normal" 
         android:layout_centerInParent="true"   
-        android:textStyle="bold" /> -->
-		    
-		    <ImageView
-		    android:layout_width="30dp"
-		    android:layout_height="30dp"
-		    android:onClick="shareClick"
-		    android:layout_alignParentRight="true"
-		    android:src="@drawable/share"
-            android:clickable="true"/>
-		
-		
-		
+        android:textStyle="bold" />
         
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="shareClick"
+            android:src="@drawable/share" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/llyt_hrline"
-	    android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_below="@+id/llyt_detailHeader"
         android:background="@color/app_lightgray"
-        android:layout_height="1dp" >
-   </LinearLayout>
-    
-   
+        android:orientation="horizontal" >
+    </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scrollNewsDetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_white"
-        android:layout_below="@+id/llyt_hrline" >
+        android:layout_below="@+id/llyt_hrline"
+        android:background="@color/app_white" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            
+            android:orientation="vertical" >
 
-             <TextView
-        android:id="@+id/txtHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textColor="@color/app_black"
-        android:layout_below="@+id/llyt_hrline"
-        android:textSize="@dimen/font_lbl_large"
-        android:textStyle="bold" />
-             
-             <LinearLayout
-            android:id="@+id/llyt_mainContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/txtHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/font_lbl_large"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/llyt_mainContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
             </LinearLayout>
-             
-            
-            <!-- <ImageView
+
+            <!--
+            <ImageView
                 android:id="@+id/imgNews"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -98,10 +95,47 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/font_lbl_normal"
-                android:layout_marginBottom="10dp" /> -->
+                android:layout_marginBottom="10dp" />
+            -->
+<LinearLayout
+                android:id="@+id/llyt_commentsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/llyt_hrline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/app_lightgray"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+                
+                <TextView 
+                    android:id="@+id/txtComments"
+        			android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:text ="Comments"
+    				android:layout_margin="20dp"
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_gray"
+    				android:textStyle="bold"
+    				/>
+                <EditText
+                    android:id="@+id/edtWriteComments"
+        			android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:hint="Add your comment ..."
+    				android:editable="false"
+    				android:clickable="true"
+    				android:onClick="onClickWriteComment"
+    				android:layout_margin="10dp"
+    				android:textSize="@dimen/font_lbl_normal"
+    				android:textColor="@color/app_gray"/>
+            </LinearLayout>
+            
         </LinearLayout>
     </ScrollView>
-
-    
 
 </RelativeLayout>

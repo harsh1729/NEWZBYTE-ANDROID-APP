@@ -26,7 +26,7 @@
         <ImageView 
             android:layout_height="30dp"
             android:layout_width="30dp"
-            android:src="@drawable/up"
+            android:src="@drawable/arrow_up"
     		android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:clickable="true"
@@ -281,13 +281,5 @@
         </LinearLayout>
     </ScrollView>
 
-<!--     <ImageView -->
-<!--         android:id="@+id/imgLogoWeb" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="12dp" -->
-<!--         android:layout_gravity="bottom" -->
-<!--         android:layout_margin="10dp" -->
-<!--         android:scaleType="fitCenter" -->
-<!--         android:src="@drawable/website" /> -->
     
 </LinearLayout>

@@ -47,20 +47,23 @@
 		    android:src="@drawable/back" />
 		<TextView
         android:id="@+id/txtHeading"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/app_black_dark"
-        android:textSize="@dimen/font_lbl_small_medium2"   
-        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/font_lbl_small_medium2"
+        android:layout_toRightOf="@+id/imgBack" 
+        android:layout_toLeftOf="@+id/imgDone"
         android:text="@string/txt_intro3_cat_chooser"
         android:textStyle="bold" />
         <ImageView
-		    android:id="@+id/imgOK"
-		    android:layout_width="30dp"
+		    android:id="@+id/imgDone"
+		    android:layout_width="60dp"
 		    android:layout_height="30dp"
 		    android:onClick="moveToNewsScreen"
 		    android:layout_alignParentRight="true"
-		    android:src="@drawable/back" />
+		    android:src="@drawable/selector_btn_done" />
     </RelativeLayout>
     
      <LinearLayout
