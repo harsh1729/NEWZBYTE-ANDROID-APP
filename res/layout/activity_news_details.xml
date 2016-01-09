@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/rlyt_newsdetail_conatiner"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_white"
     android:padding="0dp"
@@ -21,16 +21,15 @@
             android:layout_alignParentLeft="true"
             android:onClick="goBack"
             android:src="@drawable/back" />
-        
+
         <TextView
-        android:id="@+id/txtCat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/app_white"
-        android:textSize="@dimen/font_lbl_normal" 
-        android:layout_centerInParent="true"   
-        android:textStyle="bold" />
-        
+            android:id="@+id/txtCat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/font_lbl_normal"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="30dp"
@@ -97,44 +96,57 @@
                 android:textSize="@dimen/font_lbl_normal"
                 android:layout_marginBottom="10dp" />
             -->
-<LinearLayout
+
+            <LinearLayout
+                android:id="@+id/llyt_hrline2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/app_lightgray"
+                android:orientation="horizontal" >
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/llyt_commentsContainerTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp" >
+               <RelativeLayout 
+                   android:id="@+id/llyt_commentsContainer2"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Comments"
+                    android:textColor="@color/app_gray"
+                    android:textSize="@dimen/font_lbl_normal"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtWriteComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:layout_alignParentRight="true"
+                    android:hint="Add your comment ..."
+                    android:onClick="onClickWriteComment"
+                    android:textColor="@color/app_gray"
+                    android:textSize="@dimen/font_lbl_normal" />
+                </RelativeLayout>
+                 <LinearLayout
                 android:id="@+id/llyt_commentsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="10dp" >
-
-                <LinearLayout
-                    android:id="@+id/llyt_hrline2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/app_lightgray"
-                    android:orientation="horizontal" >
+                android:layout_below="@+id/llyt_commentsContainer2"
+                android:orientation="vertical" >
                 </LinearLayout>
-                
-                <TextView 
-                    android:id="@+id/txtComments"
-        			android:layout_width="wrap_content"
-    				android:layout_height="wrap_content"
-    				android:text ="Comments"
-    				android:layout_margin="20dp"
-    				android:textSize="@dimen/font_lbl_normal"
-    				android:textColor="@color/app_gray"
-    				android:textStyle="bold"
-    				/>
-                <EditText
-                    android:id="@+id/edtWriteComments"
-        			android:layout_width="wrap_content"
-    				android:layout_height="wrap_content"
-    				android:hint="Add your comment ..."
-    				android:editable="false"
-    				android:clickable="true"
-    				android:onClick="onClickWriteComment"
-    				android:layout_margin="10dp"
-    				android:textSize="@dimen/font_lbl_normal"
-    				android:textColor="@color/app_gray"/>
-            </LinearLayout>
-            
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
