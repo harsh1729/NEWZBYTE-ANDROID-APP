@@ -31,7 +31,7 @@ public class Custom_GCM_Register{
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	
 
-	public static final String GCM_ID = "gcmId";
+	public static final String GCM_ID = "gcmIdNB";
 	private final String KEY_GCM_PREF = "GCM_Prefs";
 	TextView txtgcmId;
 
@@ -49,7 +49,8 @@ public class Custom_GCM_Register{
 				"checkPlayServices called");
 		int resultCode = GooglePlayServicesUtil
 				.isGooglePlayServicesAvailable(context);
-		if (resultCode != ConnectionResult.SUCCESS) 
+		if (resultCode != ConnectionResult.SUCCESS) {
+			/*
 		if(!googlePlayServicesChecked()){
 			Log.d("GCM", "checkplayservices connectionresult success");
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
@@ -60,6 +61,8 @@ public class Custom_GCM_Register{
 						"this device is not supported google play services !");
 			
 			}
+			}
+			*/
 			return false;
 		}
 		return true;
@@ -80,9 +83,9 @@ public class Custom_GCM_Register{
 			SharedPreferences prefs = this.context.getSharedPreferences(KEY_GCM_PREF, Context.MODE_PRIVATE);
 			boolean  isAlreadyChecked = prefs.getBoolean("GPS_checked", false);
 			
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean("GPS_checked", true);
-			editor.commit();
+			//SharedPreferences.Editor editor = prefs.edit();
+			//editor.putBoolean("GPS_checked", true);
+			//editor.commit();
 			
 			return isAlreadyChecked;
 			
@@ -117,7 +120,7 @@ public class Custom_GCM_Register{
 						gcm = GoogleCloudMessaging.getInstance(context);
 					}
 					gcmId = gcm.register(Globals.GCM_SENDER_ID);
-                    storeRegistrationId(context, gcmId);
+                   // storeRegistrationId(context, gcmId);
                    
                     
 				} catch (IOException ex) {
@@ -146,6 +149,7 @@ public class Custom_GCM_Register{
 					public void onResponse(JSONObject response) {
 						Log.i("GCM", "json registerOnServer recieved !!"
 								+ response.toString());
+						storeRegistrationId(context, gcmId);
 					}
 				}, new ErrorListener() {
 					@Override

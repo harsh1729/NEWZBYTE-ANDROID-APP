@@ -19,7 +19,6 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,9 +47,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +71,7 @@ GestureDetector.OnDoubleTapListener {
 	View viewMoving;
 	View viewStatic;
 	RelativeLayout viewLoading;
+	ImageView imgLoadingAnim;
 	View viewSettings;
 	
 	AnimationDrawable bAmin;
@@ -97,9 +95,11 @@ GestureDetector.OnDoubleTapListener {
 	private Boolean isTopIconBarHidden = false;
 	static Boolean comingFromPushMessage = false;
 	private boolean doubleBackToExitPressedOnce = false;
+	private boolean isCategoryChanged = false;
+	//private boolean loadingAnimationStarted = false;
 	ImageView imgMenu;
 	ImageView imgGoToTop;
-
+	
 	private ActionBarDrawerToggle mDrawerToggle;
 	private DrawerLayout mDrawerLayout;
 
@@ -109,16 +109,16 @@ GestureDetector.OnDoubleTapListener {
 	private RelativeLayout rlytDrawerPane;
 
 
-	ArrayList<Object_ListItem_MainNews> listNewsItemServer;
+	ArrayList<Object_ListItem_MainNews> listNewsItemServer = new ArrayList<Object_ListItem_MainNews>();
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
-	private ProgressDialog mDialog;
+	//private ProgressDialog mDialog;
 	//private ArcMenu arcMenu;
 	
 	private static final String DEBUG_TAG = "Gestures";
     private GestureDetectorCompat mDetector; 
 
-    LinearLayout llytYellow;
-    LinearLayout llytGreen;
+    //LinearLayout llytYellow;
+    //LinearLayout llytGreen;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -170,7 +170,7 @@ GestureDetector.OnDoubleTapListener {
 		imgMenu = (ImageView)findViewById(R.id.imgMenu);
 		imgGoToTop = (ImageView)findViewById(R.id.imgGoToTop);
 		
-		int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
+		//int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
 		//rlytDrawerPane.getLayoutParams().width = drawerWidth;
 
 		//ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
@@ -188,7 +188,7 @@ GestureDetector.OnDoubleTapListener {
 		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//txt.setTypeface(tfCat);
 		
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.menu, R.string.drawer_open, R.string.drawer_close) {
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.home_header_menu, R.string.drawer_open, R.string.drawer_close) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
@@ -206,15 +206,19 @@ GestureDetector.OnDoubleTapListener {
 				isDrawerOpen=false;
 				//btnMenu.setBackgroundResource(R.drawable.anim_arrow_to_menu);
 				//drawerEventAnim();
+				
+				if(isCategoryChanged){
+					refresh();
+					isCategoryChanged = false;
+				}
+					
 			}
 
 			@Override
 			public void onDrawerSlide(View drawerView, float slideOffset)
 			{
 				super.onDrawerSlide(drawerView, slideOffset);
-
 				float moveFactor = (rlytDrawerPane.getWidth() * slideOffset);
-
 				rlytMainContent.setTranslationX(moveFactor);
 			}
 			/* earlier versions.
@@ -233,6 +237,9 @@ GestureDetector.OnDoubleTapListener {
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
 
+		if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
+			new Custom_GCM_Register(this);
+		}
 		refresh();
 	}
 
@@ -240,15 +247,23 @@ GestureDetector.OnDoubleTapListener {
 		
 		//mDrawerLayout.setEnabled(false);
 		isMovingViewCurrent = false;
-				addLoadingView();
+				
 
 				if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
-
+					addLoadingView();
 					serverCallForCategoriesAndNews();
-
-					new Custom_GCM_Register(this);
+					//new Custom_GCM_Register(this);
 				}else{
-					loadNewsCatFromDB();
+					
+					//final Handler handler = new Handler();
+					//handler.postDelayed(new Runnable() {
+					  //@Override
+					 // public void run() {
+						  
+						  loadNewsCatFromDB();
+					  //}
+					//}, 1000);
+					
 					Globals.showAlertDialogOneButton(
 							Globals.TEXT_CONNECTION_ERROR_HEADING,
 							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
@@ -281,7 +296,7 @@ GestureDetector.OnDoubleTapListener {
 
 		}else{
 			isFirstResume = false;
-
+			//refresh();
 		}
 	}
 	
@@ -320,9 +335,9 @@ GestureDetector.OnDoubleTapListener {
 
 		DBHandler_MainNews dbH = new DBHandler_MainNews(this);
 		listNewsItemServer = dbH.getAllMainNews();
-		Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
-		objDummySettings.setId(-999);
-		listNewsItemServer.add(objDummySettings);
+		//Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
+		//objDummySettings.setId(-999);
+		//listNewsItemServer.add(objDummySettings);
 		currentNewsIndex = -1;
 		isMovingViewCurrent = true;
 		if(comingFromPushMessage){
@@ -335,10 +350,10 @@ GestureDetector.OnDoubleTapListener {
 				//isMovingViewCurrent = true;
 				currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 			}
-			else
-				if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-					Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-		
+			if(GCMIntentService.pushMessageNeedsPopUp == 1){
+				//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+					Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
+			}
 		}
 		//arraySelectedCatIds.clear();
 		viewStatic = createNewsView();
@@ -347,210 +362,10 @@ GestureDetector.OnDoubleTapListener {
 
 
 	}
-	private void  addLoadingView(){
-
-		if(viewLoading == null){
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
-
-		viewLoading =(RelativeLayout) inflater.inflate(R.layout.view_loading, rlytMainContent,false);
-		}
-		
-		viewLoading.setVisibility(View.VISIBLE);
-
-		//ImageView imgViewLogo = (ImageView)viewLoading.findViewById(R.id.imgLogoXB);
-
-		//int screenWidth = Globals.getScreenSize(this).x;
-		//int logoWidth = screenWidth/100 * 50 ;
-		//Options options = new BitmapFactory.Options();
-		//options.inScaled = false;
-		//Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.xb, options);
-		//logo = Globals.scaleToWidth(logo,logoWidth);
-		//imgViewLogo.setImageBitmap(logo);
-		
-		
-		rlytMainContent.addView(viewLoading);
-		startAnimationLoading(100);
-
-	}
 	
 	
-	private void startAnimationLoading(int delay){
-		if(viewLoading == null || viewLoading.getVisibility() == View.GONE)
-			return;
-		
-		
-		viewLoading.removeAllViews();
-		
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
-	    llytGreen=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
-		llytGreen.setBackgroundResource(R.color.app_loading_color_1);
-		
-		llytGreen.setY(-1*Globals.getScreenSize(this).y);
-		viewLoading.addView(llytGreen);
-		
-		llytGreen.animate().setDuration(400).setStartDelay(delay)
-		.translationY(0).setListener(new AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) {///
-				animationYellowMove();
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-	}
 	
-	private void animationYellowMove(){
 
-		
-		LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
-	    llytYellow=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
-	    llytYellow.setBackgroundResource(R.color.app_loading_color_2);
-		
-	    llytYellow.setY(Globals.getScreenSize(Activity_Home.this).y);
-		viewLoading.addView(llytYellow);
-		
-		llytYellow.animate().setDuration(400).setStartDelay(300)
-		.translationY(0).setListener(new AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) { ///
-				
-				animationYellowFade();
-				
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	}
-	private void animationYellowFade(){
-		viewLoading.removeView(llytGreen);
-		ImageView imgView = new ImageView(Activity_Home.this);
-		imgView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		imgView.setImageResource(R.drawable.collarge);
-		
-		viewLoading.addView(imgView, 0);
-		Animation fadeOut = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_out);
-		fadeOut.setStartOffset(300);
-		fadeOut.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {////
-            	//llytYellow.setVisibility(View.GONE);
-            	animationWhiteFadeIn();
-            }
-        });
-        llytYellow.startAnimation(fadeOut);
-	}
-	private void animationWhiteFadeIn(){
-		llytYellow.setAnimation(null);
-		viewLoading.removeView(llytYellow);
-    	LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
-    	LinearLayout llytWhite=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
-    	llytWhite.setBackgroundResource(R.color.app_white);
-    	Animation fadeIn = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_in);
-    	viewLoading.addView(llytWhite);
-    	fadeIn.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            	animationMOveNewzByteLogo();
-            }
-        });
-    	fadeIn.setStartOffset(100);
-    	
-    	llytWhite.startAnimation(fadeIn);
-	}
-	
-	private void animationMOveNewzByteLogo(){
-		
-		ImageView imgView = new ImageView(Activity_Home.this);
-		int size = 200;
-		imgView.setLayoutParams(new LayoutParams(size, size));
-		imgView.setImageResource(R.drawable.newzbyte);
-		viewLoading.addView(imgView);
-		
-		imgView.setY(Globals.getScreenSize(Activity_Home.this).y);
-		imgView.setX(Globals.getScreenSize(Activity_Home.this).x/2 - size/2);
-			
-		imgView.animate().setDuration(300).setStartDelay(100)
-			.translationY(Globals.getScreenSize(Activity_Home.this).y/2 - size/2).setListener(new AnimatorListener() {
-				
-				@Override
-				public void onAnimationStart(Animator arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onAnimationEnd(Animator arg0) { 
-					//startAnimationLoading(1000);
-				}
-				
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-	}
 	private View createNewsView(){
 
 		if(listNewsItemServer == null ){
@@ -579,7 +394,7 @@ GestureDetector.OnDoubleTapListener {
 					//currentNewsIndex = listNewsItemServer.size() ;
 				//}
 				currentNewsIndex = listNewsItemServer.size() - 1;
-				//Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
 				////////Commented to copy functionality of Murmur
 				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
 				
@@ -594,7 +409,7 @@ GestureDetector.OnDoubleTapListener {
 			
 			//Special case when no slide
 			if(copyCurrentNewsIndex == 0){
-				imgGoToTop.setImageResource(R.drawable.refresh);
+				imgGoToTop.setImageResource(R.drawable.home_header_refresh);
 				currentNewsIndex = copyCurrentNewsIndex;
 				imgGoToTop.setOnClickListener(new OnClickListener() {
 					
@@ -607,7 +422,7 @@ GestureDetector.OnDoubleTapListener {
 				setHeader();
 				
 			}else{
-				imgGoToTop.setImageResource(R.drawable.go_to_top);
+				imgGoToTop.setImageResource(R.drawable.home_header_up);
 				imgGoToTop.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -643,12 +458,15 @@ GestureDetector.OnDoubleTapListener {
 			///return createNewsView();
 		///}
 
+		//Below code is to add custom last page .. commented as of now
+		/*
 		if(objNews.getId() == -999){
 			currentNewsIndex = copyCurrentNewsIndex;
 			View viewSettting = initViewSetting(true);
 			rlytNewsContent.addView(viewSettting,0);
 			return viewSettting;
 		}
+		*/
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -769,6 +587,7 @@ GestureDetector.OnDoubleTapListener {
 		}
 		///Arc menu copied to each view
 		
+		/*
 		final ArcMenu arcMenu = (ArcMenu)newView.findViewById(R.id.arcMenu1);
 		
 		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
@@ -786,22 +605,22 @@ GestureDetector.OnDoubleTapListener {
 				}
 			});
         }
-		
+		*/
 		ImageView imageDeatil = (ImageView)newView.findViewById(R.id.imgShowDetail);
-		ImageView imgComment = (ImageView)newView.findViewById(R.id.imgComment);
+		//ImageView imgComment = (ImageView)newView.findViewById(R.id.imgComment);
 		switch (objNews.getTypeId()) {
 		case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
 			imageDeatil.setVisibility(View.GONE);
-			imgComment.setVisibility(View.GONE);
+			//imgComment.setVisibility(View.GONE);
 			break;
 		case Globals.NEWS_TYPE_ID_TEXT:
 			//imageDeatil.setVisibility(View.VISIBLE);
-			imageDeatil.setImageResource(R.drawable.show_detail);
+			imageDeatil.setImageResource(R.drawable.home_footer_view);
 			
 			break;
 		case Globals.NEWS_TYPE_ID_VIDEO:
-			imageDeatil.setImageResource(R.drawable.play);
-			imgComment.setVisibility(View.GONE);
+			imageDeatil.setImageResource(R.drawable.home_footer_play);
+			//imgComment.setVisibility(View.GONE);
 			break;
 
 		default:
@@ -809,8 +628,11 @@ GestureDetector.OnDoubleTapListener {
 		}
 		return newView;
 	}
-	
 	//TODO
+	public void onClickShareMain(View v){
+		
+	}
+	
 	public void shareIntent()
     {    
 		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
@@ -828,9 +650,9 @@ GestureDetector.OnDoubleTapListener {
 						// currentNewsItem.getContent()
 						"Read more @\n"
 						+ currentNewsItem.getShareLink()
-								+ "\nvia "
+								+ "\n\nvia "
 								+ getResources().getString(
-										R.string.news_paper_name) +" for Android" + "\nDownload at "+ Globals.SHARE_URL);
+										R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
@@ -839,9 +661,10 @@ GestureDetector.OnDoubleTapListener {
 						//"Read more @\n"
 								//+ getResources().getString(
 										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-										"via "
+						currentNewsItem.getHeadingSpan()+	
+						"\n\nvia "
 										+ getResources().getString(
-												R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
+												R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			}
 
 			File imgF = takeScreenshot(
@@ -879,58 +702,7 @@ GestureDetector.OnDoubleTapListener {
 			}
 		}
 		
-		/*Intent sendIntent = new Intent();
-		sendIntent.setAction(Intent.ACTION_SEND);
-
-		if (android.os.Build.VERSION.SDK_INT >= 13) 
-		{
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-					"News Heading"+ "\n\n");
-		}else{
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-					"News Heading"  + "\n\n");
-		}
-
-
-		{
-			sendIntent.putExtra(
-					Intent.EXTRA_TEXT,
-					"Read more @\n"
-							+ 
-									"Website LInk"//+"/detail/"+currentNewsItem.getId()
-									+ "\nvia "
-									+ 
-											"Company name"+" for Android");
-		}
-
-		File imgF = takeScreenshot("Read more @ "+ "company link"+ " via "
-						+ "compony name"+" for Android");
-
-		sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
-		Log.i("jaspal","image Path is :"+Uri.fromFile(imgF));
-
-		sendIntent.setType("image/*"); 
-		sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
-		
-		ArrayList<String> listPackageDetail = getPackageName(optNumber);
-		
-		if(listPackageDetail.size()==0){
-			// Open all options
-			startActivity(Intent.createChooser(sendIntent, "Share Via"));
-		}
-		else if(listPackageDetail.size()>0)
-		{
-			if(isPackageInstalled(listPackageDetail.get(0),this)){
-		
-				sendIntent.setPackage(listPackageDetail.get(0)); 
-				startActivity(Intent.createChooser(sendIntent, "Share Image"));
-
-			}else{
-				Toast.makeText(getApplicationContext(), "Please Install "+listPackageDetail.get(1), Toast.LENGTH_LONG).show();
-			}
-		}*/
     }
-	//TODO
 	private ArrayList<String> getPackageName(int optionNumber)
     {
     	ArrayList<String> res = new ArrayList<String>();
@@ -1011,11 +783,116 @@ GestureDetector.OnDoubleTapListener {
 
 		
 	}
+	
+	private void  addLoadingView(){
 
+		if(viewLoading == null){
+			LayoutInflater inflater = (LayoutInflater)this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+
+			viewLoading =(RelativeLayout) inflater.inflate(R.layout.view_loading, rlytMainContent,false);
+			
+			int y = Globals.getScreenSize(this).y;
+			
+			ImageView imgLoadingFooter =(ImageView) viewLoading.findViewById(R.id.imgLoadingFooter);
+			ImageView imgLoadingNewzByte =(ImageView) viewLoading.findViewById(R.id.imgLoadingNewzByte);
+			
+			imgLoadingFooter.getLayoutParams().height = (int) (y * 0.4);
+			imgLoadingFooter.getLayoutParams().width = (int) (y * 0.4);
+			
+			imgLoadingNewzByte.getLayoutParams().height = (int) (y * 0.25);
+			
+			rlytMainContent.addView(viewLoading);
+			
+		}
+		
+		viewLoading.setVisibility(View.VISIBLE);
+
+		//ImageView imgViewLogo = (ImageView)viewLoading.findViewById(R.id.imgLogoXB);
+
+		//int screenWidth = Globals.getScreenSize(this).x;
+		//int logoWidth = screenWidth/100 * 50 ;
+		//Options options = new BitmapFactory.Options();
+		//options.inScaled = false;
+		//Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.xb, options);
+		//logo = Globals.scaleToWidth(logo,logoWidth);
+		//imgViewLogo.setImageBitmap(logo);
+		
+		//rlytMainContent.removeView(viewLoading);
+		//rlytMainContent.addView(viewLoading);
+		//imgLoadingAnim =(ImageView) viewLoading.findViewById(R.id.imgLoadingAnim);
+		
+		
+		try{
+			//imgLoadingAnim.setBackgroundResource(0);
+			//imgLoadingAnim.setBackgroundResource(R.drawable.anim_newzbyte_intro);
+			
+			//bAmin = (AnimationDrawable) imgLoadingAnim.getBackground();
+			//bAmin.setOneShot(true);
+			//bAmin.start();
+			/*
+			loadingAnimationStarted = true;
+				
+			final Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+			  @Override
+			  public void run() {
+				  loadingAnimationStarted = false;
+			  }
+			}, getTotalAnimationDuration(bAmin));
+			*/
+		}
+		catch(OutOfMemoryError err){
+			Log.e("HARSH", "Memory Error !");
+			System.gc();
+		}
+		catch(Exception ex){
+
+		}
+		//startAnimationLoading(100);
+
+	}
+
+	public int getTotalAnimationDuration(AnimationDrawable bAmin) {
+
+        int iDuration = 0;
+
+        for (int i = 0; i < bAmin.getNumberOfFrames(); i++) {
+            iDuration += bAmin.getDuration(i);
+        }
+        
+        iDuration += 100;
+        return iDuration;
+    }
 	private void hideLoadingView(){
 
 		if(viewLoading!= null){
 
+			/*
+			//if(bAmin != null){
+				if(loadingAnimationStarted){
+
+					final Handler handler = new Handler();
+					handler.postDelayed(new Runnable() {
+					  @Override
+					  public void run() {
+						  Activity_Home.this.runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									hideLoadingView();
+								}
+							});
+					  }
+					}, 200);
+					
+					return;
+
+				}
+			//}
+			 
+			 
 			viewLoading.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION)
 			.translationY(viewLoading.getHeight() *-1)
 			.alpha(1.0f).setListener(new AnimatorListener() {
@@ -1034,15 +911,20 @@ GestureDetector.OnDoubleTapListener {
 
 				@Override
 				public void onAnimationEnd(Animator arg0) {
+					imgLoadingAnim =(ImageView) viewLoading.findViewById(R.id.imgLoadingAnim);
+					imgLoadingAnim.setBackgroundResource(0);
 					viewLoading.setVisibility(View.GONE);
 					rlytMainContent.removeView(viewLoading);
-
+					viewLoading = null;
+					bAmin = null;
 				}
 
 				@Override
 				public void onAnimationCancel(Animator arg0) {
 					viewLoading.setVisibility(View.GONE);
 					rlytMainContent.removeView(viewLoading);
+					viewLoading = null;
+					bAmin = null;
 
 				}
 			});
@@ -1050,6 +932,12 @@ GestureDetector.OnDoubleTapListener {
 
 		}else{
 			Log.i("Bytes", "viewMoving is null");
+		}
+		
+		*/
+			viewLoading.setVisibility(View.GONE);
+			rlytMainContent.removeView(viewLoading);
+			viewLoading = null;
 		}
 
 	}
@@ -1119,7 +1007,7 @@ GestureDetector.OnDoubleTapListener {
 				}
 				
 				if(currentNewsIndex == 0){
-					imgGoToTop.setImageResource(R.drawable.refresh);
+					imgGoToTop.setImageResource(R.drawable.home_header_refresh);
 					imgGoToTop.setOnClickListener(new OnClickListener() {
 						
 						@Override
@@ -1130,7 +1018,7 @@ GestureDetector.OnDoubleTapListener {
 					});
 					
 				}else{
-					imgGoToTop.setImageResource(R.drawable.go_to_top);
+					imgGoToTop.setImageResource(R.drawable.home_header_up);
 					imgGoToTop.setOnClickListener(new OnClickListener() {
 						
 						@Override
@@ -1246,19 +1134,19 @@ GestureDetector.OnDoubleTapListener {
 	private void setHeader(){
 		
 		if(currentNewsIndex >=0 && currentNewsIndex < listNewsItemServer.size() - 1){
-		RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+		//RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
 		DBHandler_Category dbCat = new DBHandler_Category(this);
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
 		String catColor = dbCat.getCategoryColor(objNews.getCatId());
 		Log.i("Darsh", "catColor"+catColor);
-		if(!catColor.isEmpty()){
-			rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
-		}
-		TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
-		Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		txtCategory.setTypeface(tfCat);
+		//if(!catColor.isEmpty()){
+			//rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
+		//}
+		//TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
+		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		//txtCategory.setTypeface(tfCat);
 		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
-		txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
+		//txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
 		}
 	}
 
@@ -1692,6 +1580,7 @@ GestureDetector.OnDoubleTapListener {
 */
     private void tapOnView(){
     	
+    	/*
     	if(viewStatic != null){
     		ArcMenu arcMenu = (ArcMenu)viewStatic.findViewById(R.id.arcMenu1);
     		if(arcMenu != null)
@@ -1701,7 +1590,7 @@ GestureDetector.OnDoubleTapListener {
     			}
     				
     	}
-    	
+    	*/
     	if(isTopIconBarHidden)
     		showTopIconsBar();
     	else
@@ -1817,7 +1706,7 @@ GestureDetector.OnDoubleTapListener {
 		}
 	
 		//setBootomBarStatus();
-
+		isCategoryChanged = true;
 	}
 	
 	
@@ -1931,9 +1820,10 @@ GestureDetector.OnDoubleTapListener {
 						//"Read more @\n"
 						//+ getResources().getString(
 								//R.string.txt_company_website)
-								"via "
+						currentNewsItem.getHeadingSpan()+
+								"\n\nvia "
 								+ getResources().getString(
-										R.string.news_paper_name) +" for Android" + "\nDownload at "+ Globals.SHARE_URL);
+										R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
@@ -1942,9 +1832,10 @@ GestureDetector.OnDoubleTapListener {
 						//"Read more @\n"
 								//+ getResources().getString(
 										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-										 "via "
+						currentNewsItem.getHeadingSpan()+			 
+						"\n\nvia "
 										+ getResources().getString(
-												R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
+												R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			}
 
 			File imgF = takeScreenshot(
@@ -2003,7 +1894,7 @@ GestureDetector.OnDoubleTapListener {
 		
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
 		ArrayList<Integer> Ids = dbH.getAllCategories();
-		DBHandler_Category dbCat = new DBHandler_Category(this);
+		//DBHandler_Category dbCat = new DBHandler_Category(this);
 		for(int i = 0 ; i< listCatItemServer.size() ; i++){
 
 			//if(i%3 == 0){
@@ -2106,11 +1997,14 @@ GestureDetector.OnDoubleTapListener {
 		//int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
 		
 		///
-		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
-		int heightImage = (int) ((scrollViewCat.getHeight() - 6* margin )/6.0 ) ;
+		int headerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, getResources().getDisplayMetrics());
+		int totalHeight = Globals.getScreenSize(this).y - headerHeight;
+		//ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+		
+		int heightImage = (int) ((totalHeight - 6* margin )/6.0 ) ;
 		int widthImage = heightImage;
 		///
-		Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight());
+		Log.d("DARSH","scrollViewCat.getHeight():"+totalHeight);
 		Log.d("DARSH","widthImage:"+widthImage);
 		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
 
@@ -2291,8 +2185,8 @@ GestureDetector.OnDoubleTapListener {
 
 			Object_AppConfig objConfig = new Object_AppConfig(this);
 
-			 boolean hasNews = false;
-			 boolean hasCategory = false;
+			// boolean hasNews = false;
+			// boolean hasCategory = false;
 
 			//// If news is there insert new news News
 			if (response.has("news")) {
@@ -2302,9 +2196,9 @@ GestureDetector.OnDoubleTapListener {
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
 				listNewsItemServer = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig
 						.getRootCatId());
-				Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
-				objDummySettings.setId(-999);
-				listNewsItemServer.add(objDummySettings);
+				//Object_ListItem_MainNews objDummySettings = new Object_ListItem_MainNews();
+				//objDummySettings.setId(-999);
+				//listNewsItemServer.add(objDummySettings);
 				currentNewsIndex = -1;
 				if(comingFromPushMessage){
 					comingFromPushMessage = false;
@@ -2315,10 +2209,10 @@ GestureDetector.OnDoubleTapListener {
 						isMovingViewCurrent = true;
 						currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 					}
-					else
-						if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-							Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-				
+					if(GCMIntentService.pushMessageNeedsPopUp == 1){
+						//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+							Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
+					}
 				}
 				isMovingViewCurrent = true;
 				viewStatic = createNewsView();
@@ -2326,7 +2220,7 @@ GestureDetector.OnDoubleTapListener {
 				if(rlytNewsContent.getChildCount() > 1)
 					rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount()-1);
 				preLoadImages();
-				hasNews = true;
+				//hasNews = true;
 				
 			}
 			// Now set Categories
@@ -2344,23 +2238,31 @@ GestureDetector.OnDoubleTapListener {
 						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(this);
 						listCatItemServer = parserObject.getCategoriesFromJson(Cat_Object_Array);
 						createDrawerCategories();
-						hasCategory = true;
+						//hasCategory = true;
 					}
 
 				} 
 			} 
 
-			 //Thread t = new Thread(new MyRunnable(hasNews,hasCategory));
-			 //t.start();
-			if(hasNews && listNewsItemServer != null){
-        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
-	        	dbH.insertNewsItemList(listNewsItemServer,true);
-        	}
+			final Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+			  @Override
+			  public void run() {
+				  if(listNewsItemServer != null && listNewsItemServer.size() > 0){
+		        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+			        	dbH.insertNewsItemList(listNewsItemServer,true);
+				  }
+				  if(listCatItemServer != null && listCatItemServer.size() > 0){
+					  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
+					  dbH2.setCategories(listCatItemServer);
+				  }
+				  
+			  }
+			}, 500);
+			
+			
         	
-		  if(hasCategory && listCatItemServer != null){
-			  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
-			  dbH2.setCategories(listCatItemServer);
-		  }
+		  
 
 		} catch (Exception ex) {
 			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
@@ -2562,6 +2464,7 @@ GestureDetector.OnDoubleTapListener {
 				}
 			}
 			
+			/* Uncomment when supporting language
 			TextView txtLanguage = (TextView) viewSettings.findViewById(R.id.txtLanguageSelected);
 
 			if(obj.getLangId() == Globals.LANG_ENG){
@@ -2569,7 +2472,7 @@ GestureDetector.OnDoubleTapListener {
 			}else if(obj.getLangId() == Globals.LANG_HINDI){
 				txtLanguage.setText("हिंदी");
 			}
-			
+			*/
 			//rlytMainContent.addView(viewSettings);
 		}
 		
@@ -2615,9 +2518,9 @@ GestureDetector.OnDoubleTapListener {
 	public void onClickNotification(View v){
 		Object_AppConfig obj = new Object_AppConfig(this);
 
-		TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
-		ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
-		ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
+		TextView txt =(TextView) v.findViewById(R.id.txtNotification);
+		ImageView imgImageView1 = (ImageView)v.findViewById(R.id.imgNotification1);
+		ImageView imgImageView2 = (ImageView)v.findViewById(R.id.imgNotification2);
 		if(obj.isNotificationEnabled()){
 			obj.setNotificationEnabled(false);
 			if(txt !=null){
@@ -2693,6 +2596,183 @@ GestureDetector.OnDoubleTapListener {
 
 /*
 
+	private void startAnimationLoading(int delay){
+		if(viewLoading == null || viewLoading.getVisibility() == View.GONE)
+			return;
+		
+		
+		viewLoading.removeAllViews();
+		
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+	    llytGreen=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+		llytGreen.setBackgroundResource(R.color.app_loading_color_1);
+		
+		llytGreen.setY(-1*Globals.getScreenSize(this).y);
+		viewLoading.addView(llytGreen);
+		
+		llytGreen.animate().setDuration(400).setStartDelay(delay)
+		.translationY(0).setListener(new AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) {///
+				animationYellowMove();
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+	private void animationYellowMove(){
+
+		
+		LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+	    llytYellow=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+	    llytYellow.setBackgroundResource(R.color.app_loading_color_2);
+		
+	    llytYellow.setY(Globals.getScreenSize(Activity_Home.this).y);
+		viewLoading.addView(llytYellow);
+		
+		llytYellow.animate().setDuration(400).setStartDelay(300)
+		.translationY(0).setListener(new AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) { ///
+				
+				animationYellowFade();
+				
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	private void animationYellowFade(){
+		viewLoading.removeView(llytGreen);
+		ImageView imgView = new ImageView(Activity_Home.this);
+		imgView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		imgView.setImageResource(R.drawable.collarge);
+		
+		viewLoading.addView(imgView, 0);
+		Animation fadeOut = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_out);
+		fadeOut.setStartOffset(300);
+		fadeOut.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {////
+            	//llytYellow.setVisibility(View.GONE);
+            	animationWhiteFadeIn();
+            }
+        });
+        llytYellow.startAnimation(fadeOut);
+	}
+	private void animationWhiteFadeIn(){
+		llytYellow.setAnimation(null);
+		viewLoading.removeView(llytYellow);
+    	LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+    	LinearLayout llytWhite=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
+    	llytWhite.setBackgroundResource(R.color.app_white);
+    	Animation fadeIn = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_in);
+    	viewLoading.addView(llytWhite);
+    	fadeIn.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            	animationMOveNewzByteLogo();
+            }
+        });
+    	fadeIn.setStartOffset(100);
+    	
+    	llytWhite.startAnimation(fadeIn);
+	}
+	
+	private void animationMOveNewzByteLogo(){
+		
+		ImageView imgView = new ImageView(Activity_Home.this);
+		int size = 200;
+		imgView.setLayoutParams(new LayoutParams(size, size));
+		imgView.setImageResource(R.drawable.newzbyte);
+		viewLoading.addView(imgView);
+		
+		imgView.setY(Globals.getScreenSize(Activity_Home.this).y);
+		imgView.setX(Globals.getScreenSize(Activity_Home.this).x/2 - size/2);
+			
+		imgView.animate().setDuration(300).setStartDelay(100)
+			.translationY(Globals.getScreenSize(Activity_Home.this).y/2 - size/2).setListener(new AnimatorListener() {
+				
+				@Override
+				public void onAnimationStart(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationEnd(Animator arg0) { 
+					//startAnimationLoading(1000);
+				}
+				
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+	}
+	
 private void updateCatTopNewsId(int catId, int newsId){
 		DBHandler_Category dbH = new DBHandler_Category(this);
 		dbH.updateCategoryTopNews(catId, newsId);

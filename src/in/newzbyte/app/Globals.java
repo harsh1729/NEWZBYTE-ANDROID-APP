@@ -48,8 +48,8 @@ public class Globals {
 	public final static String APP_TITLE = "Newz Byte App";
 	public final static String APP_PNAME = "in.newzbyte.app";
 	public final static String SHARE_URL = "goo.gl/k3Cvyl";//"https://play.google.com/store/apps/details?id="+APP_PNAME;
-	public final static String GCM_SENDER_ID = "82788197303";
-	public static final String DEFAULT_APP_SERVER_PATH= "http://app.newzbyte.in:9393/v2/client_requests/";//"http://103.248.80.133:9393/delhinewsserver/delhi-newsci/client_requests/";//"http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
+	public final static String GCM_SENDER_ID ="603181231697";// "82788197303";
+	public static final String DEFAULT_APP_SERVER_PATH = "http://highlinenews.org/v2/client_requests/";//"http://app.newzbyte.in:9393/v2/client_requests/";//"http://103.248.80.133:9393/delhinewsserver/delhi-newsci/client_requests/";//"http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";
 	
 
@@ -63,7 +63,7 @@ public class Globals {
 	public static final String TEXT_NOTIFICATION_DISABLED= "Notifications";
 	public static final int VOLLEY_TIMEOUT_MILLISECS = 15000;
 	public static final int CLIENT_ID = 4;
-	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 50;
+	public static final int FINAL_NEWS_LIMIT_FIRST_CALL = 100;
 	public static final int FINAL_NEWS_LIMIT_LOAD_OLD = 50;
 	public static final int FINAL_NEWS_LIMIT_LOAD_NEW = 50;
 	
@@ -199,7 +199,7 @@ static public void showAlertDialogOneButton(String title,String msg,Context cont
 		alertDialog.setTitle(Html.fromHtml(title));
 		alertDialog.setMessage(Html.fromHtml(msg));
 		alertDialog.setCancelable(isCancelable);
-		alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+		alertDialog.setIcon(R.drawable.newzbyte_small);
 		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,positiveButtonText,listnerPositive);
 		
 		if(negativeButtonText!= null && !negativeButtonText.equals("")){

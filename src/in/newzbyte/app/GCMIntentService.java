@@ -32,9 +32,11 @@ public class GCMIntentService extends IntentService {
 	}
 
 	public static final String TAG = "GCMIntentService";
-	public static String pushMessageHeader;
-	public static String pushMessageText;
-	public static long pushMessageNewsId;
+	public static String pushMessageHeader = "";
+	public static String pushMessageText = "";
+	public static long pushMessageNewsId = 0;
+	public static int pushMessageLangId = 0;
+	public static int pushMessageNeedsPopUp= 0;
 	
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -78,19 +80,32 @@ public class GCMIntentService extends IntentService {
 	private void sendNotification(Bundle extras) {
 		if (extras != null) {
 			Log.i("GCM",extras.toString());
+			try{
 			pushMessageHeader = extras.getString("heading", "");
 			pushMessageText = extras.getString("content", "");
 			pushMessageNewsId = Long.parseLong(extras.getString("newsid", "0"));//  extras.getInt("newsid", 0);
+			pushMessageLangId = Integer.parseInt(extras.getString("language", "0"));
+			pushMessageNeedsPopUp = Integer.parseInt(extras.getString("needpopup", "0"));
+			}catch(NumberFormatException ex){
+				
+			}catch(Exception ex){
+				
+			}
 			
 			Log.i("GCM", "Heading : "+pushMessageHeader + " Content  :"+pushMessageText +" NewsId  :"+pushMessageNewsId );
 			
 			//NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			// No message is passed
+			if(pushMessageHeader.trim().isEmpty()){
+				return;
+			}
+			Object_AppConfig obj = new Object_AppConfig(this);
 			
-			if(pushMessageHeader.isEmpty()){
+			if(pushMessageLangId != obj.getLangId()){ // Other language notification
 				return;
 			}
 			
-			Object_AppConfig obj = new Object_AppConfig(this);
+			
 			if(!obj.isNotificationEnabled()){
 				return;
 			}
@@ -101,8 +116,8 @@ public class GCMIntentService extends IntentService {
 				if (android.os.Build.VERSION.SDK_INT < 11) {
 					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 							this).setSmallIcon(R.drawable.ic_launcher)
-							.setContentTitle(this.getResources().getString(R.string.news_paper_name)).setContentText(Html.fromHtml(pushMessageHeader));
-					
+							.setContentTitle(Html.fromHtml(pushMessageHeader)).setContentText(Html.fromHtml(pushMessageText));
+					//this.getResources().getString(R.string.news_paper_name)
 					TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 					stackBuilder.addParentStack(Activity_Home.class);
 					stackBuilder.addNextIntent(intent);
@@ -127,17 +142,19 @@ public class GCMIntentService extends IntentService {
 					notification = new Notification.Builder(this)
 					.setSmallIcon(R.drawable.ic_launcher)
 					.setWhen(System.currentTimeMillis())
-					.setContentTitle(this.getResources().getString(R.string.news_paper_name)).setContentText(Html.fromHtml(pushMessageHeader))
+					.setContentTitle(Html.fromHtml(pushMessageHeader)).setContentText(Html.fromHtml(pushMessageText))
 					.setContentIntent(pIntent)
 					// .setContentInfo(
 					// String.valueOf(++MainActivity.numOfNotifications) )
 					.setLights(0xFFFF0000, 500, 500).getNotification();
+					
+					//this.getResources().getString(R.string.news_paper_name)
 				} else {
 					notification = new Notification.Builder(this)
 					.setSmallIcon(R.drawable.ic_launcher)
 					.setWhen(System.currentTimeMillis())
-					.setContentTitle(this.getResources().getString(R.string.news_paper_name))
-					.setContentText(Html.fromHtml(pushMessageHeader)).setContentIntent(pIntent)
+					.setContentTitle(Html.fromHtml(pushMessageHeader))
+					.setContentText(Html.fromHtml(pushMessageText)).setContentIntent(pIntent)
 					// .setContentInfo(
 					// String.valueOf(++MainActivity.numOfNotifications) )
 					.setLights(0xFFFF0000, 500, 500).build();

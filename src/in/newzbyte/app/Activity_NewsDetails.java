@@ -77,6 +77,8 @@ public class Activity_NewsDetails extends Activity {
 			txt.setText(objNews.getCatName());
 			
 			newsId = objNews.getId();
+			ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+			scroll.setVisibility(View.INVISIBLE);
 			getNewsDetail();
 			
 			}
@@ -122,23 +124,24 @@ public class Activity_NewsDetails extends Activity {
 		{
 			sendIntent.putExtra(
 					Intent.EXTRA_TEXT,
-					// currentNewsItem.getContent()
+					objNews.getHeadingSpan()+
 					"Read more @\n"
 							+ objNews.getShareLink()
-							+ "\nvia "
+							+ "\n\nvia "
 							+ getResources().getString(
-									R.string.news_paper_name) +" for Android "+"\nDownload at "+ Globals.SHARE_URL);
+									R.string.news_paper_name) +" for Android "+"\nDownload @ "+ Globals.SHARE_URL);
 		} 
 		else 
 		{
 			sendIntent.putExtra(
 					Intent.EXTRA_TEXT,
+					objNews.getHeadingSpan()+
 					//"Read more @\n"
 							//+ getResources().getString(
 									//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							 "via "
+							 "\n\nvia "
 							+ getResources().getString(
-									R.string.news_paper_name)+" for Android" + "\nDownload at "+ Globals.SHARE_URL);
+									R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 		}
 		
 		
@@ -532,18 +535,30 @@ public class Activity_NewsDetails extends Activity {
 
 		showComments();
 		
-		if(!isNavigationForComment){
+		TextView txtWriteComments = (TextView)findViewById(R.id.txtWriteComments);
+		txtWriteComments.setSelected(true);
+		ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
+		if(isNavigationForComment){
 
-			ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
-			scroll.postDelayed(new Runnable() {
+			
+			final Handler handler = new Handler();
+			
+			handler.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
 					 ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
-					 scroll.scrollTo(0, 0);
+					 scroll.scrollTo(0, scroll.getHeight());
+					 scroll.setVisibility(View.VISIBLE);
+					 Globals.hideLoadingDialog(mDialog);
 					
 				}
-			},500);
+			},100);
+		}else{
+			
+			scroll.setVisibility(View.VISIBLE);
+			Globals.hideLoadingDialog(mDialog);
+		}
 			
 			/*new Handler().postDelayed(new Runnable()
 			{
@@ -566,9 +581,9 @@ public class Activity_NewsDetails extends Activity {
 		            return false;
 		        }
 		    });*/
-		}
+	
 		isNavigationForComment = false;
-		Globals.hideLoadingDialog(mDialog);
+		//Globals.hideLoadingDialog(mDialog);
 		//showNewsDetails();
 	}
 	
@@ -591,6 +606,7 @@ public class Activity_NewsDetails extends Activity {
 	}
 	
 	public void onClickWriteComment(View v){
+		
 		RelativeLayout rlyt = (RelativeLayout)findViewById(R.id.rlyt_newsdetail_conatiner);
 		if(commentContainer== null){
 			

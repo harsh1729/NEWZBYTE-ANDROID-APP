@@ -3,12 +3,15 @@ package in.newzbyte.app;
 import com.google.android.gms.internal.db;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class Activity_Intro extends Activity {
 
@@ -31,7 +34,7 @@ public class Activity_Intro extends Activity {
     boolean doubleBackToExitPressedOnce = false;
     boolean isBootomBarHidden = false;
     AnimationDrawable bAmin;
-    
+    private View viewLoading;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -44,58 +47,41 @@ public class Activity_Intro extends Activity {
 		}
 		setContentView(R.layout.activity_intro);
 		
+		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.rlytmain);
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService
+				(Context.LAYOUT_INFLATER_SERVICE);
+		viewLoading =(RelativeLayout) inflater.inflate(R.layout.view_loading, mainLayout,false);
+		
+		int y = Globals.getScreenSize(this).y;
+		
+		ImageView imgLoadingFooter =(ImageView) viewLoading.findViewById(R.id.imgLoadingFooter);
+		ImageView imgLoadingNewzByte =(ImageView) viewLoading.findViewById(R.id.imgLoadingNewzByte);
+		
+		
+		imgLoadingFooter.getLayoutParams().height = (int) (y * 0.4) ;
+		imgLoadingFooter.getLayoutParams().width = (int) (y * 0.4) ;
+		
+		imgLoadingNewzByte.getLayoutParams().height = (int) (y * 0.25) ;
+		
+		mainLayout.addView(viewLoading);
+		
+		viewLoading.setVisibility(View.VISIBLE);
+		
+		new Handler().postDelayed(new Runnable()
+		{
+		   @Override
+		   public void run()
+		   {
+			   // moveToChooseLang(); use this as future enhancement
+			   moveToChooseCategory();
+			   
+		   }
+		}, 2000);
 		
 		/*
 		
-		// Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setPageTransformer(true, new Custom_ZoomOutPageTransform());
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        final RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-            	Object_AppConfig obj = new Object_AppConfig(Activity_Intro.this);
-            	RadioGroup group = (RadioGroup)findViewById(R.id.radiogroup);
-            	 switch (position){
-                 case 0:
-                     radioGroup.check(R.id.radioButton);
-                     
-             		group.setVisibility(View.VISIBLE);
-                     break;
-                 case 1:
-                     radioGroup.check(R.id.radioButton2);
-                     
-                     if(obj.getLangId() != 0)
-                    	 onClickLang(obj.getLangId(),obj);
-                     
-             		group.setVisibility(View.VISIBLE);
-                     break;
-                 case 2:
-                     radioGroup.check(R.id.radioButton3);
-                     //if(listCatItemServer == null || listCatItemServer.size() == 0)
-                     //{
-                     if(obj.getLangId() != 0)
-                    	 serverCallForCategories();
-                     else{
-                    	 Toast.makeText(Activity_Intro.this, "Please first select language !", Toast.LENGTH_SHORT).show();
-                    	 mPager.setCurrentItem(1);
-                     }
-                     
-                     setBootomBarStatus();
-                     //}else{
-                    	 //createDrawerCategories();
-                     //} user can go back and change language.
-                     break;
-             }
-            }
-        });
-        
-        */
-		
 		img = (ImageView)findViewById(R.id.imgAnimIntro);
-		img.setBackgroundResource(R.drawable.anim_newzbyte_intro);
+		img.setBackgroundResource(R.drawable.loading);
 		
 		try{
 			bAmin = (AnimationDrawable) img.getBackground();
@@ -109,10 +95,12 @@ public class Activity_Intro extends Activity {
 		   @Override
 		   public void run()
 		   {
-			   moveToChooseLang();
+			   // moveToChooseLang(); use this as future enhancement
+			   moveToChooseCategory();
+			   
 		   }
 		}, getTotalDuration(bAmin));
-		
+		*/
 		
 	}
 	
@@ -127,6 +115,7 @@ public class Activity_Intro extends Activity {
         iDuration += 500; // 
         return iDuration;
     }
+	
 	private void moveToNewsScreen(){
 		 Intent i = new Intent(this, Activity_Home.class);
          startActivity(i);
@@ -134,11 +123,17 @@ public class Activity_Intro extends Activity {
          this.finish();
 	}
 	
+	private void moveToChooseCategory(){
+		
+		Intent i = new Intent(this, Activity_ChooseCat.class);
+    	startActivity(i);
+    	this.finish();
+	}
+	
 	private void moveToChooseLang(){
 		
 		Intent i = new Intent(this, Activity_ChooseLang.class);
         startActivity(i);
-        
         this.finish();
 	}
 	

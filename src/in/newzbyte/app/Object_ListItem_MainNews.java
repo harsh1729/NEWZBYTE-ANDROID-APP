@@ -14,20 +14,20 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 {
 	/*		FIELDS OF NEWS TABLE  */
 	private int id;
-	private String heading;
-	private String content;
+	private String heading = "";
+	private String content = "";
 	private int catId;
-	private String date;
-	private String imagePath;
+	private String date = "";
+	private String imagePath = "";
 	private int imageAlign;
 	private double imageRatio;
-	private String video;
-	private String shareLink;
-	private String imageTagline;
-	private String catName;
-	private String summary;
-	private String source;
-	private String author;
+	private String video = "";
+	private String shareLink = "";
+	private String imageTagline = "";
+	private String catName = "";
+	private String summary = "";
+	private String source = "";
+	private String author = "";
 	private int typeId;
 	public Boolean hasDetailNews;
 	
@@ -97,6 +97,11 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 			date = format.format(newDate);
 		} catch (ParseException e) {
+			e.printStackTrace();
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 

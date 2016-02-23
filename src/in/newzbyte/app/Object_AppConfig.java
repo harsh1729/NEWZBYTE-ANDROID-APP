@@ -178,7 +178,7 @@ public class Object_AppConfig {
 	public int getLangId() {
 		int id = 0;
 		if(prefs != null)
-			id = prefs.getInt("appConfig_langid", 0);
+			id = prefs.getInt("appConfig_langid", Globals.LANG_ENG); // use 0 when supporting multiple language
 		
 		return id;
 	}
