@@ -2,52 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_white"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
+
+
+    <ImageView
+        android:id="@+id/imgLoadingBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_screen_bg" />
+
+    <ImageView
+        android:id="@+id/imgLoadingNewzByte"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/newzbyte_logo" />
+    
+
+     <ImageView
+        android:id="@+id/imgLoadingFooter"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:src="@drawable/splash_footer_img" />
 
 
 <!--     <ImageView -->
-<!--         android:id="@+id/imgLoadingRocket" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="200dp" -->
-<!--         android:layout_centerInParent="true" -->
-<!--         android:layout_margin="40dp" -->
-<!--         android:scaleType="fitCenter" -->
-<!--         android:src="@drawable/loading_rocket" /> -->
-
-<!-- 
-		<ProgressBar
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imgLogoName"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            android:background="@color/app_transparent"
-            android:indeterminateDrawable="@drawable/progress_bar_radar"
-            android:minHeight="48dp" />
-		
-		<LinearLayout 
-    android:layout_width="match_parent"
-     android:layout_height="5dp"
-     android:background="@color/app_black_header"
-     android:layout_alignParentBottom="true"> 
-     </LinearLayout>
-      -->
-
-<!--      <ImageView -->
-<!--         android:id="@+id/imgLogoXB" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_centerHorizontal="true" -->
-<!--         android:layout_alignParentBottom="true" -->
-<!--         android:visibility="gone" -->
-<!--         android:layout_marginBottom="5dp" -->
-<!--         android:src="@drawable/xb" /> -->
-
-
-    
+<!--      android:id="@+id/imgLoadingAnim" -->
+<!--      android:layout_width="match_parent" -->
+<!--      android:layout_height="match_parent" -->
+<!--      android:scaleType="centerCrop" /> -->
 
     
 </RelativeLayout>

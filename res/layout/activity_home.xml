@@ -23,33 +23,46 @@
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:layout_alignParentTop="true"
+        	android:background="@color/app_tranparent_black"
         	android:padding="10dp"
             >
 		        <ImageView 
 		     	android:id="@+id/imgMenu"
-		        android:layout_width="20dp"
-		    	android:layout_height="20dp"
-		    	android:background="@drawable/menu" 
+		        android:layout_width="30dp"
+		    	android:layout_height="30dp"
+		    	android:background="@drawable/home_header_menu" 
 		    	android:layout_alignParentLeft="true"
 		    	android:onClick="onClickMenu" />
 		        
-		        <TextView
-                android:id="@+id/txtCatHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:textColor="@color/app_white"
-                android:textSize="@dimen/font_lbl_normal"
-                android:textStyle="bold" />
+<!-- 		        <TextView -->
+<!--                 android:id="@+id/txtCatHeading" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_centerInParent="true" -->
+<!--                 android:gravity="center" -->
+<!--                 android:textColor="@color/app_white" -->
+<!--                 android:textSize="@dimen/font_lbl_small_medium1" -->
+<!--                 android:textStyle="bold" /> -->
 		        
 		        <ImageView 
 		        android:id="@+id/imgGoToTop"
-		        android:layout_width ="20dp"
-				android:layout_height ="20dp"
+		        android:layout_width ="30dp"
+				android:layout_height ="30dp"
+				android:clickable="true"
+				android:padding="2dp"
+				 android:layout_marginRight="15dp"
+		    	android:layout_toLeftOf="@+id/imgHomeSettings"
+				android:src="@drawable/home_header_refresh"
+				android:onClick="onClickRefresh"/>
+		        
+		        <ImageView 
+		        android:id="@+id/imgHomeSettings"
+		        android:layout_width ="30dp"
+				android:layout_height ="30dp"
 				android:clickable="true"
 		    	android:layout_alignParentRight="true"
-				android:src="@drawable/refresh"
+               
+				android:src="@drawable/home_header_settings"
 				android:onClick="onClickRefresh"/>
 		        
 		   </RelativeLayout>     
@@ -85,7 +98,7 @@
             android:layout_width ="match_parent"
         	android:layout_height ="wrap_content"
         	android:layout_alignParentTop="true"
-        	android:padding="10dp">
+        	android:padding="7dp">
 		        
            <ImageView 
             android:layout_height="30dp"
@@ -100,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="NewzByte"
-            android:textSize="@dimen/font_lbl_large"
+            android:textSize="@dimen/font_lbl_normal"
     		android:textStyle="bold"   	
             android:layout_centerInParent="true"
             android:textColor="@color/app_black_dark"/>
@@ -135,7 +148,7 @@
 <!--         android:textStyle="bold" /> -->
         
 <!--     </RelativeLayout> -->
-    <LinearLayout
+<!--    <LinearLayout
         android:id="@+id/llyt_hrline"
 	    android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -143,6 +156,7 @@
         android:background="@color/app_lightgray"
         android:layout_height="1dp" >
    </LinearLayout>
+   -->
 <!--     <LinearLayout   -->
 <!--         android:id="@+id/llytCategoryHeader" -->
 <!--         android:layout_width="match_parent" -->
@@ -167,7 +181,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_below="@+id/llyt_hrline">
+    android:layout_below="@+id/rlytSettings">
 <LinearLayout 
     android:id="@+id/llytDrwawerUpperHalf"
     android:layout_width="match_parent"
@@ -187,7 +201,7 @@
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       	android:layout_below="@+id/llyt_hrline"
+       	android:layout_below="@+id/rlytSettings"
         android:layout_marginTop="0dp" >
        <LinearLayout
             android:id="@+id/llytCatContainer"

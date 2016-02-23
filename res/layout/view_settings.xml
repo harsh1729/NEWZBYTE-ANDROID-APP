@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_orange"
-        android:padding="10dp" >
+        android:padding="7dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="25dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/newzbyte" />
+        android:src="@drawable/newzbyte_logo" />
 
     <TextView
          android:id="@+id/txtSeeYouAt"
@@ -102,7 +102,8 @@
     <ImageView
         android:id="@+id/imgWatch"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
         android:scaleType="fitCenter"
@@ -110,8 +111,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="@color/app_orange"
         android:fadeScrollbars="false" >
 
@@ -121,7 +121,7 @@
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
-
+			<!--  
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,10 +130,10 @@
                 android:gravity="center_vertical"
                 android:onClick="onClickLanguageChange"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp" >
+                android:paddingTop="5dp" >
 
                 <ImageView
                     android:id="@+id/imglanguage"
@@ -169,14 +169,14 @@
                     android:clickable="true"
                     android:onClick="onClickLanguageChange" />
             </RelativeLayout>
-
+			
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/app_white"
                 android:orientation="horizontal" >
             </LinearLayout>
-
+			-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,10 +184,10 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:onClick="onClickNotification"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp" >
+                android:paddingTop="5dp" >
 
                 <ImageView
                     android:id="@+id/imgNotification1"
@@ -226,15 +226,15 @@
                 android:background="@color/app_white"
                 android:orientation="horizontal" >
             </LinearLayout>
-            <!--
+            
     <LinearLayout 
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
          android:paddingLeft="10dp"
          android:paddingRight="10dp"
-         android:paddingTop="10dp"
-         android:paddingBottom="10dp"
+         android:paddingTop="5dp"
+         android:paddingBottom="5dp"
          android:gravity="center_vertical"
          android:background="@drawable/selector_settings_options"
          android:clickable="true"
@@ -252,12 +252,18 @@
     				android:layout_height="wrap_content"
     				android:text ="Rate This App"
     				android:textSize="@dimen/font_lbl_normal"
-    				android:textColor="@color/app_black_dark"
+    				android:textColor="@color/app_white"
     				android:textStyle="bold"
     				/>
         
     </LinearLayout>
-    
+     <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/app_white"
+                android:orientation="horizontal" >
+            </LinearLayout>
+    <!--
     <LinearLayout
 	    android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -311,10 +317,10 @@
                 android:gravity="center_vertical"
                 android:onClick="onClickPrivacyPolicy"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp" >
+                android:paddingTop="5dp" >
 
                 <ImageView
                     android:layout_width="30dp"
@@ -330,12 +336,14 @@
                     android:textSize="@dimen/font_lbl_normal"
                     android:textStyle="bold" />
             </LinearLayout>
+            <!--  
              <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/app_white"
                 android:orientation="horizontal" >
             </LinearLayout>
+            -->
         </LinearLayout>
     </ScrollView>
 

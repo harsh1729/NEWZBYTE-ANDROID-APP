@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:padding="10dp" >
+        android:padding="7dp" >
 
         <ImageView
             android:id="@+id/imgBack"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/font_lbl_normal"
+            android:textSize="@dimen/font_lbl_small_medium1"
             android:textStyle="bold" />
 
         <ImageView
@@ -57,7 +57,7 @@
         android:background="@color/app_white" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
@@ -112,6 +112,7 @@
                 android:id="@+id/llyt_hrline2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/app_lightgray"
                 android:orientation="horizontal" >
             </LinearLayout>
@@ -136,17 +137,21 @@
                     android:textColor="@color/app_gray"
                     android:textSize="@dimen/font_lbl_normal" />
 
-                <EditText
-                    android:id="@+id/edtWriteComments"
+                <TextView
+                    android:id="@+id/txtWriteComments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:clickable="true"
-                    android:editable="false"
                     android:layout_alignParentRight="true"
-                    android:hint="Add your comment ..."
+                    android:background="@drawable/editbox_background_focus_yellow"
+                    android:text="Add your comment ..."
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="@color/app_lightgray"
                     android:onClick="onClickWriteComment"
-                    android:textColor="@color/app_gray"
                     android:textSize="@dimen/font_lbl_normal" />
                 </RelativeLayout>
                  <LinearLayout

@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/app_white"
-        android:padding="10dp" >
+        android:padding="7dp" >
 
 		<ImageView
 		    android:id="@+id/imgBack"
@@ -66,20 +66,20 @@
 		    android:src="@drawable/selector_btn_done" />
     </RelativeLayout>
     
-     <LinearLayout
-        android:id="@+id/llyt_hrline"
-	    android:orientation="horizontal"
-	    android:layout_below="@+id/llyt_detailHeader"
-        android:layout_width="match_parent"
-        android:background="@color/app_lightgray"
-        android:layout_height="1dp" >
-   </LinearLayout>
+<!--      <LinearLayout -->
+<!--         android:id="@+id/llyt_hrline" -->
+<!-- 	    android:orientation="horizontal" -->
+<!-- 	    android:layout_below="@+id/llyt_detailHeader" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:background="@color/app_lightgray" -->
+<!--         android:layout_height="1dp" > -->
+<!--    </LinearLayout> -->
 
      <LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_below="@+id/llyt_hrline">
+    android:layout_below="@+id/llyt_detailHeader">
 <LinearLayout 
     android:id="@+id/llytDrwawerUpperHalf"
     android:layout_width="match_parent"
@@ -100,7 +100,7 @@
         android:id="@+id/scrollViewCat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/llyt_hrline"
+        android:layout_below="@+id/llyt_detailHeader"
         android:layout_margin="0dp" >
 
        <LinearLayout

@@ -15,7 +15,8 @@
     <color name="app_black">#111111</color>
     <color name="app_black_dark">#292929</color>
     <color name="app_black_header">#393939</color>
-    <color name="app_tranparent_black">#88000000</color>
+    <color name="app_tranparent_black">#99000000</color>
+    <color name="app_tranparent_black_dark">#CC000000</color>
     <color name="app_very_tranparent_black">#22000000</color>
     <color name="app_darkgray">#333333</color>
     <color name="app_gray">#717171</color>   

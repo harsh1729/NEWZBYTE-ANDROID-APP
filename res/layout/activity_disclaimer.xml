@@ -10,8 +10,8 @@
 	    android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_white"
-        android:padding="10dp"
+        android:background="@color/app_orange"
+        android:padding="7dp"
         android:layout_alignParentTop="true" >
 
 		<ImageView
@@ -20,18 +20,19 @@
 		    android:layout_height="30dp"
 		    android:onClick="goBack"
 		    android:layout_alignParentLeft="true"
-		    android:src="@drawable/back" />
+		    android:src="@drawable/back_white" />
 		<TextView
         android:id="@+id/txtHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/app_black_dark"
+        android:textColor="@color/app_white"
         android:textSize="@dimen/font_lbl_large"   
         android:layout_centerInParent="true"
         android:text="Disclaimer"
         android:textStyle="bold" />
         
     </RelativeLayout>
+    <!--  
     <LinearLayout
         android:id="@+id/llyt_hrline"
 	    android:orientation="horizontal"
@@ -40,12 +41,12 @@
         android:background="@color/app_lightgray"
         android:layout_height="1dp" >
    </LinearLayout>
-   
+   -->
     <ScrollView
     android:id="@+id/SCROLLER_ID"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/llyt_hrline"
+    android:layout_below="@+id/llyt_detailHeader"
     android:scrollbars="vertical"
     android:fillViewport="true">
 
