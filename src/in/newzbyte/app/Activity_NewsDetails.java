@@ -1,6 +1,12 @@
 package in.newzbyte.app;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,19 +68,19 @@ public class Activity_NewsDetails extends Activity {
 			RelativeLayout rlytHeader= (RelativeLayout)findViewById(R.id.llyt_detailHeader);
 			//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
 			//txtHeading.setBackgroundColor(catColor);
-			DBHandler_Category dbCat = new DBHandler_Category(this);
+			//DBHandler_Category dbCat = new DBHandler_Category(this);
 			
-			String catColor = dbCat.getCategoryColor(objNews.getCatId());
-			Log.i("Darsh", "catColor"+catColor);
-			if(!catColor.isEmpty()){
-				rlytHeader.setBackgroundColor(Color.parseColor(catColor));
-			}
+			//String catColor = dbCat.getCategoryColor(objNews.getCatId());
+			//Log.i("Darsh", "catColor"+catColor);
+			//if(!catColor.isEmpty()){
+				//rlytHeader.setBackgroundColor(Color.parseColor(catColor));
+			//}
 			
 			
-			TextView txt = (TextView)findViewById(R.id.txtCat);
-			Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-			txt.setTypeface(tfCat);
-			txt.setText(objNews.getCatName());
+			TextView txtCat = (TextView)findViewById(R.id.txtCat);
+			//Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
+			//txtCat.setTypeface(tf);
+			txtCat.setText(objNews.getCatName());
 			
 			newsId = objNews.getId();
 			ScrollView scroll = (ScrollView)findViewById(R.id.scrollNewsDetail);
@@ -452,18 +458,24 @@ public class Activity_NewsDetails extends Activity {
 		LinearLayout llyt_mainContainer = (LinearLayout)findViewById(R.id.llyt_mainContainer);
 		
 		TextView txtHeading = (TextView)findViewById(R.id.txtHeading);
-		TextView txtReporterName = (TextView)findViewById(R.id.txtReporterName);
+		TextView txtBy = (TextView)findViewById(R.id.txtBy);
+		TextView txtAuthor= (TextView)findViewById(R.id.txtAuthor);
+		TextView txtDate= (TextView)findViewById(R.id.txtDate);
 		TextView txtSourcesValue = (TextView)findViewById(R.id.txtSourcesValue);
 		TextView txtSources = (TextView)findViewById(R.id.txtSources);
 		
 		txtHeading.setText(objNews.getHeadingSpan());
 		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
+		
 		txtHeading.setTypeface(tf, Typeface.BOLD);
+		txtAuthor.setTypeface(tf, Typeface.BOLD);
+		txtBy.setTypeface(tf, Typeface.BOLD);
+		txtSourcesValue.setTypeface(tf);
+		txtSources.setTypeface(tf);
+		txtDate.setTypeface(tf);
 		
-		
-		txtReporterName.setTypeface(tf, Typeface.BOLD);
-		txtReporterName.setText("by "+ objNews.getAuthor());
-		
+		txtAuthor.setText(objNews.getAuthor());
+		txtDate.setText(getFormatedDateTime(objNews.getDate()));
 		if(objNews.getSource().trim().isEmpty()){
 			txtSources.setVisibility(View.GONE);
 			txtSourcesValue.setVisibility(View.GONE);
@@ -702,6 +714,71 @@ public class Activity_NewsDetails extends Activity {
 		
 	}
 	
+	private String getFormatedDateTime(String dateString){
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+
+		SimpleDateFormat currentdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+		//dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		//Assuming server time is in IST
+		Date formattedDate = null;
+
+		try {
+			formattedDate = dateFormat.parse(dateString);
+		} catch (Exception e) {
+			Log.i("HARSH", "Exception in date formatting");
+		}
+
+
+		if(formattedDate != null){
+			Log.i("HARSH", " dateString "+dateString);
+			Log.i("HARSH", "formattedDate  "+formattedDate);
+
+			TimeZone tz = TimeZone.getTimeZone(Globals.SERVER_TIME_ZONE);
+			Calendar c = Calendar.getInstance(tz);
+
+			String time = 
+					Globals.getTwoDigitNo(c.get(Calendar.YEAR))+"-"+
+					Globals.getTwoDigitNo(c.get(Calendar.MONTH)+1)+"-"+
+					Globals.getTwoDigitNo(c.get(Calendar.DAY_OF_MONTH))+" "+
+					String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+					String.format("%02d" , c.get(Calendar.MINUTE))+":"+
+					String.format("%02d" , c.get(Calendar.SECOND)) +" ";
+
+
+			Log.i("HARSH", "new time  "+time);
+
+			Date currentDate = new Date();
+			try {
+				currentDate = currentdateFormat.parse(time);
+			} catch (ParseException e) {
+			}//new Date();
+
+			Log.i("HARSH", "currentGMT "+currentDate);
+			long diffInMilliSec = currentDate.getTime() - formattedDate.getTime();
+
+			Log.i("HARSH", "diffInMilliSec "+diffInMilliSec);
+
+			long hour = diffInMilliSec / (60*60*1000);
+
+			long day = hour/24;
+
+			if( day <=2){
+
+				if(hour <= 6)
+					return "Today";//day+" day ago";
+				else if(hour <= 30)
+				return "Yesterday";//day+" days ago";
+			}
+
+
+			SimpleDateFormat sdfDDMMYYYY = new SimpleDateFormat("d MMM yyyy",Locale.ENGLISH);
+			//sdfDDMMYYYY.setTimeZone(TimeZone.getTimeZone("IST"));
+			return sdfDDMMYYYY.format(formattedDate);
+		}
+
+		return dateString;
+	}
 	
 	
 }

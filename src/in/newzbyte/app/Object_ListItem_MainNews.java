@@ -189,6 +189,9 @@ public class Object_ListItem_MainNews implements Interface_ListItem
 	}
 	
 	public String getCatName() {
+		if(catId == Globals.DEFAULT_CAT_ID){
+			return "NewzByte";
+		}
 		return catName;
 	}
 

@@ -1,6 +1,5 @@
 package in.newzbyte.app;
 
-import in.xercesblue.arcmenu.ArcMenu;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -395,7 +394,6 @@ GestureDetector.OnDoubleTapListener {
 				//}
 				currentNewsIndex = listNewsItemServer.size() - 1;
 				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
-				////////Commented to copy functionality of Murmur
 				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
 				
 				Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
@@ -479,96 +477,33 @@ GestureDetector.OnDoubleTapListener {
 		
 		
 		TextView txtViewNews = (TextView) newView.findViewById(R.id.txtHeading);
-		/*TextView txtSummary =(TextView) newView.findViewById(R.id.txtSummary);
-		
 		TextView txtAuthorText=(TextView) newView.findViewById(R.id.txtAuthorText);
-		TextView txtAuthor=(TextView) newView.findViewById(R.id.txtAuthor);
-		TextView txtTime=(TextView) newView.findViewById(R.id.txtNewsTime);
-		TextView txtSourceText=(TextView) newView.findViewById(R.id.txtSourceText);
-		TextView txtSource=(TextView) newView.findViewById(R.id.txtSource);
-		//ImageView imgShare = (ImageView)newView.findViewById(R.id.imgShareHome);
-		TextView txtTap = (TextView)newView.findViewById(R.id.txtTapToread);
-
-
-		TextView txtCategory = (TextView)newView.findViewById(R.id.txtHeadingCategory);
-		LinearLayout llyt = (LinearLayout)newView.findViewById(R.id.llytFooterLine);
+		TextView txtAuthor=(TextView) newView.findViewById(R.id.txtAuthorDate);
+		TextView txtCategory = (TextView)newView.findViewById(R.id.txtCatFooter);
 		
-		*/
-		RelativeLayout rlytImgContainer =(RelativeLayout) newView.findViewById(R.id.rlytImgContainer);
+		//HARSH : Not using Cat Color in version 3
+		//String catColor = dbCat.getCategoryColor(objNews.getCatId());
+		//Log.i("Darsh", "catColor"+catColor);
+		//if(!catColor.isEmpty()){
+			//rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
+		//}
 		
-		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objNews.getCatId(), this));
-		DBHandler_Category dbCat = new DBHandler_Category(this);
+		String stringAuthorAndDate = objNews.getAuthor() + " / " +getFormatedDateTime(objNews.getDate());
 		
-		String catColor = dbCat.getCategoryColor(objNews.getCatId());
-		Log.i("Darsh", "catColor"+catColor);
-		if(!catColor.isEmpty()){
-			rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
-		}
-		
-		
-	   //imgViewNews.setBackgroundColor(catColor);
-		//imgViewNews.setBackgroundColor(this.getResources().getColor(R.color.app_very_tranparent_black));//catColor);
-		///String textSummary = objNews.getContentSpan().toString();
-		
-		txtViewNews.setText(objNews.getHeadingSpan().toString());	
-		/*
-		//imgShare.setBackgroundColor(catColor);
-		txtCategory.setBackgroundColor(catColor);
-		llyt.setBackgroundColor(catColor);
-		txtTap.setTextColor(catColor);
-
-		
-		txtSummary.setText(textSummary);
+		txtViewNews.setText(objNews.getHeadingSpan().toString());
 		txtCategory.setText(objNews.getCatName());
-		txtAuthor.setText(objNews.getAuthor());
-		txtTime.setText("/ " +getFormatedDateTime(objNews.getDate()));
-	*/
+
+		
+		txtAuthor.setText(stringAuthorAndDate);
+		
 		//set FONT
 
 		///Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
 		///Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//Typeface tf = Typeface.createFromAsset(getAssets(), "Raleway-Regular.ttf");
-		/**
-		txtSummary.setTypeface(tf);
-		txtAuthorText.setTypeface(tf);
-		txtAuthor.setTypeface(tf);
-		txtTime.setTypeface(tf);
-		txtSource.setTypeface(tf);
-		txtSourceText.setTypeface(tf);
-		txtViewNews.setTypeface(tf,Typeface.BOLD);
-		txtTap.setTypeface(tf,Typeface.BOLD);
-		txtCategory.setTypeface(tfCat);
-		**/
-		// get Total Lines of textView Summary
-		///Rect bounds = new Rect();
-		///Paint paint = new Paint();
-		///paint.setTextSize(getResources().getDimension(R.dimen.font_lbl_small_medium1));
-		///paint.setTypeface(tf);
-		///paint.getTextBounds(textSummary, 0, textSummary.length(), bounds);
+			
+		
 
-				
-		///float width = (float) Math.ceil( bounds.width());
-
-		///float noOfLines = width /(float) (Globals.getScreenSize(this).x - Globals.dpToPx(20));
-
-		///Log.i("DARSH", "noOfLines "+noOfLines);
-
-		///if(noOfLines >= NO_OF_ROWS_NEWSCONTENT - 1){
-			///txtTap.setVisibility(View.VISIBLE);
-			//txtTap.setTextColor(catColor);
-			objNews.hasDetailNews = true;
-		///}else{
-			///objNews.hasDetailNews = false;
-		///}
-
-		/**
-		if(objNews.getSource()!= null && !objNews.getSource().isEmpty()){
-			txtSource.setText(Html.fromHtml(objNews.getSource()));
-		}else{
-			txtSourceText.setVisibility(View.GONE);
-			txtSource.setVisibility(View.GONE);
-		}
-		**/
 
 
 		Globals.loadImageIntoImageView(imgViewNews, objNews.getImagePath(), this);
@@ -585,27 +520,7 @@ GestureDetector.OnDoubleTapListener {
 		if(isSlideInProgress && !isMovingViewCurrent){
 			newView.setY(-1*rlytNewsContent.getHeight());
 		}
-		///Arc menu copied to each view
 		
-		/*
-		final ArcMenu arcMenu = (ArcMenu)newView.findViewById(R.id.arcMenu1);
-		
-		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
-        {
-        	ImageView item = new ImageView(this);
-        	item.setImageResource(Globals.SHARE_INTENT_ITEMS[i]);
-        	final int position = i;
-        	arcMenu.addItem(item, new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					arcMenu.switchShareArcmenu(true);
-					shareOptionNo = position;
-					//shareIntent(position);
-				}
-			});
-        }
-		*/
 		ImageView imageDeatil = (ImageView)newView.findViewById(R.id.imgShowDetail);
 		//ImageView imgComment = (ImageView)newView.findViewById(R.id.imgComment);
 		switch (objNews.getTypeId()) {
@@ -1133,12 +1048,13 @@ GestureDetector.OnDoubleTapListener {
 	
 	private void setHeader(){
 		
-		if(currentNewsIndex >=0 && currentNewsIndex < listNewsItemServer.size() - 1){
+		if(currentNewsIndex >=0 && currentNewsIndex < listNewsItemServer.size() - 1)
+		{
 		//RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
-		DBHandler_Category dbCat = new DBHandler_Category(this);
+		//DBHandler_Category dbCat = new DBHandler_Category(this);
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
-		String catColor = dbCat.getCategoryColor(objNews.getCatId());
-		Log.i("Darsh", "catColor"+catColor);
+		//String catColor = dbCat.getCategoryColor(objNews.getCatId());
+		//Log.i("Darsh", "catColor"+catColor);
 		//if(!catColor.isEmpty()){
 			//rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
 		//}
@@ -1610,9 +1526,7 @@ GestureDetector.OnDoubleTapListener {
 			case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
 				break;
 			case Globals.NEWS_TYPE_ID_TEXT:
-				if(obj.hasDetailNews)	
 					navigateToNewsDetail(obj);
-				
 				break;
 			case Globals.NEWS_TYPE_ID_VIDEO:
 				if(obj.getVideo() == null || obj.getVideo().isEmpty()){
@@ -2366,14 +2280,15 @@ GestureDetector.OnDoubleTapListener {
 
 			long day = hour/24;
 
-			if(day >= 1){
+			if( day <=2){
 
-				if(day == 1)
-					return day+" day ago";
-
-				return day+" days ago";
+				if(hour <= 6)
+					return "Today";//day+" day ago";
+				else if(hour <= 30)
+				return "Yesterday";//day+" days ago";
 			}
 
+			/*
 			if( hour> 0 && hour<= 24){
 
 				if(hour == 1)
@@ -2398,8 +2313,9 @@ GestureDetector.OnDoubleTapListener {
 					}
 				}
 			}
+			*/
 
-			SimpleDateFormat sdfDDMMYYYY = new SimpleDateFormat("d MMM , yyyy",Locale.ENGLISH);
+			SimpleDateFormat sdfDDMMYYYY = new SimpleDateFormat("d MMM",Locale.ENGLISH);
 			//sdfDDMMYYYY.setTimeZone(TimeZone.getTimeZone("IST"));
 			return sdfDDMMYYYY.format(formattedDate);
 		}

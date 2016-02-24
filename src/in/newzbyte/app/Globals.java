@@ -4,7 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -49,7 +55,7 @@ public class Globals {
 	public final static String APP_PNAME = "in.newzbyte.app";
 	public final static String SHARE_URL = "goo.gl/k3Cvyl";//"https://play.google.com/store/apps/details?id="+APP_PNAME;
 	public final static String GCM_SENDER_ID ="603181231697";// "82788197303";
-	public static final String DEFAULT_APP_SERVER_PATH = "http://highlinenews.org/v2/client_requests/";//"http://app.newzbyte.in:9393/v2/client_requests/";//"http://103.248.80.133:9393/delhinewsserver/delhi-newsci/client_requests/";//"http://newstest2.tk/client_requests/";//"http://xbnews.in/newsci/client_requests/";//"http://newstest2.tk/client_requests/";//;
+	public static final String DEFAULT_APP_SERVER_PATH = "http://app.newzbyte.in:9393/v2/client_requests/";//"http://highlinenews.org/v2/client_requests/";//
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";
 	
 
@@ -74,8 +80,8 @@ public class Globals {
 	public static final String CALL_TYPE_OLD = "old";
 	public static final String CALL_TYPE_NEW = "new";
 	
-	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";
-	public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
+	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";//"Roboto-Regular.ttf";//
+	//public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
 	
 	public static final int LANG_ENG = 1;
 	public static final int LANG_HINDI = 2;
@@ -91,6 +97,8 @@ public class Globals {
 														R.drawable.share_twitter, 
 														R.drawable.share_whats_app
 													};
+	
+	public static final int DEFAULT_CAT_ID = 95;
 	
 	public static String getShareAppMsg() {
 		return "Friends, check out this awesome news app . ";
@@ -470,6 +478,8 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		return catIds;
 		
 	}
+	
+	
 	
 	/*public void takeScreenshot(View v) { 
 	    Date now = new Date(); 
