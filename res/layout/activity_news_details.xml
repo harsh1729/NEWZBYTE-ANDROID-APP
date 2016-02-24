@@ -12,12 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:padding="7dp" >
+        android:background="@color/app_black"
+        android:padding="10dp" >
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:padding="2dp"
             android:layout_alignParentLeft="true"
             android:onClick="goBack"
             android:src="@drawable/back_white" />
@@ -28,14 +30,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/font_lbl_small_medium1"
-            android:textStyle="bold" />
+            android:textSize="@dimen/font_lbl_normal" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:clickable="true"
+            android:padding="2dp"
             android:onClick="shareClick"
             android:src="@drawable/share_white" />
     </RelativeLayout>
@@ -71,14 +73,39 @@
                 android:textColor="@color/app_black"
                 android:textSize="@dimen/font_lbl_large"
                 android:textStyle="bold" />
+            <LinearLayout 
+             	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="10dp"
+            	android:paddingRight="10dp"
+            	android:layout_marginBottom="2dp"
+            	android:paddingLeft="10dp"
+            	android:orientation="horizontal">
+            	<TextView
+                	android:id="@+id/txtBy"
+                	android:layout_width="wrap_content"
+                	android:layout_height="wrap_content"
+                	android:layout_marginRight="4dp"
+                	android:text="By"
+                	android:textColor="@color/app_v3_darkgray"
+                	android:textSize="@dimen/font_lbl_small_medium2"
+                 	/>
+            	<TextView
+                	android:id="@+id/txtAuthor"
+                	android:layout_width="wrap_content"
+                	android:layout_height="wrap_content"
+                	android:textColor="@color/app_v3_blue"
+                	android:textSize="@dimen/font_lbl_small_medium2"
+                 	/>
+            </LinearLayout>
             <TextView
-                android:id="@+id/txtReporterName"
-                android:layout_width="match_parent"
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textColor="@color/app_gray"
-                android:textSize="@dimen/font_lbl_small_medium1"
+                android:textColor="@color/app_v3_lightgray"
+                android:textSize="@dimen/font_lbl_small"
                  />
 
             <LinearLayout

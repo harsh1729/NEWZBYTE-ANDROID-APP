@@ -12,7 +12,6 @@
         android:id="@+id/rlytSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_orange"
         android:padding="7dp" >
 
         <TextView
@@ -112,7 +111,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_orange"
         android:fadeScrollbars="false" >
 
         <LinearLayout

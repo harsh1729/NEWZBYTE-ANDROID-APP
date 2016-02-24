@@ -50,7 +50,7 @@
 				android:layout_height ="30dp"
 				android:clickable="true"
 				android:padding="2dp"
-				 android:layout_marginRight="15dp"
+				android:layout_marginRight="15dp"
 		    	android:layout_toLeftOf="@+id/imgHomeSettings"
 				android:src="@drawable/home_header_refresh"
 				android:onClick="onClickRefresh"/>
