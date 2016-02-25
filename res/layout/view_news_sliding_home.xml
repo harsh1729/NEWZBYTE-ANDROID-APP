@@ -92,7 +92,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="10dp"
-                    android:text="by"
                     android:textStyle="bold|italic"
                     android:textColor="@color/app_white"
                     android:textSize="@dimen/font_lbl_normal" />
@@ -101,7 +100,6 @@
                     android:id="@+id/txtAuthorDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
                     android:layout_toRightOf="@+id/txtAuthorText"
                     android:text="Harsh / Today"
                     android:textColor="@color/app_v3_offwhite"

@@ -24,6 +24,7 @@
 	<dimen name="font_lbl_very_large">24sp</dimen>
 	<dimen name="font_lbl_very_very_large">26sp</dimen>
 	<dimen name="font_lbl_normal">16sp</dimen>
+	<dimen name="font_lbl_normal_large">18sp</dimen>
 	<dimen name="font_lbl_small_medium2">15sp</dimen>
 	
 	

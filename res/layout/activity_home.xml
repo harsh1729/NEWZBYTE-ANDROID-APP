@@ -63,7 +63,7 @@
 		    	android:layout_alignParentRight="true"
                
 				android:src="@drawable/home_header_settings"
-				android:onClick="onClickRefresh"/>
+				android:onClick="onClickSettings"/>
 		        
 		   </RelativeLayout>     
 		    	<!--  <in.xercesblue.arcmenu.ArcMenu

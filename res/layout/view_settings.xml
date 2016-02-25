@@ -3,7 +3,9 @@
     android:id="@+id/llytSettingsContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_white"
+    android:background="@color/app_tranparent_black_dark"
+    android:onClick="onClickDummy"
+    
     android:orientation="vertical" >
 
     <!-- android:background="@drawable/bg_settings" -->
@@ -12,101 +14,38 @@
         android:id="@+id/rlytSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="7dp" >
+        android:background="@color/app_black"
+        android:padding="10dp" >
+        
+        <ImageView
+            android:id="@+id/settings_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:src="@drawable/option_page_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Settings"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/settings_icon"
+            android:layout_centerVertical="true"
+            android:text="Options"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/font_lbl_large"
-            android:textStyle="bold" />
+            android:textSize="@dimen/font_lbl_normal" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:clickable="true"
-            android:onClick="onClickSettings2"
-            android:src="@drawable/arrow_up_white" />
-        <!--
-           <TextView 
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Done"
-            android:paddingLeft="10dp"
-         	android:paddingRight="10dp"
-         	android:paddingTop="15dp"
-         	android:paddingBottom="15dp"
-            android:textSize="@dimen/font_lbl_small"
-            android:background="@drawable/selector_settings_options"
-    		android:textStyle="bold"
-    		android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:clickable="true"
-            android:textColor="@color/app_black_dark"
-            android:onClick="onClickSettings2"/>
-            
-           <ImageView 
-                android:layout_width ="30dp"
-        		android:layout_height ="30dp"
-        		android:clickable="true"
-        		android:layout_alignParentRight="true"
-        		android:src="@drawable/setting_black"
-        		android:onClick="onClickSettings2"/>
-        -->
+            android:onClick="onClickSettingsClose"
+            android:src="@drawable/close_icon" />
+        
 
     </RelativeLayout>
 
-<!--     <LinearLayout -->
-<!--         android:id="@+id/llyt_hrline" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="1dp" -->
-<!--         android:layout_below="@+id/rlytSettings" -->
-<!--         android:background="@color/app_lightgray" -->
-<!--         android:orientation="horizontal" > -->
-<!--     </LinearLayout> -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Check Out Hatke News On"
-        android:textColor="@color/app_black_dark"
-        android:textSize="@dimen/font_lbl_very_large"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imgLogoName"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="25dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/newzbyte_logo" />
-
-    <TextView
-         android:id="@+id/txtSeeYouAt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Everyday At"
-        android:textColor="@color/app_black_dark"
-        android:textSize="@dimen/font_lbl_very_large"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imgWatch"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/watch_image" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -116,9 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:orientation="vertical" >
 			<!--  
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -168,144 +105,109 @@
                     android:onClick="onClickLanguageChange" />
             </RelativeLayout>
 			
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/app_white"
-                android:orientation="horizontal" >
-            </LinearLayout>
 			-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_settings_options"
                 android:clickable="true"
-                android:gravity="center_vertical"
                 android:onClick="onClickNotification"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp" >
+                android:layout_marginTop="20dp"
+                android:padding="20dp" >
 
                 <ImageView
-                    android:id="@+id/imgNotification1"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/imgNotification_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:padding="0dp"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/notification_off1" />
+                    android:src="@drawable/notifications_icon" />
 
                 <TextView
                     android:id="@+id/txtNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/imgNotification_icon"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imgNotification1"
+                    android:padding="0dp"
                     android:text="Notifications"
                     android:textColor="@color/app_white"
-                    android:textSize="@dimen/font_lbl_normal"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_lbl_normal_large" />
 
                 <ImageView
                     android:id="@+id/imgNotification2"
-                    android:layout_width="56dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="18dp"
                     android:padding="0dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
                     android:clickable="true"
                     android:onClick="onClickNotification"
                     android:src="@drawable/notification_on" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/app_white"
-                android:orientation="horizontal" >
-            </LinearLayout>
-            
     <LinearLayout 
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
-         android:paddingLeft="10dp"
-         android:paddingRight="10dp"
-         android:paddingTop="5dp"
-         android:paddingBottom="5dp"
-         android:gravity="center_vertical"
-         android:background="@drawable/selector_settings_options"
-         android:clickable="true"
-         android:onClick="onClickRateApp">
-        
-        <ImageView 
-                android:layout_width ="30dp"
-        		android:layout_height ="30dp"
-        		android:layout_marginRight="10dp"
-        		android:src="@drawable/rate"
-        		/>
-        
-         <TextView 
-        			android:layout_width="wrap_content"
-    				android:layout_height="wrap_content"
-    				android:text ="Rate This App"
-    				android:textSize="@dimen/font_lbl_normal"
-    				android:textColor="@color/app_white"
-    				android:textStyle="bold"
-    				/>
-        
-    </LinearLayout>
-     <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/app_white"
-                android:orientation="horizontal" >
-            </LinearLayout>
-    <!--
-    <LinearLayout
-	    android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="@color/app_lightgray"
-        android:layout_height="1dp" >
-    </LinearLayout>
-    <LinearLayout 
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:paddingLeft="10dp"
-         android:paddingRight="10dp"
-         android:paddingTop="10dp"
-         android:paddingBottom="10dp"
+         android:padding="20dp"
          android:gravity="center_vertical"
          android:background="@drawable/selector_settings_options"
          android:clickable="true"
          android:onClick="onClickShareApp">
          
          <ImageView 
-                android:layout_width ="30dp"
-        		android:layout_height ="30dp"
+                android:layout_width ="18dp"
+        		android:layout_height ="18dp"
         		android:layout_marginRight="10dp"
-        		android:src="@drawable/share"
+        		android:src="@drawable/share_white"
         		/>
          
          <TextView 
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
-    				android:text ="Share This App"
-    				android:textSize="@dimen/font_lbl_normal"
-    				android:textColor="@color/app_black_dark"
-    				android:textStyle="bold"
+    				android:text ="Invite your friends"
+    				android:textSize="@dimen/font_lbl_normal_large"
+    				android:textColor="@color/app_white"
     				/>
         
     </LinearLayout>
-   
-    <LinearLayout
-	    android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="@color/app_lightgray"
-        android:layout_height="1dp" >
+           
+            
+    <LinearLayout 
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:padding="20dp"
+         android:gravity="center_vertical"
+         android:background="@drawable/selector_settings_options"
+         android:clickable="true"
+         android:onClick="onClickRateApp">
+        
+        <ImageView 
+                android:layout_width ="18dp"
+        		android:layout_height ="18dp"
+        		android:layout_marginRight="10dp"
+        		android:src="@drawable/rate_app"
+        		/>
+        
+         <TextView 
+        			android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:text ="Rate this app"
+    				android:textSize="@dimen/font_lbl_normal_large"
+    				android:textColor="@color/app_white"
+    				/>
+        
     </LinearLayout>
-            -->
+    
+    
+    
+   
+            
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -315,14 +217,11 @@
                 android:gravity="center_vertical"
                 android:onClick="onClickPrivacyPolicy"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp" >
+                android:padding="20dp" >
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/disclaimer" />
 
@@ -331,8 +230,8 @@
                     android:layout_height="wrap_content"
                     android:text="Disclaimer"
                     android:textColor="@color/app_white"
-                    android:textSize="@dimen/font_lbl_normal"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_lbl_normal_large"
+                     />
             </LinearLayout>
             <!--  
              <LinearLayout
