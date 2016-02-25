@@ -26,6 +26,11 @@ public class Activity_Disclaimer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disclaimer);
+		
+		TextView txt = (TextView)findViewById(R.id.txtHeading);
+		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+		txt.setTypeface(tf);
+		
 		initWebView();
 	}
 	

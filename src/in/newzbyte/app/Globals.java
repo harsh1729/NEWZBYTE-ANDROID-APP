@@ -90,14 +90,6 @@ public class Globals {
 	public static final int NEWS_TYPE_ID_ONLY_IMAGE = 3;
 	public static final int NEWS_TYPE_ID_TEXT = 1;
 	public static final int NEWS_TYPE_ID_VIDEO = 2;
-	public static final int[] SHARE_INTENT_ITEMS = {
-														R.drawable.share_plus, 
-														R.drawable.share_gmail,
-														R.drawable.share_messenger, 
-														R.drawable.share_fb, 
-														R.drawable.share_twitter, 
-														R.drawable.share_whats_app
-													};
 	
 	public static final int DEFAULT_CAT_ID = 95;
 	

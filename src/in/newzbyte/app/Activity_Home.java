@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,14 +33,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +47,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,13 +64,14 @@ GestureDetector.OnDoubleTapListener {
 
 	View viewMoving;
 	View viewStatic;
+	
 	RelativeLayout viewLoading;
 	ImageView imgLoadingAnim;
 	View viewSettings;
 	View viewCategory;
+	View viewShare;
 	AnimationDrawable bAmin;
-
-	public int shareOptionNo = -1;
+	
 	float x = 0;
 	float y = 0;
 	long startTime;
@@ -87,7 +82,7 @@ GestureDetector.OnDoubleTapListener {
 	final int  NO_OF_ROWS_NEWSCONTENT = 10;
 	private Boolean isSlideInProgress = false;
 	private Boolean isAnimInProgress = false;
-	private Boolean isDrawerOpen = false;
+	//private Boolean isDrawerOpen = false;
 	private Boolean isSlideUp = true;
 	private Boolean isMovingViewCurrent = true;
 	private Boolean isNoMoreNews = false;
@@ -144,24 +139,7 @@ GestureDetector.OnDoubleTapListener {
 		mDetector.setOnDoubleTapListener(this);
 		mDetector.setIsLongpressEnabled(false);
 
-		/*
-		arcMenu = (ArcMenu)findViewById(R.id.arcMenu1);
-
-		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
-        {
-        	ImageView item = new ImageView(this);
-        	item.setImageResource(Globals.SHARE_INTENT_ITEMS[i]);
-        	final int position = i;
-        	arcMenu.addItem(item, new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					arcMenu.switchShareArcmenu(true);
-					shareOptionNo = position;
-					//shareIntent(position);
-				}
-			});
-        }
-		 */
+		
 		//rlytDrawerPane = (RelativeLayout)findViewById(R.id.rlytDrawerPane);
 		rlytNewsContent = (RelativeLayout)findViewById(R.id.rlytNewsContent);
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
@@ -525,12 +503,92 @@ GestureDetector.OnDoubleTapListener {
 		}
 		return newView;
 	}
-	//TODO
 	public void onClickShareMain(View v){
 
+		if(viewShare == null){
+			LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			viewShare= inflater.inflate(R.layout.view_share, rlytMainContent,false);
+			
+			TextView txt1 =(TextView) viewShare.findViewById(R.id.text_1);
+			TextView txt2 =(TextView) viewShare.findViewById(R.id.text_2);
+			TextView txt3 =(TextView) viewShare.findViewById(R.id.text_3);
+			TextView txt4 =(TextView) viewShare.findViewById(R.id.text_4);
+			TextView txt5 =(TextView) viewShare.findViewById(R.id.text_5);
+			TextView txt6 =(TextView) viewShare.findViewById(R.id.text_6);
+
+			Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+			txt1.setTypeface(tf);	
+			txt2.setTypeface(tf);	
+			txt3.setTypeface(tf);	
+			txt4.setTypeface(tf);
+			txt5.setTypeface(tf);	
+			txt6.setTypeface(tf);
+
+			rlytMainContent.addView(viewShare);
+			Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+			viewShare.startAnimation(animationFadeIn);
+
+		}
 	}
 
-	public void shareIntent()
+	public void onClickShareItem(View view){
+		
+		final int position = Integer.parseInt(view.getTag().toString());
+		if(viewShare != null){
+			
+			Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+			animationFadeOut.setAnimationListener(new AnimationListener() {
+
+				@Override
+				public void onAnimationStart(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					rlytMainContent.removeView(viewShare);
+					viewShare =null;
+					shareIntent(position);
+				}
+			});
+			viewShare.startAnimation(animationFadeOut);
+		}
+		
+	}
+	public void  onClickShareClose(View v){
+		
+		if(viewShare != null){
+			Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+			animationFadeOut.setAnimationListener(new AnimationListener() {
+
+				@Override
+				public void onAnimationStart(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					rlytMainContent.removeView(viewShare);
+					viewShare =null;
+
+				}
+			});
+			viewShare.startAnimation(animationFadeOut);
+
+
+		}
+	}
+	public void shareIntent(int shareOptionNo)
 	{    
 		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
 
@@ -630,7 +688,7 @@ GestureDetector.OnDoubleTapListener {
 		}
 		return res;
 	}
-	//TODO
+	
 	private boolean isPackageInstalled(String packagename, Context context) {
 		PackageManager pm = context.getPackageManager();
 		try {
@@ -1692,7 +1750,7 @@ GestureDetector.OnDoubleTapListener {
 			Canvas canvas = new Canvas(bitmap);
 
 			Paint paint = new Paint();
-			paint.setColor(Color.BLACK); // Text Color
+			paint.setColor(Color.WHITE); // Text Color
 			paint.setTypeface(Typeface.SERIF);
 			paint.setAntiAlias(true);
 			paint.setStrokeWidth(30); // Text Size
@@ -1717,80 +1775,7 @@ GestureDetector.OnDoubleTapListener {
 		return imageFile;
 	}
 
-	public void onClickShare(View v) {
 
-		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
-
-
-
-			Object_ListItem_MainNews currentNewsItem = listNewsItemServer.get(currentNewsIndex);
-			Intent sendIntent = new Intent();
-			sendIntent.setAction(Intent.ACTION_SEND);
-			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-
-
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-					currentNewsItem.getHeadingSpan()  + "\n\n");
-
-
-
-
-			if (currentNewsItem.getShareLink() != null && !currentNewsItem.getShareLink().trim().equals("")) 
-			{
-				sendIntent.putExtra(
-						Intent.EXTRA_TEXT,
-						// currentNewsItem.getContent()
-						//"Read more @\n"
-						//+ getResources().getString(
-						//R.string.txt_company_website)
-						currentNewsItem.getHeadingSpan()+
-						"\n\nvia "
-						+ getResources().getString(
-								R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
-			} 
-			else 
-			{
-				sendIntent.putExtra(
-						Intent.EXTRA_TEXT,
-						//"Read more @\n"
-						//+ getResources().getString(
-						//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-						currentNewsItem.getHeadingSpan()+			 
-						"\n\nvia "
-						+ getResources().getString(
-								R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
-			}
-
-			File imgF = takeScreenshot(
-					//"Read more @ "
-					//+ getResources().getString(
-					//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-					" via "
-					+ getResources().getString(
-							R.string.news_paper_name)+" for Android");
-
-			sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
-			Log.i("jaspal","image Path is :"+Uri.fromFile(imgF));
-
-			//sendIntent.setType("text/plain");
-			sendIntent.setType("image/*"); 
-			sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
-			//startActivity(sendIntent);
-			startActivity(Intent.createChooser(sendIntent, "Share Via"));
-		}
-	}
-	/*
-	private void drawerEventAnim(){
-
-		try{
-			bAmin = (AnimationDrawable) btnMenu.getBackground();
-			bAmin.setOneShot(true);
-			bAmin.start();
-		}catch(Exception ex){
-
-		}
-	}
-	 */
 
 	private void serverCallForCategoriesAndNews() {
 		try {
@@ -2109,6 +2094,18 @@ GestureDetector.OnDoubleTapListener {
 
 	@Override
 	public void onBackPressed() {
+		if(viewCategory != null){
+			onClickCatClose(viewCategory);
+			return;
+		}
+		if(viewSettings != null){
+			onClickSettingsClose(viewSettings);
+			return;
+		}
+		if(viewShare!= null){
+			onClickShareClose(viewShare);
+			return;
+		}
 		if (doubleBackToExitPressedOnce) {
 			super.onBackPressed();
 			return;
@@ -2396,7 +2393,68 @@ GestureDetector.OnDoubleTapListener {
 
 /*
 
+public void onClickShare(View v) {
 
+		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
+
+
+
+			Object_ListItem_MainNews currentNewsItem = listNewsItemServer.get(currentNewsIndex);
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+
+
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+					currentNewsItem.getHeadingSpan()  + "\n\n");
+
+
+
+
+			if (currentNewsItem.getShareLink() != null && !currentNewsItem.getShareLink().trim().equals("")) 
+			{
+				sendIntent.putExtra(
+						Intent.EXTRA_TEXT,
+						// currentNewsItem.getContent()
+						//"Read more @\n"
+						//+ getResources().getString(
+						//R.string.txt_company_website)
+						currentNewsItem.getHeadingSpan()+
+						"\n\nvia "
+						+ getResources().getString(
+								R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+			} 
+			else 
+			{
+				sendIntent.putExtra(
+						Intent.EXTRA_TEXT,
+						//"Read more @\n"
+						//+ getResources().getString(
+						//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+						currentNewsItem.getHeadingSpan()+			 
+						"\n\nvia "
+						+ getResources().getString(
+								R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+			}
+
+			File imgF = takeScreenshot(
+					//"Read more @ "
+					//+ getResources().getString(
+					//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+					" via "
+					+ getResources().getString(
+							R.string.news_paper_name)+" for Android");
+
+			sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
+			Log.i("jaspal","image Path is :"+Uri.fromFile(imgF));
+
+			//sendIntent.setType("text/plain");
+			sendIntent.setType("image/*"); 
+			sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
+			//startActivity(sendIntent);
+			startActivity(Intent.createChooser(sendIntent, "Share Via"));
+		}
+	}
  private float getScrollViewDiagonalAngle(){
 
 		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
