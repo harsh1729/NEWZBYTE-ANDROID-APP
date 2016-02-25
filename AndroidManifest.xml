@@ -59,6 +59,11 @@
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activity_NewsDetails"
@@ -84,22 +89,12 @@
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
         <activity android:name=".Custom_YouTubePlayerActivity" >
         </activity>
         <activity
             android:name=".Activity_ChooseLang" 
-            android:configChanges="orientation"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".Activity_ChooseCat" 
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
