@@ -31,15 +31,18 @@ public class Custom_JsonParserCategory {
 					JSONObject Single_Cat = Cat_Object_Array.getJSONObject(i);
 					ob.setId(Single_Cat.getInt("id"));
 					ob.setName(Single_Cat.getString("name").trim());
-					if(Single_Cat.has("image"))
-						ob.setImageName(Single_Cat.getString("image").trim());
+					//if(Single_Cat.has("image"))
+						//ob.setImageName(Single_Cat.getString("image").trim());
+					//Harsh : Use image_new since after version 3
+					if(Single_Cat.has("image_new"))
+						ob.setImageName(Single_Cat.getString("image_new").trim());
+					
 					if(Single_Cat.has("selected_image"))
 						ob.setSelectedImageName(Single_Cat.getString("selected_image").trim());
 					if(Single_Cat.has("langid"))
 						ob.setLangId(Single_Cat.getInt("langid"));
 					if(Single_Cat.has("topnewsid"))
 						ob.setTopNewsId(Single_Cat.getInt("topnewsid"));
-					
 					if(Single_Cat.has("color"))
 						ob.setColor(Single_Cat.getString("color"));
 					

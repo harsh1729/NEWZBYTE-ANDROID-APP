@@ -73,7 +73,7 @@ public class Activity_Intro extends Activity {
 		   public void run()
 		   {
 			   // moveToChooseLang(); use this as future enhancement
-			   moveToChooseCategory();
+			   moveToChooseLang();
 			   
 		   }
 		}, 2000);
@@ -122,14 +122,14 @@ public class Activity_Intro extends Activity {
          
          this.finish();
 	}
-	
+	/*
 	private void moveToChooseCategory(){
 		
 		Intent i = new Intent(this, Activity_ChooseCat.class);
     	startActivity(i);
     	this.finish();
 	}
-	
+	*/
 	private void moveToChooseLang(){
 		
 		Intent i = new Intent(this, Activity_ChooseLang.class);
@@ -154,7 +154,7 @@ public class Activity_Intro extends Activity {
 	            }else{
 	            	try{
 	            		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
-	            		if(dbH.getAllCategories().size() == 0)
+	            		if(dbH.getAllSelectedCategories().size() == 0)
 	            			return true;
 	            	}catch(Exception ex){
 	            		

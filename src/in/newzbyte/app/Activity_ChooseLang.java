@@ -49,7 +49,7 @@ public class Activity_ChooseLang extends Activity {
 	    		imageViewHindi.setImageResource(R.drawable.hindi_unselected);
 	    	}
 	    	
-	    	Intent i = new Intent(this, Activity_ChooseCat.class);
+	    	Intent i = new Intent(this, Activity_Home.class);
 	    	startActivity(i);
 	    	
 	    	}catch(Exception ex){

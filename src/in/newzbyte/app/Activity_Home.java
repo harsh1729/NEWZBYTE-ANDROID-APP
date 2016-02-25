@@ -73,7 +73,7 @@ GestureDetector.OnDoubleTapListener {
 	RelativeLayout viewLoading;
 	ImageView imgLoadingAnim;
 	View viewSettings;
-	
+	View viewCategory;
 	AnimationDrawable bAmin;
 
 	public int shareOptionNo = -1;
@@ -99,26 +99,26 @@ GestureDetector.OnDoubleTapListener {
 	//private boolean loadingAnimationStarted = false;
 	ImageView imgMenu;
 	ImageView imgGoToTop;
-	
-	private ActionBarDrawerToggle mDrawerToggle;
-	private DrawerLayout mDrawerLayout;
+
+	//private ActionBarDrawerToggle mDrawerToggle;
+	//private DrawerLayout mDrawerLayout;
 
 
 	private RelativeLayout rlytNewsContent;
 	private RelativeLayout rlytMainContent;
-	private RelativeLayout rlytDrawerPane;
+	//private RelativeLayout rlytDrawerPane;
 
 
 	ArrayList<Object_ListItem_MainNews> listNewsItemServer = new ArrayList<Object_ListItem_MainNews>();
 	ArrayList<Object_Category> listCatItemServer = new ArrayList<Object_Category>();
 	//private ProgressDialog mDialog;
 	//private ArcMenu arcMenu;
-	
-	private static final String DEBUG_TAG = "Gestures";
-    private GestureDetectorCompat mDetector; 
 
-    //LinearLayout llytYellow;
-    //LinearLayout llytGreen;
+	private static final String DEBUG_TAG = "Gestures";
+	private GestureDetectorCompat mDetector; 
+
+	//LinearLayout llytYellow;
+	//LinearLayout llytGreen;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -128,7 +128,7 @@ GestureDetector.OnDoubleTapListener {
 
 	}
 
-	
+
 	private void initHome(){
 
 		///arraySelectedCatIds = new ArrayList<Integer>();
@@ -136,17 +136,17 @@ GestureDetector.OnDoubleTapListener {
 		db.createDataBase();
 
 		// Instantiate the gesture detector with the
-        // application context and an implementation of
-        // GestureDetector.OnGestureListener
-        mDetector = new GestureDetectorCompat(this,this);
-        // Set the gesture detector as the double tap
-        // listener.
-        mDetector.setOnDoubleTapListener(this);
-        mDetector.setIsLongpressEnabled(false);
+		// application context and an implementation of
+		// GestureDetector.OnGestureListener
+		mDetector = new GestureDetectorCompat(this,this);
+		// Set the gesture detector as the double tap
+		// listener.
+		mDetector.setOnDoubleTapListener(this);
+		mDetector.setIsLongpressEnabled(false);
 
-        /*
+		/*
 		arcMenu = (ArcMenu)findViewById(R.id.arcMenu1);
-		
+
 		for(int i=0;i<Globals.SHARE_INTENT_ITEMS.length;i++)
         {
         	ImageView item = new ImageView(this);
@@ -161,32 +161,32 @@ GestureDetector.OnDoubleTapListener {
 				}
 			});
         }
-		*/
-		rlytDrawerPane = (RelativeLayout)findViewById(R.id.rlytDrawerPane);
+		 */
+		//rlytDrawerPane = (RelativeLayout)findViewById(R.id.rlytDrawerPane);
 		rlytNewsContent = (RelativeLayout)findViewById(R.id.rlytNewsContent);
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+		//mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 		imgMenu = (ImageView)findViewById(R.id.imgMenu);
 		imgGoToTop = (ImageView)findViewById(R.id.imgGoToTop);
-		
+
 		//int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
 		//rlytDrawerPane.getLayoutParams().width = drawerWidth;
 
 		//ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
 		//btnCatAll.getLayoutParams().width = drawerWidth;
-		
-		
+
+
 		//Drawable d = getResources().getDrawable(R.drawable.viewall);
 		//int hImage = d.getIntrinsicHeight(); 
 		//int wImage = d.getIntrinsicWidth();  
-		
+
 		//int newImageHeight = hImage * (drawerWidth - Globals.dpToPx(10+10)) / wImage;
 		//btnCatAll.getLayoutParams().height = newImageHeight + Globals.dpToPx(10+10);
-		
+
 		//TextView txt = (TextView)findViewById(R.id.txtCatHeading);
 		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
 		//txt.setTypeface(tfCat);
-		
+		/*
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.home_header_menu, R.string.drawer_open, R.string.drawer_close) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
@@ -205,12 +205,12 @@ GestureDetector.OnDoubleTapListener {
 				isDrawerOpen=false;
 				//btnMenu.setBackgroundResource(R.drawable.anim_arrow_to_menu);
 				//drawerEventAnim();
-				
+
 				if(isCategoryChanged){
 					refresh();
 					isCategoryChanged = false;
 				}
-					
+
 			}
 
 			@Override
@@ -220,22 +220,14 @@ GestureDetector.OnDoubleTapListener {
 				float moveFactor = (rlytDrawerPane.getWidth() * slideOffset);
 				rlytMainContent.setTranslationX(moveFactor);
 			}
-			/* earlier versions.
-                {
-                    TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
-                    anim.setDuration(0);
-                    anim.setFillAfter(true);
-                    rlytMainContent.startAnimation(anim);
 
-                    lastTranslate = moveFactor;
-                }*/
 
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);	
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-
+		 */
 		if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
 			new Custom_GCM_Register(this);
 		}
@@ -243,47 +235,47 @@ GestureDetector.OnDoubleTapListener {
 	}
 
 	private void refresh(){
-		
+
 		//mDrawerLayout.setEnabled(false);
 		isMovingViewCurrent = false;
-				
 
-				if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
-					addLoadingView();
-					serverCallForCategoriesAndNews();
-					//new Custom_GCM_Register(this);
-				}else{
-					
-					//final Handler handler = new Handler();
-					//handler.postDelayed(new Runnable() {
-					  //@Override
-					 // public void run() {
-						  
-						  loadNewsCatFromDB();
-					  //}
-					//}, 1000);
-					
-					Globals.showAlertDialogOneButton(
-							Globals.TEXT_CONNECTION_ERROR_HEADING,
-							Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
-							Activity_Home.this, "OK", null, false);
-				}
-		
+
+		if( (new Custom_ConnectionDetector(this)).isConnectingToInternet()){
+			addLoadingView();
+			serverCallForCategoriesAndNews();
+			//new Custom_GCM_Register(this);
+		}else{
+
+			//final Handler handler = new Handler();
+			//handler.postDelayed(new Runnable() {
+			//@Override
+			// public void run() {
+
+			loadNewsCatFromDB();
+			//}
+			//}, 1000);
+
+			Globals.showAlertDialogOneButton(
+					Globals.TEXT_CONNECTION_ERROR_HEADING,
+					Globals.TEXT_LOADING_FROM_PREVIOUS_SESSION,
+					Activity_Home.this, "OK", null, false);
+		}
+
 	}
 	@Override
 	protected void onResume() {
-		
+
 		super.onResume();
 
-// Moved to service call
-//		if(comingFromPushMessage){
-//			comingFromPushMessage = false;
-//			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-//				//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-//		
-//			isSlideUp = false;
-//			currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
-//		}
+		// Moved to service call
+		//		if(comingFromPushMessage){
+		//			comingFromPushMessage = false;
+		//			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
+		//				//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+		//		
+		//			isSlideUp = false;
+		//			currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
+		//		}
 
 		if(!isFirstResume){
 
@@ -298,13 +290,13 @@ GestureDetector.OnDoubleTapListener {
 			//refresh();
 		}
 	}
-	
-	
-	
+
+
+
 	private int getNewsIndexById(long id){
 		int index = -1;
 		if(listNewsItemServer != null && listNewsItemServer.size() > 0){
-			
+
 			for (int i = 0;i< listNewsItemServer.size();i++){
 				Object_ListItem_MainNews newsObj = listNewsItemServer.get(i);
 				if(newsObj.getId() == id)
@@ -314,7 +306,7 @@ GestureDetector.OnDoubleTapListener {
 				}
 			}
 		}
-		
+
 		return index;
 	}
 
@@ -323,14 +315,6 @@ GestureDetector.OnDoubleTapListener {
 		if(viewLoading != null){
 			hideLoadingView();
 		}
-		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
-
-
-
-		DBHandler_Category dbH2 = new DBHandler_Category(this);
-		listCatItemServer = dbH2.getAllCategories();
-		createDrawerCategories();
 
 		DBHandler_MainNews dbH = new DBHandler_MainNews(this);
 		listNewsItemServer = dbH.getAllMainNews();
@@ -342,16 +326,16 @@ GestureDetector.OnDoubleTapListener {
 		if(comingFromPushMessage){
 			comingFromPushMessage = false;
 			//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-				//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-		
-			
+			//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+
+
 			if(GCMIntentService.pushMessageNewsId > 0){
 				//isMovingViewCurrent = true;
 				currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 			}
 			if(GCMIntentService.pushMessageNeedsPopUp == 1){
 				//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-					Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
+				Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
 			}
 		}
 		//arraySelectedCatIds.clear();
@@ -361,9 +345,6 @@ GestureDetector.OnDoubleTapListener {
 
 
 	}
-	
-	
-	
 
 	private View createNewsView(){
 
@@ -375,58 +356,58 @@ GestureDetector.OnDoubleTapListener {
 		{
 			return null;
 		}
-		
+
 		Log.d("jaspal","CurrentNewsIndex:"+currentNewsIndex);
 
 		//Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
 
 		int copyCurrentNewsIndex = currentNewsIndex;
-				
+
 		if(isMovingViewCurrent){
 			if(currentNewsIndex >= listNewsItemServer.size() - 1){
-				
+
 				//if(copyCurrentNewsIndex == listNewsItemServer.size() - 1){
-					//currentNewsIndex++;
-					//rlytNewsContent.addView(initViewSetting(),0);
-					//return viewSettings;
+				//currentNewsIndex++;
+				//rlytNewsContent.addView(initViewSetting(),0);
+				//return viewSettings;
 				//}else{
-					//currentNewsIndex = listNewsItemServer.size() ;
+				//currentNewsIndex = listNewsItemServer.size() ;
 				//}
 				currentNewsIndex = listNewsItemServer.size() - 1;
 				Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
 				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
-				
+
 				Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
 				getNewsDataFromServer(-1,Globals.CALL_TYPE_OLD, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_OLD);
-				*/
+				 */
 				return null;
 			}
 
 			copyCurrentNewsIndex ++;	
-			
+
 			//Special case when no slide
 			if(copyCurrentNewsIndex == 0){
 				imgGoToTop.setImageResource(R.drawable.home_header_refresh);
 				currentNewsIndex = copyCurrentNewsIndex;
 				imgGoToTop.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View arg0) {
 						onClickRefresh(arg0);
-						
+
 					}
 				});
 				setHeader();
-				
+
 			}else{
 				imgGoToTop.setImageResource(R.drawable.home_header_up);
 				imgGoToTop.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View arg0) {
 						setFirstView();
-						
+
 					}
 				});
 			}
@@ -438,13 +419,13 @@ GestureDetector.OnDoubleTapListener {
 				currentNewsIndex = copyCurrentNewsIndex;
 				Toast.makeText(this, "No more news to show at this moment.", Toast.LENGTH_SHORT).show();
 				//////Commented to copy functionality of Murmur
-				
+
 				/*mDialog = Globals.showLoadingDialog(mDialog,this,false);
-				
+
 				Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 				//getNewsDataFromServer(Integer.valueOf(objNews.getCatId()),Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
 				getNewsDataFromServer(-1,Globals.CALL_TYPE_NEW, Integer.valueOf(objNews.getId()), Globals.FINAL_NEWS_LIMIT_LOAD_NEW);
-				*/
+				 */
 				return null;
 			}
 			copyCurrentNewsIndex--;
@@ -452,8 +433,8 @@ GestureDetector.OnDoubleTapListener {
 		Object_ListItem_MainNews objNews = listNewsItemServer.get(copyCurrentNewsIndex);
 		//objNews = listNewsItemServer.get(currentNewsIndex);
 		///if(arraySelectedCatIds.size() > 0 && !isSelectedId(Integer.valueOf(objNews.getCatId())) ){//selectedCatId !=0  && objNews.getCatId() != selectedCatId){
-			///currentNewsIndex = copyCurrentNewsIndex;
-			///return createNewsView();
+		///currentNewsIndex = copyCurrentNewsIndex;
+		///return createNewsView();
 		///}
 
 		//Below code is to add custom last page .. commented as of now
@@ -464,7 +445,7 @@ GestureDetector.OnDoubleTapListener {
 			rlytNewsContent.addView(viewSettting,0);
 			return viewSettting;
 		}
-		*/
+		 */
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -474,26 +455,26 @@ GestureDetector.OnDoubleTapListener {
 
 
 		ImageView imgViewNews = (ImageView) newView.findViewById(R.id.imgHome);
-		
-		
+
+
 		TextView txtViewNews = (TextView) newView.findViewById(R.id.txtHeading);
 		TextView txtAuthorText=(TextView) newView.findViewById(R.id.txtAuthorText);
 		TextView txtAuthor=(TextView) newView.findViewById(R.id.txtAuthorDate);
 		TextView txtCategory = (TextView)newView.findViewById(R.id.txtCatFooter);
-		
+
 		//HARSH : Not using Cat Color in version 3
 		//String catColor = dbCat.getCategoryColor(objNews.getCatId());
 		//Log.i("Darsh", "catColor"+catColor);
 		//if(!catColor.isEmpty()){
-			//rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
+		//rlytImgContainer.setBackgroundColor(Color.parseColor(catColor));
 		//}
-		
+
 		String stringAuthorAndDate = objNews.getAuthor() + " / " +getFormatedDateTime(objNews.getDate());
-		
+
 		txtViewNews.setText(objNews.getHeadingSpan().toString());
 		txtCategory.setText(objNews.getCatName());
 
-		
+
 		txtAuthor.setText(stringAuthorAndDate);
 		txtAuthorText.setText("by ");
 		//set FONT
@@ -503,7 +484,7 @@ GestureDetector.OnDoubleTapListener {
 		txtAuthorText.setTypeface(tf, Typeface.BOLD_ITALIC);	
 		txtAuthor.setTypeface(tf);	
 		txtCategory.setTypeface(tf);	
-		
+
 
 
 
@@ -521,7 +502,7 @@ GestureDetector.OnDoubleTapListener {
 		if(isSlideInProgress && !isMovingViewCurrent){
 			newView.setY(-1*rlytNewsContent.getHeight());
 		}
-		
+
 		ImageView imageDeatil = (ImageView)newView.findViewById(R.id.imgShowDetail);
 		//ImageView imgComment = (ImageView)newView.findViewById(R.id.imgComment);
 		switch (objNews.getTypeId()) {
@@ -532,7 +513,7 @@ GestureDetector.OnDoubleTapListener {
 		case Globals.NEWS_TYPE_ID_TEXT:
 			//imageDeatil.setVisibility(View.VISIBLE);
 			imageDeatil.setImageResource(R.drawable.home_footer_view);
-			
+
 			break;
 		case Globals.NEWS_TYPE_ID_VIDEO:
 			imageDeatil.setImageResource(R.drawable.home_footer_play);
@@ -546,19 +527,19 @@ GestureDetector.OnDoubleTapListener {
 	}
 	//TODO
 	public void onClickShareMain(View v){
-		
+
 	}
-	
+
 	public void shareIntent()
-    {    
-		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
+	{    
+		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
 
 			Object_ListItem_MainNews currentNewsItem = listNewsItemServer.get(currentNewsIndex);
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
 			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
 			sendIntent.putExtra(Intent.EXTRA_SUBJECT,currentNewsItem.getHeadingSpan()  + "\n\n");
-			
+
 			if (currentNewsItem.getShareLink() != null && !currentNewsItem.getShareLink().trim().equals("")) 
 			{
 				sendIntent.putExtra(
@@ -566,30 +547,30 @@ GestureDetector.OnDoubleTapListener {
 						// currentNewsItem.getContent()
 						"Read more @\n"
 						+ currentNewsItem.getShareLink()
-								+ "\n\nvia "
-								+ getResources().getString(
-										R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+						+ "\n\nvia "
+						+ getResources().getString(
+								R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
 				sendIntent.putExtra(
 						Intent.EXTRA_TEXT,
 						//"Read more @\n"
-								//+ getResources().getString(
-										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+						//+ getResources().getString(
+						//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
 						currentNewsItem.getHeadingSpan()+	
 						"\n\nvia "
-										+ getResources().getString(
-												R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+						+ getResources().getString(
+								R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			}
 
 			File imgF = takeScreenshot(
 					//"Read more @ "
 					//+ getResources().getString(
-							//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							"via "
-							+ getResources().getString(
-									R.string.news_paper_name)+" for Android");
+					//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+					"via "
+					+ getResources().getString(
+							R.string.news_paper_name)+" for Android");
 
 			sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
 
@@ -598,9 +579,9 @@ GestureDetector.OnDoubleTapListener {
 			sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 
 			//startActivity(sendIntent);
 			//startActivity(Intent.createChooser(sendIntent, "Share Via"));
-			
+
 			ArrayList<String> listPackageDetail = getPackageName(shareOptionNo);
-			
+
 			if(listPackageDetail.size()==0){
 				// Open all options
 				startActivity(Intent.createChooser(sendIntent, "Share Via"));
@@ -608,7 +589,7 @@ GestureDetector.OnDoubleTapListener {
 			else if(listPackageDetail.size()>0)
 			{
 				if(isPackageInstalled(listPackageDetail.get(0),this)){
-			
+
 					sendIntent.setPackage(listPackageDetail.get(0)); 
 					startActivity(Intent.createChooser(sendIntent, "Share Image"));
 
@@ -617,47 +598,47 @@ GestureDetector.OnDoubleTapListener {
 				}
 			}
 		}
-		
-    }
+
+	}
 	private ArrayList<String> getPackageName(int optionNumber)
-    {
-    	ArrayList<String> res = new ArrayList<String>();
-    	switch(optionNumber)
-    	{
-    		case 5:
-    			res.add("com.whatsapp");
-    			res.add("Whatsapp");
-    			break;
-    		case 4:
-    			res.add("com.twitter.android");
-    			res.add("Twitter");
-    			break;
-    		case 3:
-    			res.add("com.facebook.katana");
-    			res.add("Facebook");;
-    			break;
-    		case 2: 
-    			res.add("com.facebook.orca");
-    			res.add("Messenger");
-    			break;
-    		case 1:
-    			res.add("com.google.android.gm");
-    			res.add("Gmail");
-    			break;
-    		default:
-    			break;
-    	}
-    	return res;
-    }
+	{
+		ArrayList<String> res = new ArrayList<String>();
+		switch(optionNumber)
+		{
+		case 5:
+			res.add("com.whatsapp");
+			res.add("Whatsapp");
+			break;
+		case 4:
+			res.add("com.twitter.android");
+			res.add("Twitter");
+			break;
+		case 3:
+			res.add("com.facebook.katana");
+			res.add("Facebook");;
+			break;
+		case 2: 
+			res.add("com.facebook.orca");
+			res.add("Messenger");
+			break;
+		case 1:
+			res.add("com.google.android.gm");
+			res.add("Gmail");
+			break;
+		default:
+			break;
+		}
+		return res;
+	}
 	//TODO
-    private boolean isPackageInstalled(String packagename, Context context) {
-	    PackageManager pm = context.getPackageManager();
-	    try {
-	        pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
-	        return true;
-	    } catch (NameNotFoundException e) {
-	        return false;
-	    }
+	private boolean isPackageInstalled(String packagename, Context context) {
+		PackageManager pm = context.getPackageManager();
+		try {
+			pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (NameNotFoundException e) {
+			return false;
+		}
 	}
 
 	private void slide(int height , long duration){
@@ -668,27 +649,27 @@ GestureDetector.OnDoubleTapListener {
 			.translationY(height)
 			.alpha(1.0f);
 			Log.i("Bytes", "viewMoving not null");
-			
-			if(viewStatic != null && currentNewsIndex < listNewsItemServer.size()-1){
+
+			if(viewStatic != null && currentNewsIndex <= listNewsItemServer.size()-1){
 				RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
 				RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
 				float scale = Math.abs((float)viewMoving.getY() /rlytNewsContent.getHeight()) ;
 
-				
+
 				float alpha = 1 - scale; // scale 0 alpha is 1 and when scale is 1 aplha is 0
 				scale = (float) (0.80 + scale * 0.20); // 
-				 
-						
-				
+
+
+
 				Log.i("DARSH","scale"+scale+ "alpha "+ alpha);
 				if(imgCover!= null)
-				imgCover.setAlpha(alpha);
+					imgCover.setAlpha(alpha);
 				//imgCover.animate()
 				//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
-				
+
 				if(imgContainer!= null)
-				imgContainer.animate().setDuration(duration).scaleX(scale).scaleY(scale);
-				
+					imgContainer.animate().setDuration(duration).scaleX(scale).scaleY(scale);
+
 			}else{
 				Log.i("viewStatic", "viewMoving is null");
 			}
@@ -697,31 +678,31 @@ GestureDetector.OnDoubleTapListener {
 			Log.i("Bytes", "viewMoving is null");
 		}
 
-		
+
 	}
-	
+
 	private void  addLoadingView(){
 
 		if(viewLoading == null){
 			LayoutInflater inflater = (LayoutInflater)this.getSystemService
-				(Context.LAYOUT_INFLATER_SERVICE);
+					(Context.LAYOUT_INFLATER_SERVICE);
 
 			viewLoading =(RelativeLayout) inflater.inflate(R.layout.view_loading, rlytMainContent,false);
-			
+
 			int y = Globals.getScreenSize(this).y;
-			
+
 			ImageView imgLoadingFooter =(ImageView) viewLoading.findViewById(R.id.imgLoadingFooter);
 			ImageView imgLoadingNewzByte =(ImageView) viewLoading.findViewById(R.id.imgLoadingNewzByte);
-			
+
 			imgLoadingFooter.getLayoutParams().height = (int) (y * 0.4);
 			imgLoadingFooter.getLayoutParams().width = (int) (y * 0.4);
-			
+
 			imgLoadingNewzByte.getLayoutParams().height = (int) (y * 0.25);
-			
+
 			rlytMainContent.addView(viewLoading);
-			
+
 		}
-		
+
 		viewLoading.setVisibility(View.VISIBLE);
 
 		//ImageView imgViewLogo = (ImageView)viewLoading.findViewById(R.id.imgLogoXB);
@@ -733,22 +714,22 @@ GestureDetector.OnDoubleTapListener {
 		//Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.xb, options);
 		//logo = Globals.scaleToWidth(logo,logoWidth);
 		//imgViewLogo.setImageBitmap(logo);
-		
+
 		//rlytMainContent.removeView(viewLoading);
 		//rlytMainContent.addView(viewLoading);
 		//imgLoadingAnim =(ImageView) viewLoading.findViewById(R.id.imgLoadingAnim);
-		
-		
+
+
 		try{
 			//imgLoadingAnim.setBackgroundResource(0);
 			//imgLoadingAnim.setBackgroundResource(R.drawable.anim_newzbyte_intro);
-			
+
 			//bAmin = (AnimationDrawable) imgLoadingAnim.getBackground();
 			//bAmin.setOneShot(true);
 			//bAmin.start();
 			/*
 			loadingAnimationStarted = true;
-				
+
 			final Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 			  @Override
@@ -756,7 +737,7 @@ GestureDetector.OnDoubleTapListener {
 				  loadingAnimationStarted = false;
 			  }
 			}, getTotalAnimationDuration(bAmin));
-			*/
+			 */
 		}
 		catch(OutOfMemoryError err){
 			Log.e("HARSH", "Memory Error !");
@@ -771,15 +752,15 @@ GestureDetector.OnDoubleTapListener {
 
 	public int getTotalAnimationDuration(AnimationDrawable bAmin) {
 
-        int iDuration = 0;
+		int iDuration = 0;
 
-        for (int i = 0; i < bAmin.getNumberOfFrames(); i++) {
-            iDuration += bAmin.getDuration(i);
-        }
-        
-        iDuration += 100;
-        return iDuration;
-    }
+		for (int i = 0; i < bAmin.getNumberOfFrames(); i++) {
+			iDuration += bAmin.getDuration(i);
+		}
+
+		iDuration += 100;
+		return iDuration;
+	}
 	private void hideLoadingView(){
 
 		if(viewLoading!= null){
@@ -793,7 +774,7 @@ GestureDetector.OnDoubleTapListener {
 					  @Override
 					  public void run() {
 						  Activity_Home.this.runOnUiThread(new Runnable() {
-								
+
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
@@ -802,26 +783,26 @@ GestureDetector.OnDoubleTapListener {
 							});
 					  }
 					}, 200);
-					
+
 					return;
 
 				}
 			//}
-			 
-			 
+
+
 			viewLoading.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION)
 			.translationY(viewLoading.getHeight() *-1)
 			.alpha(1.0f).setListener(new AnimatorListener() {
 
 				@Override
 				public void onAnimationStart(Animator arg0) {
-					
+
 
 				}
 
 				@Override
 				public void onAnimationRepeat(Animator arg0) {
-					
+
 
 				}
 
@@ -849,15 +830,15 @@ GestureDetector.OnDoubleTapListener {
 		}else{
 			Log.i("Bytes", "viewMoving is null");
 		}
-		
-		*/
+
+			 */
 			viewLoading.setVisibility(View.GONE);
 			rlytMainContent.removeView(viewLoading);
 			viewLoading = null;
 		}
 
 	}
-/**
+	/**
 	private void setTextContainerHeight(View v,String title,String content){
 
 		LinearLayout container = (LinearLayout)v.findViewById(R.id.llytTextContainer);
@@ -882,10 +863,10 @@ GestureDetector.OnDoubleTapListener {
 
 		container.setLayoutParams(params);
 	}
-	
-	**/
+
+	 **/
 	private void slideComplete(float velocity, float currentY){
-		
+
 		Log.i("DARSH", "slideComplete");
 		if(isNoMoreNews){
 			isNoMoreNews = false;
@@ -895,7 +876,7 @@ GestureDetector.OnDoubleTapListener {
 			int moveTo = 0;
 			isSlideInProgress = false;
 			boolean newViewShown = false;;
-			
+
 			if(viewMoving != null){
 
 				if(isSlideUp ){
@@ -908,54 +889,54 @@ GestureDetector.OnDoubleTapListener {
 						else{
 							currentNewsIndex ++;
 						}
-							
+
 					}
-						
+
 				}else if(!isMovingViewCurrent){
 					newViewShown = true;
 					if(currentNewsIndex <= 0)
 						currentNewsIndex  = 0;
 					else{
-						
+
 						currentNewsIndex--;
 					}
-						
+
 				}
-				
+
 				if(currentNewsIndex == 0){
 					imgGoToTop.setImageResource(R.drawable.home_header_refresh);
 					imgGoToTop.setOnClickListener(new OnClickListener() {
-						
+
 						@Override
 						public void onClick(View arg0) {
 							onClickRefresh(arg0);
-							
+
 						}
 					});
-					
+
 				}else{
 					imgGoToTop.setImageResource(R.drawable.home_header_up);
 					imgGoToTop.setOnClickListener(new OnClickListener() {
-						
+
 						@Override
 						public void onClick(View arg0) {
 							setFirstView();
-							
+
 						}
 					});
 				}
-				
+
 				if(newViewShown){
-					
+
 					setHeader();
 				}
-				
+
 				/*
 				float currentMovement = Math.abs(y - y2) ;
 				long elapseTimeMilliSec =(long) (( System.nanoTime() - startTime )/ 1000000.0);
 				if(elapseTimeMilliSec > 0){
 				long speed = (long) ((currentMovement - MAX_TOUCH_VALUE)/elapseTimeMilliSec);
-				*/
+				 */
 				float currentMovement = Math.abs(y - currentY) ;
 				long newDuration = DEFAULT_MAX_SLIDE_DURATION;
 				float speed = Math.abs(velocity);
@@ -964,9 +945,9 @@ GestureDetector.OnDoubleTapListener {
 					newDuration = (long) (((rlytNewsContent.getHeight() - currentMovement) * 1000) / speed);
 					delay =0;
 				}
-				
-				
-				
+
+
+
 				Log.i("Bytes", "newDuration = "+newDuration);
 
 				if(newDuration > DEFAULT_MAX_SLIDE_DURATION)
@@ -1000,70 +981,70 @@ GestureDetector.OnDoubleTapListener {
 						//moveAnimationOver();
 					}
 				});
-				
-				if(viewStatic != null && currentNewsIndex < listNewsItemServer.size()-1){
+
+				if(viewStatic != null && currentNewsIndex <= listNewsItemServer.size()-1){
 					RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
 					RelativeLayout imgCover =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgCover);
 					float alpha =1;
 					Log.i("DARSH", "alpha "+ alpha);
-					
+
 					if(isSlideUp ){
 						alpha = 0;
 					}
 					if(imgCover!= null)
-					imgCover.animate().setStartDelay(delay).setDuration(newDuration).alpha(alpha);
-					
+						imgCover.animate().setStartDelay(delay).setDuration(newDuration).alpha(alpha);
+
 					//imgCover.animate()
 					//LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) imgContainer.getLayoutParams();
-					
+
 					if(imgContainer!= null)
-					imgContainer.animate().setStartDelay(delay).setDuration(newDuration).scaleX(1-alpha).scaleY(1-alpha).setListener(new AnimatorListener() {
+						imgContainer.animate().setStartDelay(delay).setDuration(newDuration).scaleX(1-alpha).scaleY(1-alpha).setListener(new AnimatorListener() {
 
-						@Override
-						public void onAnimationStart(Animator animation) {
-						}
+							@Override
+							public void onAnimationStart(Animator animation) {
+							}
 
-						@Override
-						public void onAnimationRepeat(Animator animation) {
+							@Override
+							public void onAnimationRepeat(Animator animation) {
 
-						}
+							}
 
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							scaleAnimationOver();
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								scaleAnimationOver();
 
-						}
+							}
 
-						@Override
-						public void onAnimationCancel(Animator animation) {
-							//scaleAnimationOver();
-						}
-					});
-					
+							@Override
+							public void onAnimationCancel(Animator animation) {
+								//scaleAnimationOver();
+							}
+						});
+
 				}else{
 					Log.i("viewStatic", "viewMoving is null");
 				}
 			}
 		}
 	}
-	
+
 	private void setHeader(){
-		
-		if(currentNewsIndex >=0 && currentNewsIndex < listNewsItemServer.size() - 1)
+
+		if(currentNewsIndex >=0 && currentNewsIndex <= listNewsItemServer.size() - 1)
 		{
-		//RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
-		//DBHandler_Category dbCat = new DBHandler_Category(this);
-		Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
-		//String catColor = dbCat.getCategoryColor(objNews.getCatId());
-		//Log.i("Darsh", "catColor"+catColor);
-		//if(!catColor.isEmpty()){
+			//RelativeLayout rlytNewsHeaderIconContainer  =(RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
+			//DBHandler_Category dbCat = new DBHandler_Category(this);
+			Object_ListItem_MainNews objNews = listNewsItemServer.get(currentNewsIndex);
+			//String catColor = dbCat.getCategoryColor(objNews.getCatId());
+			//Log.i("Darsh", "catColor"+catColor);
+			//if(!catColor.isEmpty()){
 			//rlytNewsHeaderIconContainer.setBackgroundColor(Color.parseColor(catColor));
-		//}
-		//TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
-		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		//txtCategory.setTypeface(tfCat);
-		Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
-		//txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
+			//}
+			//TextView txtCategory = (TextView)findViewById(R.id.txtCatHeading); //Its activity control now
+			//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+			//txtCategory.setTypeface(tfCat);
+			Log.i("DARSH", "objNews.getCatName()"+objNews.getCatName());
+			//txtCategory.setText(dbCat.getCategoryName(objNews.getCatId()));
 		}
 	}
 
@@ -1073,40 +1054,40 @@ GestureDetector.OnDoubleTapListener {
 			if(viewStatic != null){
 				RelativeLayout imgContainer =(RelativeLayout) viewStatic.findViewById(R.id.rlytImgContainer);
 				imgContainer.animate().setListener(null);
-				
+
 				if((isSlideUp && isMovingViewCurrent) || (!isSlideUp && !isMovingViewCurrent)){
-				
-				ImageView imageDeatil = (ImageView)viewStatic.findViewById(R.id.imgShowDetail);
-				//RelativeLayout rlytButtonsContainer = (RelativeLayout)findViewById(R.id.rlytButtonsContainer);
-				//RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)imageDeatil.getLayoutParams();
-				
-				//int originalX = lp.width;
-				//int originalY = lp.height;
-				
-				//lp.height = 10;
-				//lp.width = 10;
-				
-				//imageDeatil.setLayoutParams(lp);
-				
-				Animation zoomin = AnimationUtils.loadAnimation(this, R.anim.zoomin);
-				//Animation zoomout = AnimationUtils.loadAnimation(this, R.anim.zoomout);
-				imageDeatil.setAnimation(zoomin);
-				//imageDeatil.setAnimation(zoomout);
-				
-				imageDeatil.startAnimation(zoomin);
-				
-				if((isSlideUp && isMovingViewCurrent)){
-					hideTopIconsBar();
-				}else{
-					showTopIconsBar();
-				}
-				
+
+					ImageView imageDeatil = (ImageView)viewStatic.findViewById(R.id.imgShowDetail);
+					//RelativeLayout rlytButtonsContainer = (RelativeLayout)findViewById(R.id.rlytButtonsContainer);
+					//RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)imageDeatil.getLayoutParams();
+
+					//int originalX = lp.width;
+					//int originalY = lp.height;
+
+					//lp.height = 10;
+					//lp.width = 10;
+
+					//imageDeatil.setLayoutParams(lp);
+
+					Animation zoomin = AnimationUtils.loadAnimation(this, R.anim.zoomin);
+					//Animation zoomout = AnimationUtils.loadAnimation(this, R.anim.zoomout);
+					imageDeatil.setAnimation(zoomin);
+					//imageDeatil.setAnimation(zoomout);
+
+					imageDeatil.startAnimation(zoomin);
+
+					if((isSlideUp && isMovingViewCurrent)){
+						hideTopIconsBar();
+					}else{
+						showTopIconsBar();
+					}
+
 				}
 			}
 		}
 	}
 	private void moveAnimationOver(){
-		
+
 		isAnimInProgress = false;
 		/*
 		if(isSlideUp && isMovingViewCurrent){
@@ -1117,8 +1098,8 @@ GestureDetector.OnDoubleTapListener {
 		}else if (isSlideUp && !isMovingViewCurrent){
 			rlytNewsContent.removeView(viewMoving);
 		}else if(!isSlideUp && !isMovingViewCurrent)
-		*/
-		
+		 */
+
 		if(!isSlideUp){
 			rlytNewsContent.removeView(viewStatic);						
 			viewStatic = viewMoving;
@@ -1126,30 +1107,30 @@ GestureDetector.OnDoubleTapListener {
 		}else{
 			rlytNewsContent.removeView(viewMoving);
 		}
-		
+
 
 		if(viewMoving != null)
 			viewMoving.animate().setListener(null);
 		viewMoving = null;
-		
+
 		rlytNewsContent.bringChildToFront(viewStatic);
 		if(rlytNewsContent.getChildCount() > 1)
 			rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount() -1);
 	}
-	
-	
+
+
 	private void hideTopIconsBar(){
-		
+
 		if(!isTopIconBarHidden){
-			
+
 			RelativeLayout layout = (RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
 			layout.animate().setDuration(300).translationY(-1*layout.getHeight());
 			isTopIconBarHidden = true;
 		}
-		
-	
+
+
 	}
-	
+
 	private void showTopIconsBar(){
 		if(isTopIconBarHidden){
 			RelativeLayout layout = (RelativeLayout)findViewById(R.id.rlytNewsHeaderIconContainer);
@@ -1158,88 +1139,88 @@ GestureDetector.OnDoubleTapListener {
 		}
 	}
 	@Override 
-    public boolean onTouchEvent(MotionEvent touchevent){ 
-        this.mDetector.onTouchEvent(touchevent);
-        // Be sure to call the superclass implementation
-        
-        switch (touchevent.getAction())
+	public boolean onTouchEvent(MotionEvent touchevent){ 
+		this.mDetector.onTouchEvent(touchevent);
+		// Be sure to call the superclass implementation
+
+		switch (touchevent.getAction())
 		{
 		// when user first touches the screen we get x and y coordinate
-			case (MotionEvent.ACTION_UP): 
-				 Log.d(DEBUG_TAG,"onTouchUp: " );
-				 slideComplete(0,touchevent.getY());
-				 return false;
-			case (MotionEvent.ACTION_CANCEL): 
-				 Log.d(DEBUG_TAG,"onTouchCancel: " );
-				slideComplete(0,touchevent.getY());
-				 return false;
-				 
-			default : 
-	            return super.onTouchEvent(touchevent);
+		case (MotionEvent.ACTION_UP): 
+			Log.d(DEBUG_TAG,"onTouchUp: " );
+		slideComplete(0,touchevent.getY());
+		return false;
+		case (MotionEvent.ACTION_CANCEL): 
+			Log.d(DEBUG_TAG,"onTouchCancel: " );
+		slideComplete(0,touchevent.getY());
+		return false;
+
+		default : 
+			return super.onTouchEvent(touchevent);
 		}
-        
-        //return super.onTouchEvent(touchevent);
-    }
 
-    @Override
-    public boolean onDown(MotionEvent event) { 
-        Log.d(DEBUG_TAG,"onDown: " );//+ event.toString()); 
-        y = event.getY();
-        return true;
-    }
+		//return super.onTouchEvent(touchevent);
+	}
 
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, 
-            float velocityX, float velocityY) {
-        Log.d(DEBUG_TAG, "onFling: VelocityX = "+ velocityX + " VelocityY = "+ velocityY );//+ event1.toString()+event2.toString());
-        
-        if (e1.getX() < e2.getX()) {
-            Log.d(DEBUG_TAG, "Left to Right swipe performed");
-        }
-     
-        if (e1.getX() > e2.getX()) {
-            Log.d(DEBUG_TAG, "Right to Left swipe performed");
-        }
-     
-        if (e1.getY() < e2.getY() | e1.getY() > e2.getY()) {
-            Log.d(DEBUG_TAG, "Up to Down swipe performed");
-            slideComplete(velocityY,e2.getY());
-            
-        }
-     
-       // if (e1.getY() > e2.getY()) {
-          //  Log.d(DEBUG_TAG, "Down to Up swipe performed");
-       // }
-        
-        return true;
-    }
+	@Override
+	public boolean onDown(MotionEvent event) { 
+		Log.d(DEBUG_TAG,"onDown: " );//+ event.toString()); 
+		y = event.getY();
+		return true;
+	}
 
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-            float distanceY) {
-       
-        
-        if(isAnimInProgress || isNoMoreNews)
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, 
+			float velocityX, float velocityY) {
+		Log.d(DEBUG_TAG, "onFling: VelocityX = "+ velocityX + " VelocityY = "+ velocityY );//+ event1.toString()+event2.toString());
+
+		if (e1.getX() < e2.getX()) {
+			Log.d(DEBUG_TAG, "Left to Right swipe performed");
+		}
+
+		if (e1.getX() > e2.getX()) {
+			Log.d(DEBUG_TAG, "Right to Left swipe performed");
+		}
+
+		if (e1.getY() < e2.getY() | e1.getY() > e2.getY()) {
+			Log.d(DEBUG_TAG, "Up to Down swipe performed");
+			slideComplete(velocityY,e2.getY());
+
+		}
+
+		// if (e1.getY() > e2.getY()) {
+		//  Log.d(DEBUG_TAG, "Down to Up swipe performed");
+		// }
+
+		return true;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+
+
+		if(isAnimInProgress || isNoMoreNews)
 			return true;
-        
-        if(e1 == null || e2 == null)
-			return true;
-        
-        Log.d(DEBUG_TAG, "onScroll: X = " + distanceX + " and Y = "+distanceY );//+ e1.toString()+e2.toString());
 
-        Log.d(DEBUG_TAG, "onScroll: e1.y = " + e1.getY() + " and e2.y = "+e2.getY() );
-        y = e1.getY(); // Motion event for first touch of scroll.
-        float totalDisplacementY = Math.abs(e1.getY()-e2.getY());
-        
-        if(Math.abs(distanceY) > Math.abs(distanceX) ){
-        	if(distanceY > 0){
-        		isSlideUp = true;
+		if(e1 == null || e2 == null)
+			return true;
+
+		Log.d(DEBUG_TAG, "onScroll: X = " + distanceX + " and Y = "+distanceY );//+ e1.toString()+e2.toString());
+
+		Log.d(DEBUG_TAG, "onScroll: e1.y = " + e1.getY() + " and e2.y = "+e2.getY() );
+		y = e1.getY(); // Motion event for first touch of scroll.
+		float totalDisplacementY = Math.abs(e1.getY()-e2.getY());
+
+		if(Math.abs(distanceY) > Math.abs(distanceX) ){
+			if(distanceY > 0){
+				isSlideUp = true;
 				Log.i("Bytes", "ACTION_MOVE UP");
-        	}else{
-        		isSlideUp = false;
+			}else{
+				isSlideUp = false;
 				Log.i("Bytes", "ACTION_MOVE DOWN");
-        	}
-        	
+			}
+
 			if(!isSlideInProgress ){
 				isSlideInProgress = true;
 				if(isSlideUp){
@@ -1276,48 +1257,48 @@ GestureDetector.OnDoubleTapListener {
 					slide((-1*rlytNewsContent.getHeight()) + (int)totalDisplacementY,0);
 			}
 		}
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void onLongPress(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onLongPress: " );//+ event.toString()); 
-    }
-     
-   
-    @Override
-    public void onShowPress(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onShowPress: " );//+ event.toString());
-    }
+	@Override
+	public void onLongPress(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onLongPress: " );//+ event.toString()); 
+	}
 
-    @Override
-    public boolean onSingleTapUp(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onSingleTapUp: " );//+ event.toString());
-        return true;
-    }
 
-    @Override
-    public boolean onDoubleTap(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onDoubleTap: " );//+ event.toString());
-        return true;
-    }
+	@Override
+	public void onShowPress(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onShowPress: " );//+ event.toString());
+	}
 
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onDoubleTapEvent: " );//+ event.toString());
-        return true;
-    }
+	@Override
+	public boolean onSingleTapUp(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onSingleTapUp: " );//+ event.toString());
+		return true;
+	}
 
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent event) {
-        Log.d(DEBUG_TAG, "onSingleTapConfirmed: " );//+ event.toString());
-        tapOnView();
-        return true;
-    }
-    
+	@Override
+	public boolean onDoubleTap(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onDoubleTap: " );//+ event.toString());
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTapEvent(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onDoubleTapEvent: " );//+ event.toString());
+		return true;
+	}
+
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent event) {
+		Log.d(DEBUG_TAG, "onSingleTapConfirmed: " );//+ event.toString());
+		tapOnView();
+		return true;
+	}
+
 	/*
-	 
-	 
+
+
 	 private void slideComplete(float y2){
 		if(isNoMoreNews){
 			isNoMoreNews = false;
@@ -1379,8 +1360,8 @@ GestureDetector.OnDoubleTapListener {
 			}
 		}
 	}
-	
-	
+
+
 	@Override
 	public boolean onTouchEvent(MotionEvent touchevent) {	
 		//return super.onTouchEvent(event);
@@ -1498,10 +1479,10 @@ GestureDetector.OnDoubleTapListener {
 		return false;		
 	}
 
-*/
-    private void tapOnView(){
-    	
-    	/*
+	 */
+	private void tapOnView(){
+
+		/*
     	if(viewStatic != null){
     		ArcMenu arcMenu = (ArcMenu)viewStatic.findViewById(R.id.arcMenu1);
     		if(arcMenu != null)
@@ -1509,29 +1490,29 @@ GestureDetector.OnDoubleTapListener {
     				arcMenu.getControlLayout().setBackgroundResource(R.drawable.arcmenu_share_share_btn);
     				arcMenu.getArcLayout().switchState(true);
     			}
-    				
+
     	}
-    	*/
-    	if(isTopIconBarHidden)
-    		showTopIconsBar();
-    	else
-    		hideTopIconsBar();
-    	
-    }
+		 */
+		if(isTopIconBarHidden)
+			showTopIconsBar();
+		else
+			hideTopIconsBar();
+
+	}
 	public void tapOnShowDetails(View v){
 
 		if(viewLoading!= null )
 			if(viewLoading.getVisibility() == View.VISIBLE)
 				return;
 
-		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
+		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
 			Object_ListItem_MainNews obj =	listNewsItemServer.get(currentNewsIndex);
-			
+
 			switch (obj.getTypeId()) {
 			case Globals.NEWS_TYPE_ID_ONLY_IMAGE:
 				break;
 			case Globals.NEWS_TYPE_ID_TEXT:
-					navigateToNewsDetail(obj);
+				navigateToNewsDetail(obj);
 				break;
 			case Globals.NEWS_TYPE_ID_VIDEO:
 				if(obj.getVideo() == null || obj.getVideo().isEmpty()){
@@ -1540,30 +1521,48 @@ GestureDetector.OnDoubleTapListener {
 				Custom_YouTubePlayerActivity.videoKey = obj.getVideo();
 				Log.d("HARSH", "videoKey"+Custom_YouTubePlayerActivity.videoKey);
 				try{
-				Intent i = new Intent(this, Custom_YouTubePlayerActivity.class);
-		    	//this.finish();
-		    	this.startActivity(i);
+					Intent i = new Intent(this, Custom_YouTubePlayerActivity.class);
+					//this.finish();
+					this.startActivity(i);
 				}catch (Exception e) {
-					
+
 				}
 				break;
 
 			default:
 				break;
 			}
-			
-			
-			
+
+
+
 		}
 	}
 	public void onClickMenu(View v){
 
-		if(isDrawerOpen){                
-			mDrawerLayout.closeDrawer(Gravity.LEFT);
-		}else{              
-			mDrawerLayout.openDrawer(Gravity.LEFT);
-		}
+		//if(isDrawerOpen){                
+		//mDrawerLayout.closeDrawer(Gravity.LEFT);
+		//}else{              
+		//mDrawerLayout.openDrawer(Gravity.LEFT);
+		//}
 
+		if(viewCategory == null){
+			viewCategory = initViewCategories();
+			TextView txtHeading =(TextView) viewCategory.findViewById(R.id.cat_header);
+			TextView txt1 =(TextView) viewCategory.findViewById(R.id.cat_intro_text_1);
+			TextView txt2 =(TextView) viewCategory.findViewById(R.id.cat_intro_text_2);
+
+
+			Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+			txtHeading.setTypeface(tf);	
+			txt1.setTypeface(tf);	
+			txt2.setTypeface(tf);	
+
+			rlytMainContent.addView(viewCategory);
+			Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+			viewCategory.startAnimation(animationFadeIn);
+
+		}
+		
 	}
 
 	/*
@@ -1572,69 +1571,74 @@ GestureDetector.OnDoubleTapListener {
 		arraySelectedCatIds.clear();
 		onClickCategory();
 	}
-	*/
+	 */
 
+
+	public void onClickAllCategory(View v){
+		DBHandler_CategorySelection dbHSelection = new DBHandler_CategorySelection(this);
+		if(!dbHSelection.isAllCategoriesSelected()){
+
+			dbHSelection.clearCategoryTable();
+
+			DBHandler_Category dbHCategory = new DBHandler_Category(this);
+			dbHCategory.selectAllCategories(dbHSelection);
+			isCategoryChanged = true;
+			
+			if(viewCategory!=null){
+				LinearLayout llytAllSelection =(LinearLayout)viewCategory.findViewById(R.id.llytAllNewsSelection);
+				llytAllSelection.setVisibility(View.VISIBLE);
+				onClickCatClose(null);
+			}
+		}
+	}
 	public void onClickCategoryItem(View v){
 
-		Log.d("HARSH", "onClickCategoryItem");
+		int selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
+		DBHandler_CategorySelection dbHSelection = new DBHandler_CategorySelection(this);
+		LinearLayout llytSelection =(LinearLayout)v.findViewById(R.id.llytNewsSelection);
 		
-		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
-		
-		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
-		boolean contains = dbH.containsCatId(selectedCatId);
-		
-		ArrayList<Integer> Ids = dbH.getAllCategories();
-		
-		for(Integer id : Ids){
-			if(id.intValue() == selectedCatId){
-				contains = true;
-				break;
-			}
+		if(viewCategory!=null){
+			LinearLayout llytAllSelection =(LinearLayout)viewCategory.findViewById(R.id.llytAllNewsSelection);
+			llytAllSelection.setVisibility(View.INVISIBLE);
 		}
 		
-		if(contains){
-			if(Ids.size() > 1)
-				dbH.clearCategory(selectedCatId);
-			else{
-				Toast.makeText(this, "You have to select atleast one category!", Toast.LENGTH_SHORT).show();
-				return;
-			}
-				
-			Log.d("HARSH", "dbH.clearCategory(catId) "+selectedCatId);
-		}
-		else{
-			dbH.insertSelectedCat(selectedCatId);
-			Log.d("HARSH", "dbH.insertCategory(catId) "+selectedCatId);
-		}
-		
-		View cView = v.findViewById(R.id.imgViewCat);
-		if(cView!= null && cView.getClass() == ImageView.class){
-			ImageView imageView = (ImageView)cView;
-			int index = ((Integer)imageView.getTag(R.string.app_name)).intValue();
-			if(listCatItemServer!= null && listCatItemServer.size() > index){
-				Object_Category obj = listCatItemServer.get(index);
-				if(contains){
-					Log.d("HARSH", "1");
-					Globals.loadImageIntoImageView(imageView, obj.getImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
-				}else{
-					Log.d("HARSH", "2");
-					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading_selected,R.drawable.cat_loading_selected);
-				}
-			}
+		if(dbHSelection.isAllCategoriesSelected()){
 			
+			dbHSelection.clearCategoryTable();
+			dbHSelection.insertSelectedCat(selectedCatId);
+			llytSelection.setVisibility(View.VISIBLE);
+		}else{
+			boolean contains = dbHSelection.containsCatId(selectedCatId);
+			if(contains){
+				ArrayList<Integer> Ids = dbHSelection.getAllSelectedCategories();
+				if(Ids.size() > 1){
+					dbHSelection.clearCategory(selectedCatId);
+					llytSelection.setVisibility(View.INVISIBLE);
+				}
+				else{
+					Toast.makeText(this, "You have to select atleast one category!", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				Log.d("HARSH", "dbH.clearCategory(catId) "+selectedCatId);
+			}
+			else{
+				dbHSelection.insertSelectedCat(selectedCatId);
+				llytSelection.setVisibility(View.VISIBLE);
+				Log.d("HARSH", "dbH.insertCategory(catId) "+selectedCatId);
+			}
 		}
-	
-		//setBootomBarStatus();
+
 		isCategoryChanged = true;
 	}
-	
-	
+
+
 
 	private void setFirstView(){
 		currentNewsIndex = -1;
 		isMovingViewCurrent = true;
 		View view = createNewsView();
-		
+
 		if(view != null){
 			viewStatic = view;
 			scaleAnimationOver();
@@ -1645,22 +1649,22 @@ GestureDetector.OnDoubleTapListener {
 			rlytNewsContent.removeViews(1, rlytNewsContent.getChildCount() -1);
 	}
 
-	
+
 	private boolean isNotContainsId(int id){
-		
+
 		boolean returnVal = true;
 		for(Object_ListItem_MainNews item : listNewsItemServer){
 			if(item.getId() == id){
 				returnVal = false;
 				break;
 			}
-			
+
 		}
 		return returnVal;
 	}
-	
-	
-	
+
+
+
 
 	public File takeScreenshot(String txt) { 
 		Date now = new Date(); 
@@ -1715,7 +1719,7 @@ GestureDetector.OnDoubleTapListener {
 
 	public void onClickShare(View v) {
 
-		if (currentNewsIndex >= 0 &&  currentNewsIndex < listNewsItemServer.size() - 1) {
+		if (currentNewsIndex >= 0 &&  currentNewsIndex <= listNewsItemServer.size() - 1) {
 
 
 
@@ -1724,10 +1728,10 @@ GestureDetector.OnDoubleTapListener {
 			sendIntent.setAction(Intent.ACTION_SEND);
 			//sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
 
-			
-				sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-						currentNewsItem.getHeadingSpan()  + "\n\n");
-			
+
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+					currentNewsItem.getHeadingSpan()  + "\n\n");
+
 
 
 
@@ -1738,32 +1742,32 @@ GestureDetector.OnDoubleTapListener {
 						// currentNewsItem.getContent()
 						//"Read more @\n"
 						//+ getResources().getString(
-								//R.string.txt_company_website)
+						//R.string.txt_company_website)
 						currentNewsItem.getHeadingSpan()+
-								"\n\nvia "
-								+ getResources().getString(
-										R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+						"\n\nvia "
+						+ getResources().getString(
+								R.string.news_paper_name) +" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			} 
 			else 
 			{
 				sendIntent.putExtra(
 						Intent.EXTRA_TEXT,
 						//"Read more @\n"
-								//+ getResources().getString(
-										//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+						//+ getResources().getString(
+						//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
 						currentNewsItem.getHeadingSpan()+			 
 						"\n\nvia "
-										+ getResources().getString(
-												R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
+						+ getResources().getString(
+								R.string.news_paper_name)+" for Android" + "\nDownload @ "+ Globals.SHARE_URL);
 			}
 
 			File imgF = takeScreenshot(
 					//"Read more @ "
 					//+ getResources().getString(
-							//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
-							 " via "
-							+ getResources().getString(
-									R.string.news_paper_name)+" for Android");
+					//R.string.txt_company_website)//+"/detail/"+currentNewsItem.getId()
+					" via "
+					+ getResources().getString(
+							R.string.news_paper_name)+" for Android");
 
 			sendIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(imgF) );
 			Log.i("jaspal","image Path is :"+Uri.fromFile(imgF));
@@ -1775,7 +1779,7 @@ GestureDetector.OnDoubleTapListener {
 			startActivity(Intent.createChooser(sendIntent, "Share Via"));
 		}
 	}
-/*
+	/*
 	private void drawerEventAnim(){
 
 		try{
@@ -1786,242 +1790,7 @@ GestureDetector.OnDoubleTapListener {
 
 		}
 	}
-*/
-	private void createDrawerCategories(){
-
-		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
-		///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
-
-		if(llytCatContainer.getChildCount() > 0){
-			llytCatContainer.removeAllViews();
-		}
-		
-		///if(llytCatContainer.getChildCount() > 1){
-			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
-		///}
-
-		///if(arraySelectedCatIds.size() == 0){
-			///btnCatAll.setImageResource(R.drawable.viewall_selected);
-			///btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
-		///}else{
-			///btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
-			///btnCatAll.setBackgroundResource(R.color.app_transparent);
-		///}
-
-		LinearLayout row = null;
-		boolean firstInRow ;
-		
-		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
-		ArrayList<Integer> Ids = dbH.getAllCategories();
-		//DBHandler_Category dbCat = new DBHandler_Category(this);
-		for(int i = 0 ; i< listCatItemServer.size() ; i++){
-
-			//if(i%3 == 0){
-				firstInRow = true;
-			//}else{
-				//firstInRow = false;
-			//}
-			if(firstInRow){
-				
-				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
-			}
-
-			if(row != null){
-				
-				boolean contains = false;
-				for(Integer id : Ids){
-					if(id.intValue() == listCatItemServer.get(i).getId()){
-						contains = true;
-						break;
-					}
-				}
-				
-				Log.d("HARSH", "contains"+contains);
-				Object_Category objCat = listCatItemServer.get(i);
-				row.addView(getCatImageView(objCat,row,firstInRow,i,contains)) ;
-
-				
-				
-
-				String catColor = objCat.getColor();//dbCat.getCategoryColor(objCat.getId());
-				if(!catColor.isEmpty())
-					row.setBackgroundColor(Color.parseColor(catColor));
-				
-//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//						Globals.getScreenSize(this).x*3/2,      
-//						LinearLayout.LayoutParams.WRAP_CONTENT
-//				);
-//				
-//				int marginD = -1*Globals.getScreenSize(this).x/4;
-//				params.setMargins(marginD, 0, marginD, 0);
-//				row.setLayoutParams(params);
-				
-				if(firstInRow)
-					llytCatContainer.addView(row);	
-			}
-
-		}
-		
-		ScrollView.LayoutParams params2 = new ScrollView.LayoutParams(
-				ScrollView.LayoutParams.MATCH_PARENT,      
-				ScrollView.LayoutParams.WRAP_CONTENT
-		);
-		
-		int marginD = -1*Globals.getScreenSize(this).x/2;
-		params2.setMargins(marginD, 0, marginD, 0);
-		llytCatContainer.setLayoutParams(params2);
-		
-		llytCatContainer.setRotation(-1* getScrollViewDiagonalAngle());
-		
-		if(listCatItemServer.size() > 0){
-			
-			LinearLayout llytUpper = (LinearLayout)findViewById(R.id.llytDrwawerUpperHalf);
-			LinearLayout llytLower = (LinearLayout)findViewById(R.id.llytDrwawerLowerHalf);
-			
-			
-			
-			String catColor1 = listCatItemServer.get(0).getColor();//dbCat.getCategoryColor(listCatItemServer.get(0).getId());
-			if(!catColor1.isEmpty()){
-				llytUpper.setBackgroundColor(Color.parseColor(catColor1));
-			}
-			
-			String catColor2 = listCatItemServer.get(listCatItemServer.size() - 1).getColor();//dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
-			if(!catColor2.isEmpty()){
-				llytLower.setBackgroundColor(Color.parseColor(catColor2));
-			}
-			
-		}
-		
-	}
-
-	private float getScrollViewDiagonalAngle(){
-		
-		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
-		
-		if(scrollViewCat.getHeight() > 0 && scrollViewCat.getWidth() > 0){
-			
-			float angle = 90.0f - (float) Math.toDegrees(Math.atan((float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()));
-			//Log.d("DARSH","angle:"+ (float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()+ " " +Math.atan(scrollViewCat.getHeight()/scrollViewCat.getWidth()) + " " +angle);
-			//Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight() + "scrollViewCat.getWidth()"+scrollViewCat.getWidth());
-			return angle;
-		}
-		
-		return 30.0f;
-	}
-	@SuppressLint("NewApi")
-	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
-
-		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-		//int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
-		
-		///
-		int headerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, getResources().getDisplayMetrics());
-		int totalHeight = Globals.getScreenSize(this).y - headerHeight;
-		//ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
-		
-		int heightImage = (int) ((totalHeight - 6* margin )/6.0 ) ;
-		int widthImage = heightImage;
-		///
-		Log.d("DARSH","scrollViewCat.getHeight():"+totalHeight);
-		Log.d("DARSH","widthImage:"+widthImage);
-		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
-
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
-		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
-
-		/*
-		if(isSelectedId(Integer.valueOf(objCat.getId())))
-		{
-
-			GradientDrawable shape =  new GradientDrawable();
-			//shape.setCornerRadius(10);
-			shape.setColor(catColor);
-			if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-			{                   
-				item.setBackground(shape);
-			} 
-			else{ 
-				item.setBackgroundDrawable(shape);  // deprecated.
-			} 
-
-		}
-		else
-		{
-			item.setOnTouchListener(new Custom_OnTouchListener_ColoredBG(item, this, objCat.getId()));
-			item.setBackgroundResource(R.drawable.bg_rounded_shadow);
-		}
-		*/
-		//item.getLayoutParams().width = widthImage;
-		//item.getLayoutParams().height = item.getLayoutParams().width;
-
-		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
-		imgView.setTag(R.string.app_name, position);
-		//int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-				//100;//Globals.getScreenSize(this).y/5;
-		
-		//item.setMinimumWidth(widthImage);
-		//item.setMinimumHeight(heightImage);
-
-		
-		RelativeLayout.LayoutParams params =(RelativeLayout.LayoutParams )imgView.getLayoutParams();
-		params.height = heightImage;
-		params.width = widthImage ;//+ margin;//;rlytDrawerPane.getLayoutParams().width - margin;
-		
-		//params.gravity = Gravity.RIGHT;
-		imgView.setLayoutParams(params);
-		
-		
-		//LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
-		
-		//if(!firstInRow)
-			//paramsParent.leftMargin = margin;
-		//params.gravity = Gravity.RIGHT;
-		//item.setLayoutParams(paramsParent);
-
-		/*
-		new ImageView(this);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 10, 10, 10);
-
-		imgView.setLayoutParams(params);
-		imgView.setScaleType(ScaleType.CENTER_CROP);
-		imgView.setClickable(true);
-
-		 */
-
-		//Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
-
-		if(contains){
-
-			Globals.loadImageIntoImageView(imgView, objCat.getSelectedImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
-			Globals.preloadImage(getApplicationContext(), objCat.getImageName()) ;
-		}else{
-			Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
-			Globals.preloadImage(getApplicationContext(), objCat.getSelectedImageName()) ;
-		}
-		
-		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
-
-		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		//txtCategory.setTypeface(tfCat);
-		txtCategory.setText(objCat.getName());
-		txtCategory.setMaxWidth(widthImage-margin);
-		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
-
-		item.setRotation(getScrollViewDiagonalAngle());
-		return item;
-
-	}
-
-	
-	
-	 
-	
-
-
+	 */
 
 	private void serverCallForCategoriesAndNews() {
 		try {
@@ -2041,7 +1810,7 @@ GestureDetector.OnDoubleTapListener {
 				@Override
 				public void onResponse(JSONObject response) {
 
-					mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+					//mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 					parseAppConfigJson(response);
 					if(viewLoading != null){
 						hideLoadingView();
@@ -2088,15 +1857,15 @@ GestureDetector.OnDoubleTapListener {
 		}
 
 	}
-	
-	
-	
+
+
+
 
 
 	private void parseAppConfigJson(JSONObject response) {
 
 		if (response == null){
-			
+
 			return;
 		}
 		Log.i("DARSH", "RESPONCE parseAppConfigJson is : "+response.toString());
@@ -2122,15 +1891,15 @@ GestureDetector.OnDoubleTapListener {
 				if(comingFromPushMessage){
 					comingFromPushMessage = false;
 					//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-						//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
-				
+					//Globals.showAlertDialogOneButton("News Flash",GCMIntentService.pushMessageHeader +"\n\n"+GCMIntentService.pushMessageText, this, "OK", null, false);
+
 					if(GCMIntentService.pushMessageNewsId > 0){
 						isMovingViewCurrent = true;
 						currentNewsIndex = getNewsIndexById(GCMIntentService.pushMessageNewsId);
 					}
 					if(GCMIntentService.pushMessageNeedsPopUp == 1){
 						//if(!(GCMIntentService.pushMessageHeader.isEmpty()))
-							Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
+						Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader, GCMIntentService.pushMessageText, this, "OK", null, false);
 					}
 				}
 				isMovingViewCurrent = true;
@@ -2140,7 +1909,7 @@ GestureDetector.OnDoubleTapListener {
 					rlytNewsContent.removeViews(0, rlytNewsContent.getChildCount()-1);
 				preLoadImages();
 				//hasNews = true;
-				
+
 			}
 			// Now set Categories
 			if (response.has("categories_need_update")) {
@@ -2156,7 +1925,7 @@ GestureDetector.OnDoubleTapListener {
 						JSONArray Cat_Object_Array = response.getJSONArray("categories");
 						Custom_JsonParserCategory parserObject = new Custom_JsonParserCategory(this);
 						listCatItemServer = parserObject.getCategoriesFromJson(Cat_Object_Array);
-						createDrawerCategories();
+						//createDrawerCategories();
 						//hasCategory = true;
 					}
 
@@ -2165,23 +1934,29 @@ GestureDetector.OnDoubleTapListener {
 
 			final Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
-			  @Override
-			  public void run() {
-				  if(listNewsItemServer != null && listNewsItemServer.size() > 0){
-		        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
-			        	dbH.insertNewsItemList(listNewsItemServer,true);
-				  }
-				  if(listCatItemServer != null && listCatItemServer.size() > 0){
-					  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
-					  dbH2.setCategories(listCatItemServer);
-				  }
-				  
-			  }
+				@Override
+				public void run() {
+					if(listNewsItemServer != null && listNewsItemServer.size() > 0){
+						DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
+						dbH.insertNewsItemList(listNewsItemServer,true);
+					}
+					if(listCatItemServer != null && listCatItemServer.size() > 0){
+						DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
+						dbH2.setCategories(listCatItemServer);
+						
+						DBHandler_CategorySelection dbH3 = new DBHandler_CategorySelection(Activity_Home.this);
+						if(dbH3.isNoneSelected()){
+							dbH2.selectAllCategories(dbH3);
+						}
+						
+					}
+
+				}
 			}, 500);
-			
-			
-        	
-		  
+
+
+
+
 
 		} catch (Exception ex) {
 			Log.i("HARSH", "Error in parsin jSOn" + ex.getMessage());
@@ -2202,27 +1977,27 @@ GestureDetector.OnDoubleTapListener {
 	        		DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
 		        	dbH.insertNewsItemList(listNewsItemServer,true);
 	        	}
-	        	
+
 			  if(hasCategories && listCatItemServer != null){
 				  DBHandler_Category dbH2 = new DBHandler_Category(Activity_Home.this);
 				  dbH2.setCategories(listCatItemServer);
 			  }
 		  }
 	}
-	*/
+	 */
 	private void preLoadImages(){
 		if(listNewsItemServer != null)
-		for (Object_ListItem_MainNews item : listNewsItemServer) {
-		     String url = item.getImagePath();
-		          if (!TextUtils.isEmpty(url)) {
-		        	Globals.preloadImage(getApplicationContext(), url) ;
-		               
-		               //
-	                   // .resizeDimen(R.dimen.article_image_preview_width, R.dimen.article_image_preview_height)
-	                    //.centerCrop()
-		          }
-		     
-		}
+			for (Object_ListItem_MainNews item : listNewsItemServer) {
+				String url = item.getImagePath();
+				if (!TextUtils.isEmpty(url)) {
+					Globals.preloadImage(getApplicationContext(), url) ;
+
+					//
+					// .resizeDimen(R.dimen.article_image_preview_width, R.dimen.article_image_preview_height)
+					//.centerCrop()
+				}
+
+			}
 	}
 
 	private void navigateToNewsDetail(Object_ListItem_MainNews objNews) {
@@ -2261,11 +2036,11 @@ GestureDetector.OnDoubleTapListener {
 
 			String time = 
 					Globals.getTwoDigitNo(c.get(Calendar.YEAR))+"-"+
-					Globals.getTwoDigitNo(c.get(Calendar.MONTH)+1)+"-"+
-					Globals.getTwoDigitNo(c.get(Calendar.DAY_OF_MONTH))+" "+
-					String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
-					String.format("%02d" , c.get(Calendar.MINUTE))+":"+
-					String.format("%02d" , c.get(Calendar.SECOND)) +" ";
+							Globals.getTwoDigitNo(c.get(Calendar.MONTH)+1)+"-"+
+							Globals.getTwoDigitNo(c.get(Calendar.DAY_OF_MONTH))+" "+
+							String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+							String.format("%02d" , c.get(Calendar.MINUTE))+":"+
+							String.format("%02d" , c.get(Calendar.SECOND)) +" ";
 
 
 			Log.i("HARSH", "new time  "+time);
@@ -2290,7 +2065,7 @@ GestureDetector.OnDoubleTapListener {
 				if(hour <= 6)
 					return "Today";//day+" day ago";
 				else if(hour <= 30)
-				return "Yesterday";//day+" days ago";
+					return "Yesterday";//day+" days ago";
 			}
 
 			/*
@@ -2318,7 +2093,7 @@ GestureDetector.OnDoubleTapListener {
 					}
 				}
 			}
-			*/
+			 */
 
 			SimpleDateFormat sdfDDMMYYYY = new SimpleDateFormat("d MMM",Locale.ENGLISH);
 			//sdfDDMMYYYY.setTimeZone(TimeZone.getTimeZone("IST"));
@@ -2331,33 +2106,30 @@ GestureDetector.OnDoubleTapListener {
 	public void onClickRefresh(View v){
 		refresh();
 	}
-	
+
 	@Override
-    public void onBackPressed() {
-    	 if (doubleBackToExitPressedOnce) {
-    	        super.onBackPressed();
-    	        return;
-    	    }
+	public void onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			super.onBackPressed();
+			return;
+		}
 
-    	    this.doubleBackToExitPressedOnce = true;
-    	    Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT).show();
+		this.doubleBackToExitPressedOnce = true;
+		Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT).show();
 
-    	    new Handler().postDelayed(new Runnable() {
+		new Handler().postDelayed(new Runnable() {
 
-    	        @Override
-    	        public void run() {
-    	            doubleBackToExitPressedOnce=false;                       
-    	        }
-    	    }, 2000);
-    }
+			@Override
+			public void run() {
+				doubleBackToExitPressedOnce=false;                       
+			}
+		}, 2000);
+	}
 
 	public View initViewSetting( boolean isLast){
 		View viewSettings = null;
 		if(viewSettings == null){
 			LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			
-			
-			//viewSettings = inflater.inflate(R.layout.view_cat_sliding_settings, rlytDrawerPane,false);
 			viewSettings = inflater.inflate(R.layout.view_settings, rlytMainContent,false);
 
 			Object_AppConfig obj = new Object_AppConfig(this);
@@ -2366,20 +2138,20 @@ GestureDetector.OnDoubleTapListener {
 			//ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
 			ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
 			//RelativeLayout rlytSettings =(RelativeLayout) viewSettings.findViewById(R.id.rlytSettings);
-			
-			//if(txt !=null){
-				if(obj.isNotificationEnabled()){
-					//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-					//imgImageView1.setImageResource(R.drawable.notification_on1);
-					imgImageView2.setImageResource(R.drawable.notification_on);
-				}else{
 
-					//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-					//imgImageView1.setImageResource(R.drawable.notification_off1);
-					imgImageView2.setImageResource(R.drawable.notification_off);
-				}
+			//if(txt !=null){
+			if(obj.isNotificationEnabled()){
+				//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
+				//imgImageView1.setImageResource(R.drawable.notification_on1);
+				imgImageView2.setImageResource(R.drawable.notification_on);
+			}else{
+
+				//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
+				//imgImageView1.setImageResource(R.drawable.notification_off1);
+				imgImageView2.setImageResource(R.drawable.notification_off);
+			}
 			//}
-			
+
 			/* Uncomment when supporting language
 			TextView txtLanguage = (TextView) viewSettings.findViewById(R.id.txtLanguageSelected);
 
@@ -2388,51 +2160,158 @@ GestureDetector.OnDoubleTapListener {
 			}else if(obj.getLangId() == Globals.LANG_HINDI){
 				txtLanguage.setText("हिंदी");
 			}
-			*/
-			//rlytMainContent.addView(viewSettings);
+			 */
 		}
-		
+
 		return viewSettings;
+	}
+
+	private View initViewCategories(){
+
+
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.view_category, rlytMainContent,false);
+		LinearLayout llytCatContainer = (LinearLayout)view.findViewById(R.id.llytCatContainer);
+
+
+		LinearLayout row = null;
+
+		if(listCatItemServer.isEmpty()){
+			DBHandler_Category dbH2 = new DBHandler_Category(this);
+			listCatItemServer = dbH2.getAllCategories();
+		}
+
+
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		boolean isAllSelected = dbH.isAllCategoriesSelected();
+		//DBHandler_Category dbCat = new DBHandler_Category(this);
+		LinearLayout llytAll =(LinearLayout)view.findViewById(R.id.llytAllNewsSelection);
+		if(isAllSelected){
+			llytAll.setVisibility(View.VISIBLE);
+		}else{
+			llytAll.setVisibility(View.INVISIBLE);
+		}
+		for(int i = 0 ; i< listCatItemServer.size() ; i++){
+
+			inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			row = (LinearLayout) inflater.inflate(R.layout.view_category_row, llytCatContainer ,false);
+			if(row != null){
+
+				int catId = listCatItemServer.get(i).getId();
+				row.setTag(R.string.app_name, catId);
+
+				TextView txtCatName = (TextView)row.findViewById(R.id.txtCatName);
+				ImageView txtCatImage = (ImageView)row.findViewById(R.id.imgCat);
+				LinearLayout llytSelection =(LinearLayout)row.findViewById(R.id.llytNewsSelection);
+				Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+
+
+				if(!isAllSelected){
+					boolean contains = dbH.containsCatId(catId);
+					if(contains){
+						llytSelection.setVisibility(View.VISIBLE);
+					}else{
+						llytSelection.setVisibility(View.INVISIBLE);
+					}
+				}else{
+					llytSelection.setVisibility(View.INVISIBLE);
+				}
+				Object_Category objCat = listCatItemServer.get(i);
+				txtCatName.setText(objCat.getName());
+				txtCatName.setTypeface(tf);
+				Globals.loadImageIntoImageView(txtCatImage, objCat.getImageName(), this, R.drawable.category_default, R.drawable.category_default);
+				llytCatContainer.addView(row);	
+			}
+
+		}
+
+		return view;
 	}
 	public void onClickSettings(View v){
 
 		if(viewSettings == null){
 			viewSettings = initViewSetting(false);
-			
+			TextView txtHeading =(TextView) viewSettings.findViewById(R.id.settings_header);
+			TextView txtNotification =(TextView) viewSettings.findViewById(R.id.txtNotification);
+			TextView txtRate =(TextView) viewSettings.findViewById(R.id.txtRate);
+			TextView txtShare=(TextView) viewSettings.findViewById(R.id.txtShareApp);
+			TextView txtDisclaimer =(TextView) viewSettings.findViewById(R.id.txtDisclaimer);
+
+			Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+			txtHeading.setTypeface(tf);	
+			txtNotification.setTypeface(tf);	
+			txtRate.setTypeface(tf);	
+			txtShare.setTypeface(tf);	
+			txtDisclaimer.setTypeface(tf);	
+
+			rlytMainContent.addView(viewSettings);
+			Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+			viewSettings.startAnimation(animationFadeIn);
 		}
-		rlytMainContent.addView(viewSettings);
-		Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		viewSettings.startAnimation(animationFadeIn);
+		
+
+
 	}
 
 	public void onClickDummy(View v){
-		
+
 	}
 	public void onClickSettingsClose(View v){
 		if(viewSettings != null){
 			Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 			animationFadeOut.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(Animation arg0) {
-					
+
 				}
-				
+
 				@Override
 				public void onAnimationRepeat(Animation arg0) {
-					
+
 				}
-				
+
 				@Override
 				public void onAnimationEnd(Animation arg0) {
 					rlytMainContent.removeView(viewSettings);
 					viewSettings =null;
-					
+
 				}
 			});
 			viewSettings.startAnimation(animationFadeOut);
-			
-			
+
+
+		}
+	}
+
+	public void onClickCatClose(View v){
+		if(viewCategory != null){
+			Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+			animationFadeOut.setAnimationListener(new AnimationListener() {
+
+				@Override
+				public void onAnimationStart(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation arg0) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					rlytMainContent.removeView(viewCategory);
+					viewCategory =null;
+					if(isCategoryChanged){
+						refresh();
+						isCategoryChanged = false;
+					}
+				}
+			});
+			viewCategory.startAnimation(animationFadeOut);
+
+
 		}
 	}
 
@@ -2445,16 +2324,16 @@ GestureDetector.OnDoubleTapListener {
 		if(obj.isNotificationEnabled()){
 			obj.setNotificationEnabled(false);
 			//if(txt !=null){
-				//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-				//imgImageView1.setImageResource(R.drawable.notification_off1);
-				imgImageView2.setImageResource(R.drawable.notification_off);
+			//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
+			//imgImageView1.setImageResource(R.drawable.notification_off1);
+			imgImageView2.setImageResource(R.drawable.notification_off);
 			//}
 		}else{
 			obj.setNotificationEnabled(true);
 			//if(txt !=null){
-				//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-				//imgImageView1.setImageResource(R.drawable.notification_on1);
-				imgImageView2.setImageResource(R.drawable.notification_on);
+			//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
+			//imgImageView1.setImageResource(R.drawable.notification_on1);
+			imgImageView2.setImageResource(R.drawable.notification_on);
 			//}
 		}
 
@@ -2462,8 +2341,8 @@ GestureDetector.OnDoubleTapListener {
 	}
 
 	public void onClickPrivacyPolicy(View v){
-		 
-		
+
+
 		Intent i = new Intent(this,Activity_Disclaimer.class);
 		startActivity(i);
 
@@ -2471,12 +2350,12 @@ GestureDetector.OnDoubleTapListener {
 	public void onClickLanguageChange(View v){
 		Object_AppConfig obj = new Object_AppConfig(this);
 		obj.setLangId(0);
-		
+
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
 		dbH.clearCategoryTable();
 		Intent i = new Intent(this,Activity_ChooseLang.class);
 		startActivity(i);
-		
+
 		this.finish();
 	}
 
@@ -2489,15 +2368,15 @@ GestureDetector.OnDoubleTapListener {
 		sendIntent.setType("text/plain");
 		startActivity(sendIntent);
 	}
-	
+
 	public void onClickComment(View v){
-		
+
 		Activity_NewsDetails.isNavigationForComment = true;
 		tapOnShowDetails(v);
 	}
 
-	
-	
+
+
 	public void onClickRateApp(View v){
 
 		Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
@@ -2509,95 +2388,384 @@ GestureDetector.OnDoubleTapListener {
 			Toast.makeText(this, Globals.TEXT_NO_INTERNET_DETAIL_TOAST, Toast.LENGTH_SHORT).show();
 		}
 	}
-	
-	
+
+
 }
 
 
 
 /*
 
+
+ private float getScrollViewDiagonalAngle(){
+
+		ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+
+		if(scrollViewCat.getHeight() > 0 && scrollViewCat.getWidth() > 0){
+
+			float angle = 90.0f - (float) Math.toDegrees(Math.atan((float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()));
+			//Log.d("DARSH","angle:"+ (float)scrollViewCat.getHeight()/(float)scrollViewCat.getWidth()+ " " +Math.atan(scrollViewCat.getHeight()/scrollViewCat.getWidth()) + " " +angle);
+			//Log.d("DARSH","scrollViewCat.getHeight():"+scrollViewCat.getHeight() + "scrollViewCat.getWidth()"+scrollViewCat.getWidth());
+			return angle;
+		}
+
+		return 30.0f;
+	}
+
+ 	@SuppressLint("NewApi")
+	private RelativeLayout getCatImageView(Object_Category objCat , LinearLayout row,boolean firstInRow,int position,boolean contains){
+
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+		//int widthImage =(int) ((Globals.getScreenSize(this).x - 6* margin)/3.0) ;
+
+		///
+		int headerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, getResources().getDisplayMetrics());
+		int totalHeight = Globals.getScreenSize(this).y - headerHeight;
+		//ScrollView scrollViewCat = (ScrollView)findViewById(R.id.scrollViewCat);
+
+		int heightImage = (int) ((totalHeight - 6* margin )/6.0 ) ;
+		int widthImage = heightImage;
+		///
+		Log.d("DARSH","scrollViewCat.getHeight():"+totalHeight);
+		Log.d("DARSH","widthImage:"+widthImage);
+		//int catColor = this.getResources().getColor(Globals.getCategoryColor(objCat.getId(), this));
+
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.item_category_image_home, row ,false);
+		item.setTag(R.string.app_name, Integer.valueOf(objCat.getId()));
+
+		/*
+		if(isSelectedId(Integer.valueOf(objCat.getId())))
+		{
+
+			GradientDrawable shape =  new GradientDrawable();
+			//shape.setCornerRadius(10);
+			shape.setColor(catColor);
+			if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
+			{                   
+				item.setBackground(shape);
+			} 
+			else{ 
+				item.setBackgroundDrawable(shape);  // deprecated.
+			} 
+
+		}
+		else
+		{
+			item.setOnTouchListener(new Custom_OnTouchListener_ColoredBG(item, this, objCat.getId()));
+			item.setBackgroundResource(R.drawable.bg_rounded_shadow);
+		}
+		////
+		//item.getLayoutParams().width = widthImage;
+		//item.getLayoutParams().height = item.getLayoutParams().width;
+
+		ImageView imgView =(ImageView) item.findViewById(R.id.imgViewCat);
+		imgView.setTag(R.string.app_name, position);
+		//int heightImage = widthImage;//(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+				//100;//Globals.getScreenSize(this).y/5;
+
+		//item.setMinimumWidth(widthImage);
+		//item.setMinimumHeight(heightImage);
+
+
+		RelativeLayout.LayoutParams params =(RelativeLayout.LayoutParams )imgView.getLayoutParams();
+		params.height = heightImage;
+		params.width = widthImage ;//+ margin;//;rlytDrawerPane.getLayoutParams().width - margin;
+
+		//params.gravity = Gravity.RIGHT;
+		imgView.setLayoutParams(params);
+
+
+		//LinearLayout.LayoutParams paramsParent =(LinearLayout.LayoutParams )item.getLayoutParams();
+
+		//if(!firstInRow)
+			//paramsParent.leftMargin = margin;
+		//params.gravity = Gravity.RIGHT;
+		//item.setLayoutParams(paramsParent);
+
+		/*
+		new ImageView(this);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		params.setMargins(10, 10, 10, 10);
+
+		imgView.setLayoutParams(params);
+		imgView.setScaleType(ScaleType.CENTER_CROP);
+		imgView.setClickable(true);
+
+		 ////
+
+		//Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+
+		if(contains){
+
+			Globals.loadImageIntoImageView(imgView, objCat.getSelectedImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getImageName()) ;
+		}else{
+			Globals.loadImageIntoImageView(imgView, objCat.getImageName(), this, R.drawable.cat_loading, R.drawable.cat_loading);//(imgView, objCat.getImageName(), 0,0, this);//heightImage,widthImage
+			Globals.preloadImage(getApplicationContext(), objCat.getSelectedImageName()) ;
+		}
+
+		TextView txtCategory = (TextView)item.findViewById(R.id.txtCategory);
+
+		//Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
+		//txtCategory.setTypeface(tfCat);
+		txtCategory.setText(objCat.getName());
+		txtCategory.setMaxWidth(widthImage-margin);
+		//txtCategory.setBackgroundResource(Globals.getCategoryColor(objCat.getId(), this));
+
+		item.setRotation(getScrollViewDiagonalAngle());
+		return item;
+
+	}
+
+
+
+
+  public void onClickCategoryItem(View v){
+
+
+		Log.d("HARSH", "onClickCategoryItem");
+
+		Integer selectedCatId = ((Integer)v.getTag(R.string.app_name)).intValue();
+
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		boolean contains = dbH.containsCatId(selectedCatId);
+
+		ArrayList<Integer> Ids = dbH.getAllSelectedCategories();
+
+		for(Integer id : Ids){
+			if(id.intValue() == selectedCatId){
+				contains = true;
+				break;
+			}
+		}
+
+		if(contains){
+			if(Ids.size() > 1)
+				dbH.clearCategory(selectedCatId);
+			else{
+				Toast.makeText(this, "You have to select atleast one category!", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			Log.d("HARSH", "dbH.clearCategory(catId) "+selectedCatId);
+		}
+		else{
+			dbH.insertSelectedCat(selectedCatId);
+			Log.d("HARSH", "dbH.insertCategory(catId) "+selectedCatId);
+		}
+
+		View cView = v.findViewById(R.id.imgViewCat);
+		if(cView!= null && cView.getClass() == ImageView.class){
+			ImageView imageView = (ImageView)cView;
+			int index = ((Integer)imageView.getTag(R.string.app_name)).intValue();
+			if(listCatItemServer!= null && listCatItemServer.size() > index){
+				Object_Category obj = listCatItemServer.get(index);
+				if(contains){
+					Log.d("HARSH", "1");
+					Globals.loadImageIntoImageView(imageView, obj.getImageName(), this,R.drawable.cat_loading,R.drawable.cat_loading);
+				}else{
+					Log.d("HARSH", "2");
+					Globals.loadImageIntoImageView(imageView, obj.getSelectedImageName(), this,R.drawable.cat_loading_selected,R.drawable.cat_loading_selected);
+				}
+			}
+
+		}
+
+		//setBootomBarStatus();
+		isCategoryChanged = true;
+	}
+ private void createDrawerCategories(){
+
+		LinearLayout llytCatContainer = (LinearLayout)findViewById(R.id.llytCatContainer);
+		///ImageView btnCatAll = (ImageView)findViewById(R.id.btnCatAll);
+
+		if(llytCatContainer.getChildCount() > 0){
+			llytCatContainer.removeAllViews();
+		}
+
+		///if(llytCatContainer.getChildCount() > 1){
+			///llytCatContainer.removeViews(1, llytCatContainer.getChildCount()-1);
+		///}
+
+		///if(arraySelectedCatIds.size() == 0){
+			///btnCatAll.setImageResource(R.drawable.viewall_selected);
+			///btnCatAll.setBackgroundResource(R.color.app_cat_color_5);
+		///}else{
+			///btnCatAll.setImageResource(R.drawable.selector_cat_all_button);
+			///btnCatAll.setBackgroundResource(R.color.app_transparent);
+		///}
+
+		LinearLayout row = null;
+		boolean firstInRow ;
+
+		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(this);
+		ArrayList<Integer> Ids = dbH.getAllSelectedCategories();
+		//DBHandler_Category dbCat = new DBHandler_Category(this);
+		for(int i = 0 ; i< listCatItemServer.size() ; i++){
+
+			//if(i%3 == 0){
+				firstInRow = true;
+			//}else{
+				//firstInRow = false;
+			//}
+			if(firstInRow){
+
+				LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = (LinearLayout) inflater.inflate(R.layout.view_category_row_home, llytCatContainer ,false);
+			}
+
+			if(row != null){
+
+				boolean contains = false;
+				for(Integer id : Ids){
+					if(id.intValue() == listCatItemServer.get(i).getId()){
+						contains = true;
+						break;
+					}
+				}
+
+				Log.d("HARSH", "contains"+contains);
+				Object_Category objCat = listCatItemServer.get(i);
+				row.addView(getCatImageView(objCat,row,firstInRow,i,contains)) ;
+
+
+
+
+				String catColor = objCat.getColor();//dbCat.getCategoryColor(objCat.getId());
+				if(!catColor.isEmpty())
+					row.setBackgroundColor(Color.parseColor(catColor));
+
+//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//						Globals.getScreenSize(this).x*3/2,      
+//						LinearLayout.LayoutParams.WRAP_CONTENT
+//				);
+//				
+//				int marginD = -1*Globals.getScreenSize(this).x/4;
+//				params.setMargins(marginD, 0, marginD, 0);
+//				row.setLayoutParams(params);
+
+				if(firstInRow)
+					llytCatContainer.addView(row);	
+			}
+
+		}
+
+		ScrollView.LayoutParams params2 = new ScrollView.LayoutParams(
+				ScrollView.LayoutParams.MATCH_PARENT,      
+				ScrollView.LayoutParams.WRAP_CONTENT
+		);
+
+		int marginD = -1*Globals.getScreenSize(this).x/2;
+		params2.setMargins(marginD, 0, marginD, 0);
+		llytCatContainer.setLayoutParams(params2);
+
+		llytCatContainer.setRotation(-1* getScrollViewDiagonalAngle());
+
+		if(listCatItemServer.size() > 0){
+
+			LinearLayout llytUpper = (LinearLayout)findViewById(R.id.llytDrwawerUpperHalf);
+			LinearLayout llytLower = (LinearLayout)findViewById(R.id.llytDrwawerLowerHalf);
+
+
+
+			String catColor1 = listCatItemServer.get(0).getColor();//dbCat.getCategoryColor(listCatItemServer.get(0).getId());
+			if(!catColor1.isEmpty()){
+				llytUpper.setBackgroundColor(Color.parseColor(catColor1));
+			}
+
+			String catColor2 = listCatItemServer.get(listCatItemServer.size() - 1).getColor();//dbCat.getCategoryColor(listCatItemServer.get(listCatItemServer.size() - 1).getId());
+			if(!catColor2.isEmpty()){
+				llytLower.setBackgroundColor(Color.parseColor(catColor2));
+			}
+
+		}
+
+	}
+
+
 	private void startAnimationLoading(int delay){
 		if(viewLoading == null || viewLoading.getVisibility() == View.GONE)
 			return;
-		
-		
+
+
 		viewLoading.removeAllViews();
-		
+
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 	    llytGreen=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
 		llytGreen.setBackgroundResource(R.color.app_loading_color_1);
-		
+
 		llytGreen.setY(-1*Globals.getScreenSize(this).y);
 		viewLoading.addView(llytGreen);
-		
+
 		llytGreen.animate().setDuration(400).setStartDelay(delay)
 		.translationY(0).setListener(new AnimatorListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animator arg0) {///
 				animationYellowMove();
 			}
-			
+
 			@Override
 			public void onAnimationCancel(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 	}
-	
+
 	private void animationYellowMove(){
 
-		
+
 		LayoutInflater inflater = (LayoutInflater)Activity_Home.this.getSystemService
 				(Context.LAYOUT_INFLATER_SERVICE);
 	    llytYellow=(LinearLayout) inflater.inflate(R.layout.view_empty_layout, viewLoading, false);
 	    llytYellow.setBackgroundResource(R.color.app_loading_color_2);
-		
+
 	    llytYellow.setY(Globals.getScreenSize(Activity_Home.this).y);
 		viewLoading.addView(llytYellow);
-		
+
 		llytYellow.animate().setDuration(400).setStartDelay(300)
 		.translationY(0).setListener(new AnimatorListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animator arg0) { ///
-				
+
 				animationYellowFade();
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationCancel(Animator arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
@@ -2606,7 +2774,7 @@ GestureDetector.OnDoubleTapListener {
 		ImageView imgView = new ImageView(Activity_Home.this);
 		imgView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		imgView.setImageResource(R.drawable.collarge);
-		
+
 		viewLoading.addView(imgView, 0);
 		Animation fadeOut = AnimationUtils.loadAnimation(Activity_Home.this, R.anim.fade_out);
 		fadeOut.setStartOffset(300);
@@ -2651,54 +2819,54 @@ GestureDetector.OnDoubleTapListener {
             }
         });
     	fadeIn.setStartOffset(100);
-    	
+
     	llytWhite.startAnimation(fadeIn);
 	}
-	
+
 	private void animationMOveNewzByteLogo(){
-		
+
 		ImageView imgView = new ImageView(Activity_Home.this);
 		int size = 200;
 		imgView.setLayoutParams(new LayoutParams(size, size));
 		imgView.setImageResource(R.drawable.newzbyte);
 		viewLoading.addView(imgView);
-		
+
 		imgView.setY(Globals.getScreenSize(Activity_Home.this).y);
 		imgView.setX(Globals.getScreenSize(Activity_Home.this).x/2 - size/2);
-			
+
 		imgView.animate().setDuration(300).setStartDelay(100)
 			.translationY(Globals.getScreenSize(Activity_Home.this).y/2 - size/2).setListener(new AnimatorListener() {
-				
+
 				@Override
 				public void onAnimationStart(Animator arg0) {
 					// TODO Auto-generated method stub
-					
+
 				}
-				
+
 				@Override
 				public void onAnimationRepeat(Animator arg0) {
 					// TODO Auto-generated method stub
-					
+
 				}
-				
+
 				@Override
 				public void onAnimationEnd(Animator arg0) { 
 					//startAnimationLoading(1000);
 				}
-				
+
 				@Override
 				public void onAnimationCancel(Animator arg0) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			});
 	}
-	
+
 private void updateCatTopNewsId(int catId, int newsId){
 		DBHandler_Category dbH = new DBHandler_Category(this);
 		dbH.updateCategoryTopNews(catId, newsId);
 	}
-	
+
 case MotionEvent.ACTION_MOVE:
 		{
 
@@ -2780,7 +2948,7 @@ txtSummary.post(new Runnable() {
 
 			}
 		});
-		
+
 		public void getNewsDataFromServer(final int catId, final String callType,int lastNewsId , int limit) 
 	{
 		Log.d("jaspal","catid:"+catId);
@@ -2789,7 +2957,7 @@ txtSummary.post(new Runnable() {
 		Log.d("jaspal","limit:"+limit);
 
 		try{
-			
+
 			Custom_ConnectionDetector cd = new Custom_ConnectionDetector(getApplicationContext());
 
 			if (!cd.isConnectingToInternet()) {
@@ -2817,7 +2985,7 @@ txtSummary.post(new Runnable() {
 			//if (!isPullToRefresh)
 				//if(!isShowingLoadingScreen())
 					//mDialog = Globals.showLoadingDialog(mDialog, this,false);
-			
+
 			Log.d("jaspal","URL for more news is :\n"+Custom_URLs_Params.getURL_NewsByCategory());
 			Log.d("jaspal","\n\nParameters for more news is:\n"+Custom_URLs_Params.getParams_NewsByCategory(catId, callType, lastNewsId, limit));
 			Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(Request.Method.POST,
@@ -2825,13 +2993,13 @@ txtSummary.post(new Runnable() {
 							new Listener<JSONObject>() {
 
 
-						
+
 						@Override
 						public void onResponse(JSONObject response) {
 							Log.d("jaspal","REsponse: \n"+response);
 
 							gotNewsResponse(response, catId,callType);
-							
+
 						}
 
 					}, new ErrorListener() {
@@ -2860,25 +3028,25 @@ txtSummary.post(new Runnable() {
 						}
 					});
 
-		
+
 			Custom_AppController.getInstance().addToRequestQueue(
 					jsonObjectRQST);
-			
+
 		}catch(Exception ex){
 
 		}
 	}
-	
+
 	private void gotNewsResponse(JSONObject response, int catId, final String callType) {
- 
+
 		try {
-			
+
 			if(response != null){
 				if(response.has("topnewsid"))
 				{
 					updateCatTopNewsId(catId,response.getInt("topnewsid"));
 				}
-				
+
 				if(response.has("news"))
 				{
 					Log.d("jaspal","Found News !!!");
@@ -2887,27 +3055,27 @@ txtSummary.post(new Runnable() {
 				///if(response.has("news"))
 					///if(insertNewAndDeleteOldNews(response.getJSONArray("news"),catId,isPullToRefresh))
 							///showNewsList(catId,callType);
-						
+
 			}
 			Globals.hideLoadingDialog(mDialog);
-			
+
 		} catch (JSONException e) {
 			Globals.showAlertDialogOneButton(
 					Globals.TEXT_CONNECTION_ERROR_HEADING,
 					Globals.TEXT_CONNECTION_ERROR_DETAIL_TOAST,
 					Activity_Home.this, "OK", null, false);
-			
+
 			Globals.hideLoadingDialog(mDialog);
 			//hideLoadingScreen();
 			//showNewsList(catId,callType);
 		}
 	}
-	
-	
+
+
 		private void parseNewsJson(JSONObject response,String callType) {
 
 		if (response == null){
-			
+
 			return;
 		}
 		Log.i("DARSH", "RESPONsE parseAppConfigJson is : "+response.toString());
@@ -2922,10 +3090,10 @@ txtSummary.post(new Runnable() {
 				Log.i("DARSH", "insertNewAndDeleteOldNews news onResponse" + response);
 
 				Custom_JsonParserNews parserObject = new Custom_JsonParserNews();
-				 
+
 				ArrayList<Object_ListItem_MainNews> tempMainNewsList = parserObject.getParsedJsonMainNews(response.getJSONArray("news"),objConfig.getRootCatId());
-				
-				 
+
+
 				if(callType.equals(Globals.CALL_TYPE_NEW))
 				{
 					currentNewsIndex += tempMainNewsList.size();
@@ -2947,7 +3115,7 @@ txtSummary.post(new Runnable() {
 							listNewsItemServer.add(tempMainNewsList.get(i));
 					}
 				}
-				
+
 //				 Log.i("Bytes", "ACTION_MOVE UP");
 //						isSlideUp = true;
 //						viewMoving = viewStatic;
@@ -2961,8 +3129,8 @@ txtSummary.post(new Runnable() {
 //							isSlideInProgress = false;
 //							currentNewsIndex = backUpId;
 //							return false;
-				
-				
+
+
 				if(newsCount == 0 && callType.equals(Globals.CALL_TYPE_OLD))
 				{
 					Toast.makeText(this, "You are done for the day!", Toast.LENGTH_SHORT).show();
@@ -2986,9 +3154,9 @@ txtSummary.post(new Runnable() {
 					viewMoving.setY(-1*rlytNewsContent.getHeight());
 					slide(0,DEFAULT_MAX_SLIDE_DURATION);
 				}
-				
+
 				Log.d("jaspal","currentNEWSiNDEX AFTER adding new News :"+currentNewsIndex);
-				
+
 				//viewStatic = createNewsView();
 
 				DBHandler_MainNews dbH = new DBHandler_MainNews(getApplicationContext());
@@ -3002,7 +3170,7 @@ txtSummary.post(new Runnable() {
 
 	}
 
-	
+
 //	private void removeId(Integer catId){
 //
 //		int cnt = -1;

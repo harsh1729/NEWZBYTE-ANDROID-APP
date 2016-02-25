@@ -34,10 +34,10 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 
 	}
 
-	public ArrayList<Integer> getAllCategories() {//Context con
+	public ArrayList<Integer> getAllSelectedCategories() {//Context con
 
 		Log.i("HARSH", " getAllCategories called!");
-		String selectQuery = "select "+ KEY_CAT_ID+" from " + TABLE_CATEGORY_SELECTION ;
+		String selectQuery = "select distinct "+ KEY_CAT_ID+" from " + TABLE_CATEGORY_SELECTION ;
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
@@ -101,6 +101,43 @@ public class DBHandler_CategorySelection extends SQLiteOpenHelper {
 
 }
 
+	public boolean isAllCategoriesSelected(){
+		
+		String selectQuery = "select "+ DBHandler_Category.KEY_ID +" from " + DBHandler_Category.TABLE_CATEGORY  + " where "+DBHandler_Category.KEY_ID  + " not in ( Select " +KEY_CAT_ID  +" from "+TABLE_CATEGORY_SELECTION +" )" ;
+	
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cur = db.rawQuery(selectQuery, null);
+		if (cur != null) {
+			if (cur.getCount()> 0) {
+				db.close();
+				return false;
+			}
+		}
+
+		db.close();
+		return true;
+		
+	}
+	
+	public boolean isNoneSelected(){
+		
+		String selectQuery = " Select " +KEY_CAT_ID  +" from "+TABLE_CATEGORY_SELECTION  ;
+	
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cur = db.rawQuery(selectQuery, null);
+		if (cur != null) {
+			if (cur.getCount() > 0) {
+				db.close();
+				return false;
+			}
+		}
+
+		db.close();
+		return true;
+		
+	}
 
 	public void clearCategoryTable() {
 		SQLiteDatabase db = this.getWritableDatabase();

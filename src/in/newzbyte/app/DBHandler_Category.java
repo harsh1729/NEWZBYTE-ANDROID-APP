@@ -271,6 +271,7 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 			values.put(KEY_NAME, ob.getName());
 			//values.put(KEY_IMAGE, Globals.bitmapToByteArray(ob.getImage()));
 			values.put(KEY_IMAGE, ob.getImageName());
+			
 			values.put(KEY_IS_SELECTED, ob.getIsSelected());
 			values.put(KEY_SELECTEDIMAGE, ob.getSelectedImageName());
 			values.put(KEY_COLOR, ob.getColor());
@@ -291,5 +292,29 @@ public class DBHandler_Category extends SQLiteOpenHelper {
 
 
 		db.close();
+	}
+	
+	public void selectAllCategories(DBHandler_CategorySelection catSelection) {//Context con
+
+		Log.i("HARSH", " getAllCategories called!");
+		String selectQuery = "select * from " + TABLE_CATEGORY ;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cur = db.rawQuery(selectQuery, null);
+		if (cur != null) {
+			if (cur.moveToFirst()) {
+				do {
+					System.out.println(cur.getString(cur
+							.getColumnIndex(KEY_NAME)));
+					catSelection.insertSelectedCat(cur.getInt(cur.getColumnIndex(KEY_ID)));
+					;
+					
+				} while (cur.moveToNext());
+			}
+		}
+
+		db.close();
+
 	}
 }

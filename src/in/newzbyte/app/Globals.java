@@ -432,7 +432,7 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(context);
 		boolean contains = dbH.containsCatId(catId);
 		
-		ArrayList<Integer> Ids = dbH.getAllCategories();
+		ArrayList<Integer> Ids = dbH.getAllSelectedCategories();
 		
 		for(Integer id : Ids){
 			if(id.intValue() == catId){
@@ -461,7 +461,7 @@ public static void loadImageIntoImageView( ImageView iv ,String imgURL , int tra
 		
 		DBHandler_CategorySelection dbH = new DBHandler_CategorySelection(context);
 		
-		ArrayList<Integer> Ids = dbH.getAllCategories();
+		ArrayList<Integer> Ids = dbH.getAllSelectedCategories();
 		
 		String catIds ="";
 		boolean firstItem = true;

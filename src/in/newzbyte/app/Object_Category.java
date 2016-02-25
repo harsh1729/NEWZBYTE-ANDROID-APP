@@ -2,7 +2,6 @@ package in.newzbyte.app;
 
 import java.util.ArrayList;
 
-import android.graphics.Bitmap;
 
 
 public class Object_Category {
@@ -116,5 +115,6 @@ public class Object_Category {
 	public void setColor(String color) {
 		this.color = color;
 	}
+
 
 }
