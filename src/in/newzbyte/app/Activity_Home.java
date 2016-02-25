@@ -47,6 +47,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -154,7 +155,6 @@ GestureDetector.OnDoubleTapListener {
         	arcMenu.addItem(item, new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					arcMenu.switchShareArcmenu(true);
 					shareOptionNo = position;
 					//shareIntent(position);
@@ -495,13 +495,14 @@ GestureDetector.OnDoubleTapListener {
 
 		
 		txtAuthor.setText(stringAuthorAndDate);
-		
+		txtAuthorText.setText("by ");
 		//set FONT
 
-		///Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
-		///Typeface tfCat = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_CAT_FONT);
-		//Typeface tf = Typeface.createFromAsset(getAssets(), "Raleway-Regular.ttf");
-			
+		Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+		txtViewNews.setTypeface(tf, Typeface.BOLD);
+		txtAuthorText.setTypeface(tf, Typeface.BOLD_ITALIC);	
+		txtAuthor.setTypeface(tf);	
+		txtCategory.setTypeface(tf);	
 		
 
 
@@ -1216,13 +1217,17 @@ GestureDetector.OnDoubleTapListener {
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
             float distanceY) {
-        Log.d(DEBUG_TAG, "onScroll: X = " + distanceX + " and Y = "+distanceY );//+ e1.toString()+e2.toString());
-
-        Log.d(DEBUG_TAG, "onScroll: e1.y = " + e1.getY() + " and e2.y = "+e2.getY() );
+       
         
         if(isAnimInProgress || isNoMoreNews)
 			return true;
         
+        if(e1 == null || e2 == null)
+			return true;
+        
+        Log.d(DEBUG_TAG, "onScroll: X = " + distanceX + " and Y = "+distanceY );//+ e1.toString()+e2.toString());
+
+        Log.d(DEBUG_TAG, "onScroll: e1.y = " + e1.getY() + " and e2.y = "+e2.getY() );
         y = e1.getY(); // Motion event for first touch of scroll.
         float totalDisplacementY = Math.abs(e1.getY()-e2.getY());
         
@@ -2357,28 +2362,23 @@ GestureDetector.OnDoubleTapListener {
 
 			Object_AppConfig obj = new Object_AppConfig(this);
 
-			TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
-			ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
+			//TextView txt =(TextView) viewSettings.findViewById(R.id.txtNotification);
+			//ImageView imgImageView1 = (ImageView)viewSettings.findViewById(R.id.imgNotification1);
 			ImageView imgImageView2 = (ImageView)viewSettings.findViewById(R.id.imgNotification2);
-			RelativeLayout rlytSettings =(RelativeLayout) viewSettings.findViewById(R.id.rlytSettings);
-			TextView txtSeeU =(TextView) viewSettings.findViewById(R.id.txtSeeYouAt);
+			//RelativeLayout rlytSettings =(RelativeLayout) viewSettings.findViewById(R.id.rlytSettings);
 			
-			if(isLast){
-				rlytSettings.setBackgroundResource(R.color.app_white);
-				txtSeeU.setText("See You At");
-			}
-			if(txt !=null){
+			//if(txt !=null){
 				if(obj.isNotificationEnabled()){
-					txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-					imgImageView1.setImageResource(R.drawable.notification_on1);
+					//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
+					//imgImageView1.setImageResource(R.drawable.notification_on1);
 					imgImageView2.setImageResource(R.drawable.notification_on);
 				}else{
 
-					txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-					imgImageView1.setImageResource(R.drawable.notification_off1);
+					//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
+					//imgImageView1.setImageResource(R.drawable.notification_off1);
 					imgImageView2.setImageResource(R.drawable.notification_off);
 				}
-			}
+			//}
 			
 			/* Uncomment when supporting language
 			TextView txtLanguage = (TextView) viewSettings.findViewById(R.id.txtLanguageSelected);
@@ -2398,59 +2398,64 @@ GestureDetector.OnDoubleTapListener {
 
 		if(viewSettings == null){
 			viewSettings = initViewSetting(false);
-			rlytDrawerPane.addView(viewSettings);
+			
 		}
-		
-		viewSettings.setY(-1*rlytDrawerPane.getHeight());
-		//viewSettings.setY(-1*rlytMainContent.getHeight());
-		
-		//disable functionality behind this setting activity
-		
-		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);		
-		/*btnMenu.setVisibility(View.GONE);
-		imgSettingsCog.setVisibility(View.GONE);
-		rlytNewsContent.setVisibility(View.GONE);*/
-		
-		///**********/
-		
-
-		viewSettings.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION).translationY(0);
+		rlytMainContent.addView(viewSettings);
+		Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		viewSettings.startAnimation(animationFadeIn);
 	}
 
-	public void onClickSettings2(View v){
+	public void onClickDummy(View v){
+		
+	}
+	public void onClickSettingsClose(View v){
 		if(viewSettings != null){
+			Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+			animationFadeOut.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation arg0) {
+					
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation arg0) {
+					
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					rlytMainContent.removeView(viewSettings);
+					viewSettings =null;
+					
+				}
+			});
+			viewSettings.startAnimation(animationFadeOut);
 			
-			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);		
-			/*btnMenu.setVisibility(View.VISIBLE);
-			imgSettingsCog.setVisibility(View.VISIBLE);
-			rlytNewsContent.setVisibility(View.VISIBLE);*/
-
-			viewSettings.animate().setDuration(DEFAULT_MAX_SLIDE_DURATION)
-			.translationY(-1*rlytDrawerPane.getHeight())
-			.alpha(1.0f);
+			
 		}
 	}
 
 	public void onClickNotification(View v){
 		Object_AppConfig obj = new Object_AppConfig(this);
 
-		TextView txt =(TextView) v.findViewById(R.id.txtNotification);
-		ImageView imgImageView1 = (ImageView)v.findViewById(R.id.imgNotification1);
+		//TextView txt =(TextView) v.findViewById(R.id.txtNotification);
+		//ImageView imgImageView1 = (ImageView)v.findViewById(R.id.imgNotification1);
 		ImageView imgImageView2 = (ImageView)v.findViewById(R.id.imgNotification2);
 		if(obj.isNotificationEnabled()){
 			obj.setNotificationEnabled(false);
-			if(txt !=null){
-				txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
-				imgImageView1.setImageResource(R.drawable.notification_off1);
+			//if(txt !=null){
+				//txt.setText(Globals.TEXT_NOTIFICATION_DISABLED);
+				//imgImageView1.setImageResource(R.drawable.notification_off1);
 				imgImageView2.setImageResource(R.drawable.notification_off);
-			}
+			//}
 		}else{
 			obj.setNotificationEnabled(true);
-			if(txt !=null){
-				txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
-				imgImageView1.setImageResource(R.drawable.notification_on1);
+			//if(txt !=null){
+				//txt.setText(Globals.TEXT_NOTIFICATION_ENABLED);
+				//imgImageView1.setImageResource(R.drawable.notification_on1);
 				imgImageView2.setImageResource(R.drawable.notification_on);
-			}
+			//}
 		}
 
 

@@ -55,7 +55,7 @@ public class Globals {
 	public final static String APP_PNAME = "in.newzbyte.app";
 	public final static String SHARE_URL = "goo.gl/k3Cvyl";//"https://play.google.com/store/apps/details?id="+APP_PNAME;
 	public final static String GCM_SENDER_ID ="603181231697";// "82788197303";
-	public static final String DEFAULT_APP_SERVER_PATH = "http://app.newzbyte.in:9393/v2/client_requests/";//"http://highlinenews.org/v2/client_requests/";//
+	public static final String DEFAULT_APP_SERVER_PATH = "http://highlinenews.org/v2/client_requests/";//"http://app.newzbyte.in:9393/v2/client_requests/";
 	public final static String SERVER_TIME_ZONE = "GMT+05:30";
 	
 
@@ -80,7 +80,8 @@ public class Globals {
 	public static final String CALL_TYPE_OLD = "old";
 	public static final String CALL_TYPE_NEW = "new";
 	
-	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";//"Roboto-Regular.ttf";//
+	public static final String FONT_ROBOTO = "Roboto-Regular.ttf"; 
+	public static final String DEFAULT_FONT = "OpenSans-Regular.ttf";//"";//
 	//public static final String DEFAULT_CAT_FONT = "ArchivoBlack.otf";//"Chunkfive.otf";//"Typoline_Expanded_demo.otf";//
 	
 	public static final int LANG_ENG = 1;

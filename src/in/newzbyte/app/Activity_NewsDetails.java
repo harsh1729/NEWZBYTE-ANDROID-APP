@@ -78,8 +78,8 @@ public class Activity_NewsDetails extends Activity {
 			
 			
 			TextView txtCat = (TextView)findViewById(R.id.txtCat);
-			//Typeface tf = Typeface.createFromAsset(getAssets(), Globals.DEFAULT_FONT);
-			//txtCat.setTypeface(tf);
+			Typeface tf = Typeface.createFromAsset(getAssets(), Globals.FONT_ROBOTO);
+			txtCat.setTypeface(tf);
 			txtCat.setText(objNews.getCatName());
 			
 			newsId = objNews.getId();
