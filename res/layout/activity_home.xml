@@ -1,12 +1,13 @@
-<in.newzbyte.app.Custom_DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-     >
+<!-- <in.newzbyte.app.Custom_DrawerLayout -->
+<!--     xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!--     android:id="@+id/drawerLayout" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent" -->
+<!--      > -->
 
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rlytMainContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -83,49 +84,49 @@
     
     
  
-    <!-- The navigation drawer -->
-   <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rlytDrawerPane"
-        android:background="@color/app_white"
-        android:layout_marginLeft="-65dp"
-        android:layout_gravity="left"> 
+<!--     The navigation drawer -->
+<!--    <RelativeLayout -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:id="@+id/rlytDrawerPane" -->
+<!--         android:background="@color/app_white" -->
+<!--         android:layout_marginLeft="-65dp" -->
+<!--         android:layout_gravity="left">  -->
         
-       <!-- Settings bar -->
-       <RelativeLayout  
-            android:id="@+id/rlytSettings"
-            android:layout_width ="match_parent"
-        	android:layout_height ="wrap_content"
-        	android:layout_alignParentTop="true"
-        	android:padding="7dp">
+<!--        Settings bar -->
+<!--        <RelativeLayout   -->
+<!--             android:id="@+id/rlytSettings" -->
+<!--             android:layout_width ="match_parent" -->
+<!--         	android:layout_height ="wrap_content" -->
+<!--         	android:layout_alignParentTop="true" -->
+<!--         	android:padding="7dp"> -->
 		        
-           <ImageView 
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:src="@drawable/back"
-    		android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:clickable="true"
-            android:onClick="onClickMenu"/>
+<!--            <ImageView  -->
+<!--             android:layout_height="30dp" -->
+<!--             android:layout_width="30dp" -->
+<!--             android:src="@drawable/back" -->
+<!--     		android:layout_alignParentLeft="true" -->
+<!--             android:layout_alignParentTop="true" -->
+<!--             android:clickable="true" -->
+<!--             android:onClick="onClickMenu"/> -->
            
-            <TextView 
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="NewzByte"
-            android:textSize="@dimen/font_lbl_normal"
-    		android:textStyle="bold"   	
-            android:layout_centerInParent="true"
-            android:textColor="@color/app_black_dark"/>
+<!--             <TextView  -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:text="NewzByte" -->
+<!--             android:textSize="@dimen/font_lbl_normal" -->
+<!--     		android:textStyle="bold"   	 -->
+<!--             android:layout_centerInParent="true" -->
+<!--             android:textColor="@color/app_black_dark"/> -->
             
-            <ImageView 
-                android:layout_width ="30dp"
-        		android:layout_height ="30dp"
-        		android:clickable="true"
-        		android:layout_alignParentRight="true"
-        		android:src="@drawable/setting"
-        		android:onClick="onClickSettings"/>
-        </RelativeLayout>
+<!--             <ImageView  -->
+<!--                 android:layout_width ="30dp" -->
+<!--         		android:layout_height ="30dp" -->
+<!--         		android:clickable="true" -->
+<!--         		android:layout_alignParentRight="true" -->
+<!--         		android:src="@drawable/setting" -->
+<!--         		android:onClick="onClickSettings"/> -->
+<!--         </RelativeLayout> -->
 <!--         <RelativeLayout -->
 <!-- 	    android:id="@+id/rlyt_detailHeader" -->
 <!--         android:layout_width="match_parent" -->
@@ -148,15 +149,15 @@
 <!--         android:textStyle="bold" /> -->
         
 <!--     </RelativeLayout> -->
-<!--    <LinearLayout
-        android:id="@+id/llyt_hrline"
-	    android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/rlytSettings"
-        android:background="@color/app_lightgray"
-        android:layout_height="1dp" >
-   </LinearLayout>
-   -->
+<!--    <LinearLayout -->
+<!--         android:id="@+id/llyt_hrline" -->
+<!-- 	    android:orientation="horizontal" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_below="@+id/rlytSettings" -->
+<!--         android:background="@color/app_lightgray" -->
+<!--         android:layout_height="1dp" > -->
+<!--    </LinearLayout> -->
+<!--    -->
 <!--     <LinearLayout   -->
 <!--         android:id="@+id/llytCategoryHeader" -->
 <!--         android:layout_width="match_parent" -->
@@ -177,38 +178,38 @@
 <!--         />  -->
 <!--     </LinearLayout> -->
 
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_below="@+id/rlytSettings">
-<LinearLayout 
-    android:id="@+id/llytDrwawerUpperHalf"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:orientation="horizontal">
-</LinearLayout> 
-<LinearLayout 
-    android:id="@+id/llytDrwawerLowerHalf"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:orientation="horizontal">
-</LinearLayout>   
-</LinearLayout>
-        <ScrollView
-        android:id="@+id/scrollViewCat"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       	android:layout_below="@+id/rlytSettings"
-        android:layout_marginTop="0dp" >
-       <LinearLayout
-            android:id="@+id/llytCatContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center" >
+<!-- <LinearLayout  -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent" -->
+<!--     android:orientation="vertical" -->
+<!--     android:layout_below="@+id/rlytSettings"> -->
+<!-- <LinearLayout  -->
+<!--     android:id="@+id/llytDrwawerUpperHalf" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="0dp" -->
+<!--     android:layout_weight="1" -->
+<!--     android:orientation="horizontal"> -->
+<!-- </LinearLayout>  -->
+<!-- <LinearLayout  -->
+<!--     android:id="@+id/llytDrwawerLowerHalf" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="0dp" -->
+<!--     android:layout_weight="1" -->
+<!--     android:orientation="horizontal"> -->
+<!-- </LinearLayout>    -->
+<!-- </LinearLayout> -->
+<!--         <ScrollView -->
+<!--         android:id="@+id/scrollViewCat" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--        	android:layout_below="@+id/rlytSettings" -->
+<!--         android:layout_marginTop="0dp" > -->
+<!--        <LinearLayout -->
+<!--             android:id="@+id/llytCatContainer" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:orientation="vertical" -->
+<!--             android:gravity="center" > -->
             
 <!--             <ImageView  -->
 <!--      	android:id="@+id/btnCatAll" -->
@@ -222,11 +223,11 @@
 <!--     	android:layout_marginBottom="10dp" -->
 <!--     	android:onClick="onClickAllCategory" /> -->
 
-            </LinearLayout>
+<!--             </LinearLayout> -->
 
-     	</ScrollView>   
+<!--      	</ScrollView>    -->
  
-    </RelativeLayout>
+<!--     </RelativeLayout> -->
  
-</in.newzbyte.app.Custom_DrawerLayout>
+<!-- </in.newzbyte.app.Custom_DrawerLayout> -->
 

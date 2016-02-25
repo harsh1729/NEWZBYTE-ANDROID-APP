@@ -26,6 +26,7 @@
             android:src="@drawable/option_page_icon" />
 
         <TextView
+            android:id="@+id/settings_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -117,8 +118,8 @@
 
                 <ImageView
                     android:id="@+id/imgNotification_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:padding="0dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -138,8 +139,8 @@
 
                 <ImageView
                     android:id="@+id/imgNotification2"
-                    android:layout_width="40dp"
-                    android:layout_height="18dp"
+                    android:layout_width="44dp"
+                    android:layout_height="20dp"
                     android:padding="0dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
@@ -160,13 +161,14 @@
          android:onClick="onClickShareApp">
          
          <ImageView 
-                android:layout_width ="18dp"
-        		android:layout_height ="18dp"
+                android:layout_width ="20dp"
+        		android:layout_height ="20dp"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/share_white"
         		/>
          
          <TextView 
+             		android:id="@+id/txtShareApp"
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
     				android:text ="Invite your friends"
@@ -188,13 +190,14 @@
          android:onClick="onClickRateApp">
         
         <ImageView 
-                android:layout_width ="18dp"
-        		android:layout_height ="18dp"
+                android:layout_width ="20dp"
+        		android:layout_height ="20dp"
         		android:layout_marginRight="10dp"
         		android:src="@drawable/rate_app"
         		/>
         
          <TextView 
+             android:id="@+id/txtRate"
         			android:layout_width="wrap_content"
     				android:layout_height="wrap_content"
     				android:text ="Rate this app"
@@ -220,12 +223,13 @@
                 android:padding="20dp" >
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/disclaimer" />
 
                 <TextView
+                    android:id="@+id/txtDisclaimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Disclaimer"

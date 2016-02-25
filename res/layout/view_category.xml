@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llytSettingsContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_tranparent_black_dark"
+    android:onClick="onClickDummy"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rlytCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_black"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/img_cat_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:src="@drawable/category_page_icon" />
+
+        <TextView
+            android:id="@+id/cat_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/img_cat_icon"
+            android:text="Categories"
+            android:textColor="@color/app_white"
+            android:textSize="@dimen/font_lbl_normal" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="onClickCatClose"
+            android:src="@drawable/close_icon" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/cat_intro_text_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:text="Hello. What interests you?"
+        android:textColor="@color/app_white"
+        android:textSize="@dimen/font_lbl_very_large" />
+
+    <TextView
+        android:id="@+id/cat_intro_text_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:text="Pick some topics to follow."
+        android:textColor="@color/app_white"
+        android:textSize="@dimen/font_lbl_normal" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false" >
+
+        <LinearLayout
+            android:id="@+id/llytCatContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_settings_options"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:onClick="onClickAllCategory"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp" >
+
+                <LinearLayout
+                    android:id="@+id/llytAllNewsSelection"
+                    android:orientation="horizontal"
+                    android:layout_width="8dp"
+                    android:layout_height="32dp"
+                    android:background="@color/app_v3_blue" >
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgCat"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/all_news_icon" />
+
+                <TextView
+                    android:id="@+id/txtCatName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All News"
+                    android:textColor="@color/app_white"
+                    android:textSize="@dimen/font_lbl_normal_large" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

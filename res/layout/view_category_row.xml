@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_settings_options"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:onClick="onClickCategoryItem"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:orientation="horizontal" >
+    
+    <LinearLayout 
+        	android:id="@+id/llytNewsSelection"
+        		android:layout_width ="8dp"
+        		android:layout_height ="32dp"
+        		android:orientation="horizontal"
+        		android:background="@color/app_v3_blue"
+        ></LinearLayout>
+    
+     <ImageView 
+         android:id="@+id/imgCat"
+                android:layout_width ="20dp"
+        		android:layout_height ="20dp"
+        		android:layout_marginRight="10dp"
+        		android:layout_marginLeft="32dp"
+        		android:src="@drawable/category_default"
+        		/>
+         
+         <TextView 
+             		android:id="@+id/txtCatName"
+        			android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:text ="All News"
+    				android:textSize="@dimen/font_lbl_normal_large"
+    				android:textColor="@color/app_white"
+    				/>
+
+</LinearLayout>
