@@ -7,8 +7,7 @@
     android:clickable="true"
     android:gravity="center"
     android:onClick="onClickShareClose"
-    android:orientation="vertical"
-    android:padding="30dp" >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/app_lightgray"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="0.5dp"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -29,26 +28,29 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/selector_share_item"
-                android:layout_marginRight="1dp"
+                android:layout_marginRight="0.5dp"
                 android:onClick="onClickShareItem"
                 android:tag="3"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                 >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/fb" />
 
                 <TextView
                     android:id="@+id/text_1"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textSize="@dimen/font_lbl_small"
+                    android:layout_marginBottom="25dp"
                     android:text="Facebook" />
             </LinearLayout>
 
@@ -57,24 +59,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/selector_share_item"
-                android:layout_marginRight="1dp"
+                android:layout_marginRight="0.5dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:onClick="onClickShareItem"
-                android:tag="2"
-                android:padding="10dp" >
+                android:tag="2" >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/fb_msg" />
 
                 <TextView
                     android:id="@+id/text_2"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:layout_marginBottom="25dp"
                     android:maxLines="1"
                     android:textSize="@dimen/font_lbl_small"
                     android:text="Messenger" />
@@ -88,20 +91,21 @@
                 android:gravity="center"
                 android:onClick="onClickShareItem"
                 android:tag="4"
-                android:orientation="vertical"
-                android:padding="10dp" >
+                android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/tweeter" />
 
                 <TextView
                     android:id="@+id/text_3"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:layout_marginBottom="25dp"
                     android:maxLines="1"
                     android:textSize="@dimen/font_lbl_small"
                     android:text="Twitter" />
@@ -121,22 +125,23 @@
                 android:background="@drawable/selector_share_item"
                 android:onClick="onClickShareItem"
                 android:tag="5"
-                android:layout_marginRight="1dp"
+                android:layout_marginRight="0.5dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp" >
+                android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/whatsapp" />
 
                 <TextView
                     android:id="@+id/text_4"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_lbl_small"
+                    android:layout_marginBottom="25dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="WhatsApp" />
@@ -149,23 +154,24 @@
                 android:background="@drawable/selector_share_item"
                 android:onClick="onClickShareItem"
                 android:tag="1"
-                android:layout_marginRight="1dp"
+                android:layout_marginRight="0.5dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp" >
+                android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/gmail" />
 
                 <TextView
                     android:id="@+id/text_5"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:textSize="@dimen/font_lbl_small"
+                    android:layout_marginBottom="25dp"
                     android:maxLines="1"
                     android:text="Gmail" />
             </LinearLayout>
@@ -178,18 +184,19 @@
                 android:onClick="onClickShareItem"
                 android:tag="6"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp" >
+                android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/more" />
 
                 <TextView
                     android:id="@+id/text_6"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="25dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_lbl_small"
                     android:ellipsize="end"
