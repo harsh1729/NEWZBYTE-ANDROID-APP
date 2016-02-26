@@ -144,7 +144,7 @@ GestureDetector.OnDoubleTapListener {
 		rlytNewsContent = (RelativeLayout)findViewById(R.id.rlytNewsContent);
 		rlytMainContent = (RelativeLayout)findViewById(R.id.rlytMainContent);
 		//mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-		imgMenu = (ImageView)findViewById(R.id.imgMenu);
+		//imgMenu = (ImageView)findViewById(R.id.imgMenu);
 		imgGoToTop = (ImageView)findViewById(R.id.imgGoToTop);
 
 		//int drawerWidth = (int) (2.3 *Globals.getScreenSize(this).x / 3);
@@ -1640,13 +1640,16 @@ GestureDetector.OnDoubleTapListener {
 
 			DBHandler_Category dbHCategory = new DBHandler_Category(this);
 			dbHCategory.selectAllCategories(dbHSelection);
-			isCategoryChanged = true;
 			
-			if(viewCategory!=null){
-				LinearLayout llytAllSelection =(LinearLayout)viewCategory.findViewById(R.id.llytAllNewsSelection);
-				llytAllSelection.setVisibility(View.VISIBLE);
-				onClickCatClose(null);
-			}
+		}
+		
+		isCategoryChanged = true;
+		
+		if(viewCategory!=null){
+			
+			LinearLayout llytAllSelection =(LinearLayout)viewCategory.findViewById(R.id.llytAllNewsSelection);
+			llytAllSelection.setVisibility(View.VISIBLE);
+			onClickCatClose(null);
 		}
 	}
 	public void onClickCategoryItem(View v){
@@ -1661,10 +1664,15 @@ GestureDetector.OnDoubleTapListener {
 		}
 		
 		if(dbHSelection.isAllCategoriesSelected()){
+			if(llytSelection.getVisibility() == View.VISIBLE){
+				dbHSelection.clearCategory(selectedCatId);
+				llytSelection.setVisibility(View.INVISIBLE);
+			}else{
+				dbHSelection.clearCategoryTable();
+				dbHSelection.insertSelectedCat(selectedCatId);
+				llytSelection.setVisibility(View.VISIBLE);
+			}
 			
-			dbHSelection.clearCategoryTable();
-			dbHSelection.insertSelectedCat(selectedCatId);
-			llytSelection.setVisibility(View.VISIBLE);
 		}else{
 			boolean contains = dbHSelection.containsCatId(selectedCatId);
 			if(contains){
